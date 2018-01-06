@@ -1,4 +1,5 @@
-{
+{   "name": "up4-personalization",
+    "description": "marketing",
     "require": {
         "illuminate/database": "5.4",
         "facebook/graph-sdk": "^5.6",
