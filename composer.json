@@ -1,5 +1,9 @@
-{   "name": "up4-personalization",
-    "description": "marketing",
+{   "name": "gulo-solutions/up4-personalization",
+    "description": "Wrapper around BigCommerce API",
+    "keywords": ["API", "up4-personalization"],
+    "version": "1.0",
+    "license": "MIT",
+    "type": "project",
     "require": {
         "illuminate/database": "5.4",
         "facebook/graph-sdk": "^5.6",
