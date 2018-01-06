@@ -1,0 +1,20 @@
+{
+    "require": {
+        "illuminate/database": "5.4",
+        "facebook/graph-sdk": "^5.6",
+        "mustangostang/spyc": "^0.6.2",
+        "robmorgan/phinx": "^0.9.2",
+        "guzzlehttp/guzzle": "^6.3"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Models\\": "app/Models",
+            "Controllers\\": "app/Controllers",
+	        "Migrations\\":"app/Migration"
+        },
+    "config": {
+        "vendor-dir": "vendor/"
+        }
+    }
+}

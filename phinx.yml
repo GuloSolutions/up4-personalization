@@ -1,0 +1,24 @@
+paths:
+    migrations: /home/radboris/up4-probiotics/wp-content/plugins/up4-personalization/app/Migration/migrations
+    seeds: /home/radboris/up4-probiotics/wp-content/plugins/up4-personalization/app/Migration/seeds
+    migration_base_class: /home/radboris/up4-probiotics/wp-content/plugins/up4-personalization/app/Migration/Migration
+environments:
+    default_migration_table: phinxlog
+    default_database: up4-probiotics
+    production:
+        adapter: mysql
+        host: localhost
+        name: up4-probiotics
+        user: up4-probiotics
+        pass: Sn5xd9GZjrzLP1Pq
+        port: 3306
+        charset: utf8
+
+    development:
+        adapter: mysql
+        host: localhost
+        name: up4-probiotics
+        user: up4-probiotics
+        pass: Sn5xd9GZjrzLP1Pq
+        port: 3306
+        charset: utf8
