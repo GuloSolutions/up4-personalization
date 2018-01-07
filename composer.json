@@ -20,7 +20,7 @@
         },
       "extra": {
         "installer-paths": {
-            "public/content/plugins/{$name}/": [
+            "./wp-content/plugins/{$name}/": [
         "type:wordpress-plugin"
       ]
             }
