@@ -20,10 +20,10 @@
         },
       "extra": {
         "installer-paths": {
-      "./wp-content/plugins/up4-personalization/": [
+            "public/content/plugins/{$name}/": [
         "type:wordpress-plugin"
       ]
-    }
-  }
+            }
+        }
     }
 }
