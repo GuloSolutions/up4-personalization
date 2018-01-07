@@ -18,10 +18,12 @@
             "Controllers\\": "app/Controllers",
 	        "Migrations\\":"app/Migration"
         },
-    "extra": {
-        "installer-paths" : {
-            "./wp-content/plugins/up4-personalization/" : ["type:wordpress-plugin"]
-            }
-        }
+      "extra": {
+        "installer-paths": {
+      "./wp-content/plugins/up4-personalization/": [
+        "type:wordpress-plugin"
+      ]
+    }
+  }
     }
 }
