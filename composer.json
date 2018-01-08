@@ -9,7 +9,9 @@
         "facebook/graph-sdk": "^5.6",
         "robmorgan/phinx": "^0.9.2",
         "guzzlehttp/guzzle": "^6.3",
-        "composer/installers": "~1.0"
+        "composer/installers": "~1.0",
+        "tedivm/stash": "0.14.*"
+
 
     },
     "autoload": {
