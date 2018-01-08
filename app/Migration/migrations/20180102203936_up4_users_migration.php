@@ -41,9 +41,10 @@ class Up4UsersMigration extends Migration
                 $table->string('gender', 10)->nullable();
                 $table->string('age', 5)->nullable();
                 $table->boolean('has_children')->nullable();
-                $table->string('zip', 5)->nullable();
-                $table->string('weather')->nullable();
+                $table->string('temp', 5)->nullable();
+                $table->string('location')->nullable();
                 $table->string('local_time')->nullable();
+                $table->string('weather')->nullable();
                 $table->boolean('travels_often')->nullable();
                 $table->boolean('is_50plus')->nullable();
                 $table->boolean('is_mom')->nullable();
