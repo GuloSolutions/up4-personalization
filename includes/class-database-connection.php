@@ -14,9 +14,9 @@ class Database {
           'driver'    => 'mysql',
           'host'      => 'localhost',
           'port'      => '3306',
-          'database'  => 'DB_NAME',
-          'username'  => 'DB_USER',
-          'password'  => 'DB_PASSWORD',
+          'database'  => 'up4-probiotics',
+          'username'  => 'up4-probiotics',
+          'password'  => 'Sn5xd9GZjrzLP1Pq',
           'charset'   => 'utf8',
           'collation' => 'utf8_unicode_ci',
           'prefix' => 'ye3a_'
