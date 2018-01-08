@@ -52,7 +52,7 @@ function sendToApp(response) {
         'action': 'fb_receiver',
         'response': response
     };
-    $.ajax({
+    jQuery.ajax({
         url: ajax_receiver.ajax_url,
         data: receiver,
         method: 'POST',
