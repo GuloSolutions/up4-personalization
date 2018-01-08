@@ -173,7 +173,8 @@ class ProgressBarTest extends TestCase
         $expected =
             '  0/10 [>---------------------------]   0%'.
             $this->generateOutput(' 10/10 [============================] 100%').
-            $this->generateOutput(' 10/10 [============================] 100%');
+            $this->generateOutput(' 10/10 [============================] 100%')
+        ;
 
         // max in construct, no format
         $bar = new ProgressBar($output = $this->getOutputStream(), 10);
@@ -611,11 +612,9 @@ class ProgressBarTest extends TestCase
 
     public function testAddingPlaceholderFormatter()
     {
-        ProgressBar::setPlaceholderFormatterDefinition(
-            'remaining_steps', function (ProgressBar $bar) {
-                return $bar->getMaxSteps() - $bar->getProgress();
-            }
-        );
+        ProgressBar::setPlaceholderFormatterDefinition('remaining_steps', function (ProgressBar $bar) {
+            return $bar->getMaxSteps() - $bar->getProgress();
+        });
         $bar = new ProgressBar($output = $this->getOutputStream(), 3);
         $bar->setFormat(' %remaining_steps% [%bar%]');
 
@@ -657,15 +656,13 @@ class ProgressBarTest extends TestCase
         putenv('COLUMNS=156');
 
         $bar = new ProgressBar($output = $this->getOutputStream(), 15);
-        ProgressBar::setPlaceholderFormatterDefinition(
-            'memory', function (ProgressBar $bar) {
-                static $i = 0;
-                $mem = 100000 * $i;
-                $colors = $i++ ? '41;37' : '44;37';
+        ProgressBar::setPlaceholderFormatterDefinition('memory', function (ProgressBar $bar) {
+            static $i = 0;
+            $mem = 100000 * $i;
+            $colors = $i++ ? '41;37' : '44;37';
 
-                return "\033[".$colors.'m '.Helper::formatMemory($mem)." \033[0m";
-            }
-        );
+            return "\033[".$colors.'m '.Helper::formatMemory($mem)." \033[0m";
+        });
         $bar->setFormat(" \033[44;37m %title:-37s% \033[0m\n %current%/%max% %bar% %percent:3s%%\n 🏁  %remaining:-10s% %memory:37s%");
         $bar->setBarCharacter($done = "\033[32m●\033[0m");
         $bar->setEmptyBarCharacter($empty = "\033[31m●\033[0m");

@@ -49,7 +49,7 @@ class ReflectionClassResourceTest extends TestCase
         $now = time();
         $tmp = sys_get_temp_dir().'/tmp.php';
         file_put_contents($tmp, '<?php class ReflectionClassResourceTestClass {}');
-        include $tmp;
+        require $tmp;
 
         $res = new ReflectionClassResource(new \ReflectionClass('ReflectionClassResourceTestClass'));
         $this->assertTrue($res->isFresh($now));

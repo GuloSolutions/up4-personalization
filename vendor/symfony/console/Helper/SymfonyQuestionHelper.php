@@ -34,36 +34,36 @@ class SymfonyQuestionHelper extends QuestionHelper
         $default = $question->getDefault();
 
         switch (true) {
-        case null === $default:
-            $text = sprintf(' <info>%s</info>:', $text);
+            case null === $default:
+                $text = sprintf(' <info>%s</info>:', $text);
 
-            break;
+                break;
 
-        case $question instanceof ConfirmationQuestion:
-            $text = sprintf(' <info>%s (yes/no)</info> [<comment>%s</comment>]:', $text, $default ? 'yes' : 'no');
+            case $question instanceof ConfirmationQuestion:
+                $text = sprintf(' <info>%s (yes/no)</info> [<comment>%s</comment>]:', $text, $default ? 'yes' : 'no');
 
-            break;
+                break;
 
-        case $question instanceof ChoiceQuestion && $question->isMultiselect():
-            $choices = $question->getChoices();
-            $default = explode(',', $default);
+            case $question instanceof ChoiceQuestion && $question->isMultiselect():
+                $choices = $question->getChoices();
+                $default = explode(',', $default);
 
-            foreach ($default as $key => $value) {
-                $default[$key] = $choices[trim($value)];
-            }
+                foreach ($default as $key => $value) {
+                    $default[$key] = $choices[trim($value)];
+                }
 
-            $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape(implode(', ', $default)));
+                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape(implode(', ', $default)));
 
-            break;
+                break;
 
-        case $question instanceof ChoiceQuestion:
-            $choices = $question->getChoices();
-            $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($choices[$default]));
+            case $question instanceof ChoiceQuestion:
+                $choices = $question->getChoices();
+                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($choices[$default]));
 
-            break;
+                break;
 
-        default:
-            $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($default));
+            default:
+                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($default));
         }
 
         $output->writeln($text);

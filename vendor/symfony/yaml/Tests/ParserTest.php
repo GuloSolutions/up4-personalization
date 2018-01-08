@@ -19,9 +19,7 @@ use Symfony\Component\Yaml\Tag\TaggedValue;
 
 class ParserTest extends TestCase
 {
-    /**
-     * @var Parser 
-     */
+    /** @var Parser */
     protected $parser;
 
     protected function setUp()
@@ -599,8 +597,7 @@ EOF;
      */
     public function testMultipleDocumentsNotSupportedException()
     {
-        Yaml::parse(
-            <<<'EOL'
+        Yaml::parse(<<<'EOL'
 # Ranking of 1998 home runs
 ---
 - Mark McGwire
@@ -620,8 +617,7 @@ EOL
      */
     public function testSequenceInAMapping()
     {
-        Yaml::parse(
-            <<<'EOF'
+        Yaml::parse(<<<'EOF'
 yaml:
   hash: me
   - array stuff
@@ -681,8 +677,7 @@ EOT;
      */
     public function testMappingInASequence()
     {
-        Yaml::parse(
-            <<<'EOF'
+        Yaml::parse(<<<'EOF'
 yaml:
   - array stuff
   hash: me
@@ -696,8 +691,7 @@ EOF
      */
     public function testScalarInSequence()
     {
-        Yaml::parse(
-            <<<'EOF'
+        Yaml::parse(<<<'EOF'
 foo:
     - bar
 "missing colon"
@@ -834,8 +828,7 @@ EOF;
 
     public function testCommentAtTheRootIndent()
     {
-        $this->assertEquals(
-            array(
+        $this->assertEquals(array(
             'services' => array(
                 'app.foo_service' => array(
                     'class' => 'Foo',
@@ -844,8 +837,7 @@ EOF;
                     'class' => 'Bar',
                 ),
             ),
-            ), Yaml::parse(
-                <<<'EOF'
+        ), Yaml::parse(<<<'EOF'
 # comment 1
 services:
 # comment 2
@@ -857,14 +849,12 @@ services:
     app/bar_service:
         class: Bar
 EOF
-            )
-        );
+        ));
     }
 
     public function testStringBlockWithComments()
     {
-        $this->assertEquals(
-            array('content' => <<<'EOT'
+        $this->assertEquals(array('content' => <<<'EOT'
 # comment 1
 header
 
@@ -875,8 +865,7 @@ header
 
 footer # comment3
 EOT
-            ), Yaml::parse(
-                <<<'EOF'
+        ), Yaml::parse(<<<'EOF'
 content: |
     # comment 1
     header
@@ -888,14 +877,12 @@ content: |
 
     footer # comment3
 EOF
-            )
-        );
+        ));
     }
 
     public function testFoldedStringBlockWithComments()
     {
-        $this->assertEquals(
-            array(array('content' => <<<'EOT'
+        $this->assertEquals(array(array('content' => <<<'EOT'
 # comment 1
 header
 
@@ -906,8 +893,7 @@ header
 
 footer # comment3
 EOT
-            )), Yaml::parse(
-                <<<'EOF'
+        )), Yaml::parse(<<<'EOF'
 -
     content: |
         # comment 1
@@ -920,14 +906,12 @@ EOT
 
         footer # comment3
 EOF
-            )
-        );
+        ));
     }
 
     public function testNestedFoldedStringBlockWithComments()
     {
-        $this->assertEquals(
-            array(array(
+        $this->assertEquals(array(array(
             'title' => 'some title',
             'content' => <<<'EOT'
 # comment 1
@@ -940,8 +924,7 @@ header
 
 footer # comment3
 EOT
-            )), Yaml::parse(
-                <<<'EOF'
+        )), Yaml::parse(<<<'EOF'
 -
     title: some title
     content: |
@@ -955,14 +938,12 @@ EOT
 
         footer # comment3
 EOF
-            )
-        );
+        ));
     }
 
     public function testReferenceResolvingInInlineStrings()
     {
-        $this->assertEquals(
-            array(
+        $this->assertEquals(array(
             'var' => 'var-value',
             'scalar' => 'var-value',
             'list' => array('var-value'),
@@ -972,8 +953,7 @@ EOF
             'map' => array('key' => 'var-value'),
             'list_in_map' => array('key' => array('var-value')),
             'map_in_map' => array('foo' => array('bar' => 'var-value')),
-            ), Yaml::parse(
-                <<<'EOF'
+        ), Yaml::parse(<<<'EOF'
 var:  &var var-value
 scalar: *var
 list: [ *var ]
@@ -984,8 +964,7 @@ map: { key: *var }
 list_in_map: { key: [*var] }
 map_in_map: { foo: { bar: *var } }
 EOF
-            )
-        );
+        ));
     }
 
     public function testYamlDirective()
@@ -1280,13 +1259,13 @@ EOT
 data: !!binary |
     SGVsbG8gd29ybGQ=
 EOT
-        ),
+    ),
             'containing spaces in block scalar' => array(
                 <<<'EOT'
 data: !!binary |
     SGVs bG8gd 29ybGQ=
 EOT
-        ),
+    ),
         );
     }
 

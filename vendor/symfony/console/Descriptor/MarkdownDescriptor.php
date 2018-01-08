@@ -122,11 +122,9 @@ class MarkdownDescriptor extends Descriptor
             .str_repeat('-', Helper::strlen($command->getName()) + 2)."\n\n"
             .($command->getDescription() ? $command->getDescription()."\n\n" : '')
             .'### Usage'."\n\n"
-            .array_reduce(
-                array_merge(array($command->getSynopsis()), $command->getAliases(), $command->getUsages()), function ($carry, $usage) {
-                    return $carry.'* `'.$usage.'`'."\n";
-                }
-            )
+            .array_reduce(array_merge(array($command->getSynopsis()), $command->getAliases(), $command->getUsages()), function ($carry, $usage) {
+                return $carry.'* `'.$usage.'`'."\n";
+            })
         );
 
         if ($help = $command->getProcessedHelp()) {
@@ -158,15 +156,9 @@ class MarkdownDescriptor extends Descriptor
             }
 
             $this->write("\n\n");
-            $this->write(
-                implode(
-                    "\n", array_map(
-                        function ($commandName) use ($description) {
-                            return sprintf('* [`%s`](#%s)', $commandName, str_replace(':', '', $description->getCommand($commandName)->getName()));
-                        }, $namespace['commands']
-                    )
-                )
-            );
+            $this->write(implode("\n", array_map(function ($commandName) use ($description) {
+                return sprintf('* [`%s`](#%s)', $commandName, str_replace(':', '', $description->getCommand($commandName)->getName()));
+            }, $namespace['commands'])));
         }
 
         foreach ($description->getCommands() as $command) {

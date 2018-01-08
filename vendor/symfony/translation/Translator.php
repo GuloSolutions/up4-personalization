@@ -87,7 +87,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
 
         if ($formatter instanceof MessageSelector) {
             $formatter = new MessageFormatter($formatter);
-            @trigger_error(sprintf('Passing a "%s" instance into the "%s" as a second argument is deprecated since version 3.4 and will be removed in 4.0. Inject a "%s" implementation instead.', MessageSelector::class, __METHOD__, MessageFormatterInterface::class), E_USER_DEPRECATED);
+            @trigger_error(sprintf('Passing a "%s" instance into the "%s" as a second argument is deprecated since Symfony 3.4 and will be removed in 4.0. Inject a "%s" implementation instead.', MessageSelector::class, __METHOD__, MessageFormatterInterface::class), E_USER_DEPRECATED);
         } elseif (null === $formatter) {
             $formatter = new MessageFormatter();
         }
@@ -294,8 +294,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
         }
 
         $this->assertValidLocale($locale);
-        $cache = $this->getConfigCacheFactory()->cache(
-            $this->getCatalogueCachePath($locale),
+        $cache = $this->getConfigCacheFactory()->cache($this->getCatalogueCachePath($locale),
             function (ConfigCacheInterface $cache) use ($locale) {
                 $this->dumpCatalogue($locale, $cache);
             }
@@ -315,8 +314,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
         $this->initializeCatalogue($locale);
         $fallbackContent = $this->getFallbackContent($this->catalogues[$locale]);
 
-        $content = sprintf(
-            <<<EOF
+        $content = sprintf(<<<EOF
 <?php
 
 use Symfony\Component\Translation\MessageCatalogue;
@@ -347,8 +345,7 @@ EOF
             $fallbackSuffix = ucfirst(preg_replace($replacementPattern, '_', $fallback));
             $currentSuffix = ucfirst(preg_replace($replacementPattern, '_', $current));
 
-            $fallbackContent .= sprintf(
-                <<<'EOF'
+            $fallbackContent .= sprintf(<<<'EOF'
 $catalogue%s = new MessageCatalogue('%s', %s);
 $catalogue%s->addFallbackCatalogue($catalogue%s);
 

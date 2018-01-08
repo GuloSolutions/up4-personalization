@@ -85,12 +85,12 @@ class ResourceCheckerConfigCacheTest extends TestCase
         $checker = $this->getMockBuilder('\Symfony\Component\Config\ResourceCheckerInterface')->getMock();
 
         $checker->expects($this->once())
-            ->method('supports')
-            ->willReturn(true);
+                  ->method('supports')
+                  ->willReturn(true);
 
         $checker->expects($this->once())
-            ->method('isFresh')
-            ->willReturn(true);
+                  ->method('isFresh')
+                  ->willReturn(true);
 
         $cache = new ResourceCheckerConfigCache($this->cacheFile, array($checker));
         $cache->write('', array(new ResourceStub()));
@@ -103,12 +103,12 @@ class ResourceCheckerConfigCacheTest extends TestCase
         $checker = $this->getMockBuilder('\Symfony\Component\Config\ResourceCheckerInterface')->getMock();
 
         $checker->expects($this->once())
-            ->method('supports')
-            ->willReturn(true);
+                  ->method('supports')
+                  ->willReturn(true);
 
         $checker->expects($this->once())
-            ->method('isFresh')
-            ->willReturn(false);
+                  ->method('isFresh')
+                  ->willReturn(false);
 
         $cache = new ResourceCheckerConfigCache($this->cacheFile, array($checker));
         $cache->write('', array(new ResourceStub()));

@@ -259,8 +259,7 @@ class XliffFileLoader implements LoaderInterface
     {
         $errors = array();
         foreach (libxml_get_errors() as $error) {
-            $errors[] = sprintf(
-                '[%s %s] %s (in %s - line %d, column %d)',
+            $errors[] = sprintf('[%s %s] %s (in %s - line %d, column %d)',
                 LIBXML_ERR_WARNING == $error->level ? 'WARNING' : 'ERROR',
                 $error->code,
                 trim($error->message),
@@ -288,9 +287,7 @@ class XliffFileLoader implements LoaderInterface
      */
     private function getVersionNumber(\DOMDocument $dom)
     {
-        /**
- * @var \DOMNode $xliff 
-*/
+        /** @var \DOMNode $xliff */
         foreach ($dom->getElementsByTagName('xliff') as $xliff) {
             $version = $xliff->attributes->getNamedItem('version');
             if ($version) {
@@ -325,9 +322,7 @@ class XliffFileLoader implements LoaderInterface
             return $notes;
         }
 
-        /**
- * @var \SimpleXMLElement $xmlNote 
-*/
+        /** @var \SimpleXMLElement $xmlNote */
         foreach ($noteElement as $xmlNote) {
             $noteAttributes = $xmlNote->attributes();
             $note = array('content' => $this->utf8ToCharset((string) $xmlNote, $encoding));

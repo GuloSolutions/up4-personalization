@@ -24,8 +24,8 @@ class LockableTraitTest extends TestCase
     public static function setUpBeforeClass()
     {
         self::$fixturesPath = __DIR__.'/../Fixtures/';
-        include_once self::$fixturesPath.'/FooLockCommand.php';
-        include_once self::$fixturesPath.'/FooLock2Command.php';
+        require_once self::$fixturesPath.'/FooLockCommand.php';
+        require_once self::$fixturesPath.'/FooLock2Command.php';
     }
 
     public function testLockIsReleased()

@@ -202,14 +202,12 @@ class Application
         if (!$name) {
             $name = $this->defaultCommand;
             $definition = $this->getDefinition();
-            $definition->setArguments(
-                array_merge(
-                    $definition->getArguments(),
-                    array(
+            $definition->setArguments(array_merge(
+                $definition->getArguments(),
+                array(
                     'command' => new InputArgument('command', InputArgument::OPTIONAL, $definition->getArgument('command')->getDescription(), $name),
-                    )
                 )
-            );
+            ));
         }
 
         try {
@@ -532,11 +530,7 @@ class Application
     public function findNamespace($namespace)
     {
         $allNamespaces = $this->getNamespaces();
-        $expr = preg_replace_callback(
-            '{([^:]+|)}', function ($matches) {
-                return preg_quote($matches[1]).'[^:]*'; 
-            }, $namespace
-        );
+        $expr = preg_replace_callback('{([^:]+|)}', function ($matches) { return preg_quote($matches[1]).'[^:]*'; }, $namespace);
         $namespaces = preg_grep('{^'.$expr.'}', $allNamespaces);
 
         if (empty($namespaces)) {
@@ -579,12 +573,9 @@ class Application
     {
         $this->init();
 
+        $aliases = array();
         $allCommands = $this->commandLoader ? array_merge($this->commandLoader->getNames(), array_keys($this->commands)) : array_keys($this->commands);
-        $expr = preg_replace_callback(
-            '{([^:]+|)}', function ($matches) {
-                return preg_quote($matches[1]).'[^:]*'; 
-            }, $name
-        );
+        $expr = preg_replace_callback('{([^:]+|)}', function ($matches) { return preg_quote($matches[1]).'[^:]*'; }, $name);
         $commands = preg_grep('{^'.$expr.'}', $allCommands);
 
         if (empty($commands)) {
@@ -615,18 +606,15 @@ class Application
         // filter out aliases for commands which are already on the list
         if (count($commands) > 1) {
             $commandList = $this->commandLoader ? array_merge(array_flip($this->commandLoader->getNames()), $this->commands) : $this->commands;
-            $commands = array_unique(
-                array_filter(
-                    $commands, function ($nameOrAlias) use ($commandList, $commands) {
-                        $commandName = $commandList[$nameOrAlias] instanceof Command ? $commandList[$nameOrAlias]->getName() : $nameOrAlias;
+            $commands = array_unique(array_filter($commands, function ($nameOrAlias) use ($commandList, $commands, &$aliases) {
+                $commandName = $commandList[$nameOrAlias] instanceof Command ? $commandList[$nameOrAlias]->getName() : $nameOrAlias;
+                $aliases[$nameOrAlias] = $commandName;
 
-                        return $commandName === $nameOrAlias || !in_array($commandName, $commands);
-                    }
-                )
-            );
+                return $commandName === $nameOrAlias || !in_array($commandName, $commands);
+            }));
         }
 
-        $exact = in_array($name, $commands, true);
+        $exact = in_array($name, $commands, true) || isset($aliases[$name]);
         if (count($commands) > 1 && !$exact) {
             $usableWidth = $this->terminal->getWidth() - 10;
             $abbrevs = array_values($commands);
@@ -634,16 +622,14 @@ class Application
             foreach ($abbrevs as $abbrev) {
                 $maxLen = max(Helper::strlen($abbrev), $maxLen);
             }
-            $abbrevs = array_map(
-                function ($cmd) use ($commandList, $usableWidth, $maxLen) {
-                    if (!$commandList[$cmd] instanceof Command) {
-                        return $cmd;
-                    }
-                    $abbrev = str_pad($cmd, $maxLen, ' ').' '.$commandList[$cmd]->getDescription();
+            $abbrevs = array_map(function ($cmd) use ($commandList, $usableWidth, $maxLen) {
+                if (!$commandList[$cmd] instanceof Command) {
+                    return $cmd;
+                }
+                $abbrev = str_pad($cmd, $maxLen, ' ').' '.$commandList[$cmd]->getDescription();
 
-                    return Helper::strlen($abbrev) > $usableWidth ? Helper::substr($abbrev, 0, $usableWidth - 3).'...' : $abbrev;
-                }, array_values($commands)
-            );
+                return Helper::strlen($abbrev) > $usableWidth ? Helper::substr($abbrev, 0, $usableWidth - 3).'...' : $abbrev;
+            }, array_values($commands));
             $suggestions = $this->getAbbreviationSuggestions($abbrevs);
 
             throw new CommandNotFoundException(sprintf("Command \"%s\" is ambiguous.\nDid you mean one of these?\n%s", $name, $suggestions), array_values($commands));
@@ -819,16 +805,11 @@ class Application
         }
 
         switch ($shellVerbosity = (int) getenv('SHELL_VERBOSITY')) {
-        case -1: $output->setVerbosity(OutputInterface::VERBOSITY_QUIET); 
-            break;
-        case 1: $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE); 
-            break;
-        case 2: $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE); 
-            break;
-        case 3: $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG); 
-            break;
-        default: $shellVerbosity = 0; 
-            break;
+            case -1: $output->setVerbosity(OutputInterface::VERBOSITY_QUIET); break;
+            case 1: $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE); break;
+            case 2: $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE); break;
+            case 3: $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG); break;
+            default: $shellVerbosity = 0; break;
         }
 
         if (true === $input->hasParameterOption(array('--quiet', '-q'), true)) {
@@ -926,8 +907,7 @@ class Application
      */
     protected function getDefaultInputDefinition()
     {
-        return new InputDefinition(
-            array(
+        return new InputDefinition(array(
             new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
 
             new InputOption('--help', '-h', InputOption::VALUE_NONE, 'Display this help message'),
@@ -937,8 +917,7 @@ class Application
             new InputOption('--ansi', '', InputOption::VALUE_NONE, 'Force ANSI output'),
             new InputOption('--no-ansi', '', InputOption::VALUE_NONE, 'Disable ANSI output'),
             new InputOption('--no-interaction', '-n', InputOption::VALUE_NONE, 'Do not ask any interactive question'),
-            )
-        );
+        ));
     }
 
     /**
@@ -958,14 +937,12 @@ class Application
      */
     protected function getDefaultHelperSet()
     {
-        return new HelperSet(
-            array(
+        return new HelperSet(array(
             new FormatterHelper(),
             new DebugFormatterHelper(),
             new ProcessHelper(),
             new QuestionHelper(),
-            )
-        );
+        ));
     }
 
     /**
@@ -1043,11 +1020,7 @@ class Application
             }
         }
 
-        $alternatives = array_filter(
-            $alternatives, function ($lev) use ($threshold) {
-                return $lev < 2 * $threshold; 
-            }
-        );
+        $alternatives = array_filter($alternatives, function ($lev) use ($threshold) { return $lev < 2 * $threshold; });
         ksort($alternatives, SORT_NATURAL | SORT_FLAG_CASE);
 
         return array_keys($alternatives);

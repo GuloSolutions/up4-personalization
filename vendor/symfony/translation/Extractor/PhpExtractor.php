@@ -164,17 +164,17 @@ class PhpExtractor extends AbstractFileExtractor implements ExtractorInterface
             }
 
             switch ($t[0]) {
-            case T_START_HEREDOC:
-                $docToken = $t[1];
-                break;
-            case T_ENCAPSED_AND_WHITESPACE:
-            case T_CONSTANT_ENCAPSED_STRING:
-                $message .= $t[1];
-                break;
-            case T_END_HEREDOC:
-                return PhpStringTokenParser::parseDocString($docToken, $message);
-            default:
-                break 2;
+                case T_START_HEREDOC:
+                    $docToken = $t[1];
+                    break;
+                case T_ENCAPSED_AND_WHITESPACE:
+                case T_CONSTANT_ENCAPSED_STRING:
+                    $message .= $t[1];
+                    break;
+                case T_END_HEREDOC:
+                    return PhpStringTokenParser::parseDocString($docToken, $message);
+                default:
+                    break 2;
             }
         }
 

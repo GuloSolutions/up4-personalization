@@ -42,7 +42,8 @@ class TableTest extends TestCase
         $table
             ->setHeaders($headers)
             ->setRows($rows)
-            ->setStyle($style);
+            ->setStyle($style)
+        ;
         $table->render();
 
         $this->assertEquals($expected, $this->getOutputContent($output));
@@ -57,7 +58,8 @@ class TableTest extends TestCase
         $table
             ->setHeaders($headers)
             ->addRows($rows)
-            ->setStyle($style);
+            ->setStyle($style)
+        ;
         $table->render();
 
         $this->assertEquals($expected, $this->getOutputContent($output));
@@ -71,7 +73,8 @@ class TableTest extends TestCase
         $table = new Table($output = $this->getOutputStream($decorated));
         $table
             ->setHeaders($headers)
-            ->setStyle($style);
+            ->setStyle($style)
+        ;
         foreach ($rows as $row) {
             $table->addRow($row);
         }
@@ -94,7 +97,7 @@ class TableTest extends TestCase
                 array('ISBN', 'Title', 'Author'),
                 $books,
                 'default',
-        <<<'TABLE'
+<<<'TABLE'
 +---------------+--------------------------+------------------+
 | ISBN          | Title                    | Author           |
 +---------------+--------------------------+------------------+
@@ -110,7 +113,7 @@ TABLE
                 array('ISBN', 'Title', 'Author'),
                 $books,
                 'compact',
-        <<<'TABLE'
+<<<'TABLE'
  ISBN          Title                    Author           
  99921-58-10-7 Divine Comedy            Dante Alighieri  
  9971-5-0210-0 A Tale of Two Cities     Charles Dickens  
@@ -123,7 +126,7 @@ TABLE
                 array('ISBN', 'Title', 'Author'),
                 $books,
                 'borderless',
-        <<<'TABLE'
+<<<'TABLE'
  =============== ========================== ================== 
   ISBN            Title                      Author            
  =============== ========================== ================== 
@@ -144,7 +147,7 @@ TABLE
                     array('80-902734-1-6', 'And Then There Were None', 'Agatha Christie'),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +---------------+--------------------------+------------------+
 | ISBN          | Title                    |                  |
 +---------------+--------------------------+------------------+
@@ -165,7 +168,7 @@ TABLE
                     array('80-902734-1-6', 'And Then There Were None', 'Agatha Christie'),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +---------------+--------------------------+------------------+
 | 99921-58-10-7 | Divine Comedy            | Dante Alighieri  |
 | 9971-5-0210-0 |                          |                  |
@@ -184,7 +187,7 @@ TABLE
                     array('960-425-059-0', 'The Lord of the Rings', "J. R. R.\nTolkien"),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +---------------+----------------------------+-----------------+
 | ISBN          | Title                      | Author          |
 +---------------+----------------------------+-----------------+
@@ -204,7 +207,7 @@ TABLE
                 array('ISBN', 'Title'),
                 array(),
                 'default',
-        <<<'TABLE'
+<<<'TABLE'
 +------+-------+
 | ISBN | Title |
 +------+-------+
@@ -224,7 +227,7 @@ TABLE
                     array('9971-5-0210-0', 'A Tale of Two Cities', '<info>Charles Dickens</>'),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +---------------+----------------------+-----------------+
 | ISBN          | Title                | Author          |
 +---------------+----------------------+-----------------+
@@ -241,7 +244,7 @@ TABLE
                     array('9971-5-0210-0', 'A Tale of Two Cities', 'Charles Dickens'),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +----------------------------------+----------------------+-----------------+
 | ISBN                             | Title                | Author          |
 +----------------------------------+----------------------+-----------------+
@@ -273,7 +276,7 @@ TABLE
                     ),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +-------------------------------+-------------------------------+-----------------------------+
 | ISBN                          | Title                         | Author                      |
 +-------------------------------+-------------------------------+-----------------------------+
@@ -306,7 +309,7 @@ TABLE
                     array('80-902734-1-7', 'Test'),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +---------------+---------------+-----------------+
 | ISBN          | Title         | Author          |
 +---------------+---------------+-----------------+
@@ -339,7 +342,7 @@ TABLE
                     array('J. R. R'),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +------------------+---------+-----------------+
 | ISBN             | Title   | Author          |
 +------------------+---------+-----------------+
@@ -374,7 +377,7 @@ TABLE
                     ),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +-----------------+-------+-----------------+
 | ISBN            | Title | Author          |
 +-----------------+-------+-----------------+
@@ -411,7 +414,7 @@ TABLE
                     array('Charles Dickens'),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +-----------------+-------+-----------------+
 | ISBN            | Title | Author          |
 +-----------------+-------+-----------------+
@@ -438,7 +441,7 @@ TABLE
                     array('Charles Dickens'),
                 ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +---------------+-----------------+
 | ISBN          | Author          |
 +---------------+-----------------+
@@ -456,7 +459,7 @@ TABLE
                 ),
                 array(),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +------+-------+--------+
 | Main title            |
 +------+-------+--------+
@@ -474,9 +477,9 @@ TABLE
                         new TableCell('3', array('colspan' => 2)),
                         new TableCell('4', array('colspan' => 2)),
                     ),
-            ),
+        ),
                 'default',
-            <<<'TABLE'
+<<<'TABLE'
 +---+--+--+---+--+---+--+---+--+
 | 1       | 2    | 3    | 4    |
 +---+--+--+---+--+---+--+---+--+
@@ -550,11 +553,12 @@ TABLE
         $table
             ->setHeaders(array('■■'))
             ->setRows(array(array(1234)))
-            ->setStyle('default');
+            ->setStyle('default')
+        ;
         $table->render();
 
         $expected =
-        <<<'TABLE'
+<<<'TABLE'
 +------+
 | ■■   |
 +------+
@@ -574,7 +578,7 @@ TABLE;
         $table->render();
 
         $expected =
-        <<<'TABLE'
+<<<'TABLE'
 +-------+
 | 12345 |
 +-------+
@@ -592,7 +596,7 @@ TABLE;
         $table->render();
 
         $expected =
-        <<<'TABLE'
+<<<'TABLE'
 +----------+
 | 12345.01 |
 +----------+
@@ -608,7 +612,8 @@ TABLE;
         $style
             ->setHorizontalBorderChar('.')
             ->setVerticalBorderChar('.')
-            ->setCrossingChar('.');
+            ->setCrossingChar('.')
+        ;
 
         Table::setStyleDefinition('dotfull', $style);
         $table = new Table($output = $this->getOutputStream());
@@ -619,7 +624,7 @@ TABLE;
         $table->render();
 
         $expected =
-        <<<'TABLE'
+<<<'TABLE'
 .......
 . Foo .
 .......
@@ -636,19 +641,17 @@ TABLE;
         $table = new Table($output = $this->getOutputStream());
         $table
             ->setHeaders(array('Foo'))
-            ->setRows(
-                array(
+            ->setRows(array(
                 array('Bar1'),
                 new TableSeparator(),
                 array('Bar2'),
                 new TableSeparator(),
                 array('Bar3'),
-                )
-            );
+            ));
         $table->render();
 
         $expected =
-        <<<'TABLE'
+<<<'TABLE'
 +------+
 | Foo  |
 +------+
@@ -669,17 +672,15 @@ TABLE;
     public function testRenderMultiCalls()
     {
         $table = new Table($output = $this->getOutputStream());
-        $table->setRows(
-            array(
+        $table->setRows(array(
             array(new TableCell('foo', array('colspan' => 2))),
-            )
-        );
+        ));
         $table->render();
         $table->render();
         $table->render();
 
         $expected =
-        <<<TABLE
+<<<TABLE
 +----+---+
 | foo    |
 +----+---+
@@ -700,12 +701,10 @@ TABLE;
         $table = new Table($output = $this->getOutputStream());
         $table
             ->setHeaders(array('ISBN', 'Title', 'Author', 'Price'))
-            ->setRows(
-                array(
+            ->setRows(array(
                 array('99921-58-10-7', 'Divine Comedy', 'Dante Alighieri', '9.95'),
                 array('9971-5-0210-0', 'A Tale of Two Cities', 'Charles Dickens', '139.25'),
-                )
-            );
+            ));
 
         $style = new TableStyle();
         $style->setPadType(STR_PAD_LEFT);
@@ -732,12 +731,10 @@ TABLE;
         $table = new Table($output = $this->getOutputStream());
         $table
             ->setHeaders(array('ISBN', 'Title', 'Author', 'Price'))
-            ->setRows(
-                array(
+            ->setRows(array(
                 array('99921-58-10-7', 'Divine Comedy', 'Dante Alighieri', '9.95'),
                 array('9971-5-0210-0', 'A Tale of Two Cities', 'Charles Dickens', '139.25'),
-                )
-            )
+            ))
             ->setColumnWidth(0, 15)
             ->setColumnWidth(3, 10);
 
@@ -766,12 +763,10 @@ TABLE;
         $table = new Table($output = $this->getOutputStream());
         $table
             ->setHeaders(array('ISBN', 'Title', 'Author', 'Price'))
-            ->setRows(
-                array(
+            ->setRows(array(
                 array('99921-58-10-7', 'Divine Comedy', 'Dante Alighieri', '9.95'),
                 array('9971-5-0210-0', 'A Tale of Two Cities', 'Charles Dickens', '139.25'),
-                )
-            )
+            ))
             ->setColumnWidths(array(15, 0, -1, 10));
 
         $style = new TableStyle();

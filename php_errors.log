@@ -1355,3 +1355,4 @@ Stack trace:
 [06-Jan-2018 11:41:30 America/Chicago] PHP Warning:  Version warning: Imagick was compiled against Image Magick version 1650 but version 1666 is loaded. Imagick will run but may behave surprisingly in Unknown on line 0
 [06-Jan-2018 11:43:55 America/Chicago] PHP Warning:  Version warning: Imagick was compiled against Image Magick version 1650 but version 1666 is loaded. Imagick will run but may behave surprisingly in Unknown on line 0
 [06-Jan-2018 11:44:13 America/Chicago] PHP Warning:  Version warning: Imagick was compiled against Image Magick version 1650 but version 1666 is loaded. Imagick will run but may behave surprisingly in Unknown on line 0
+[07-Jan-2018 08:54:18 America/Chicago] PHP Warning:  Version warning: Imagick was compiled against Image Magick version 1650 but version 1666 is loaded. Imagick will run but may behave surprisingly in Unknown on line 0

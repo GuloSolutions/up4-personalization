@@ -272,13 +272,11 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
     protected function validateType($value)
     {
         if (!is_array($value) && (!$this->allowFalse || false !== $value)) {
-            $ex = new InvalidTypeException(
-                sprintf(
-                    'Invalid type for path "%s". Expected array, but got %s',
-                    $this->getPath(),
-                    gettype($value)
-                )
-            );
+            $ex = new InvalidTypeException(sprintf(
+                'Invalid type for path "%s". Expected array, but got %s',
+                $this->getPath(),
+                gettype($value)
+            ));
             if ($hint = $this->getInfo()) {
                 $ex->addHint($hint);
             }
@@ -375,15 +373,13 @@ class ArrayNode extends BaseNode implements PrototypeNodeInterface
             // no conflict
             if (!array_key_exists($k, $leftSide)) {
                 if (!$this->allowNewKeys) {
-                    $ex = new InvalidConfigurationException(
-                        sprintf(
-                            'You are not allowed to define new elements for path "%s". '
-                            .'Please define all elements for this path in one config file. '
-                            .'If you are trying to overwrite an element, make sure you redefine it '
-                            .'with the same name.',
-                            $this->getPath()
-                        )
-                    );
+                    $ex = new InvalidConfigurationException(sprintf(
+                        'You are not allowed to define new elements for path "%s". '
+                       .'Please define all elements for this path in one config file. '
+                       .'If you are trying to overwrite an element, make sure you redefine it '
+                       .'with the same name.',
+                        $this->getPath()
+                    ));
                     $ex->setPath($this->getPath());
 
                     throw $ex;

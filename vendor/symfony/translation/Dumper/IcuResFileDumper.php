@@ -46,7 +46,8 @@ class IcuResFileDumper extends FileDumper
 
             $data .= pack('V', strlen($target))
                 .mb_convert_encoding($target."\0", 'UTF-16LE', 'UTF-8')
-                .$this->writePadding($data);
+                .$this->writePadding($data)
+                  ;
         }
 
         $resOffset = $this->getPosition($data);
@@ -59,8 +60,7 @@ class IcuResFileDumper extends FileDumper
 
         $bundleTop = $this->getPosition($data);
 
-        $root = pack(
-            'V7',
+        $root = pack('V7',
             $resOffset + (2 << 28), // Resource Offset + Resource Type
             6,                      // Index length
             $keyTop,                        // Index keys top
@@ -70,8 +70,7 @@ class IcuResFileDumper extends FileDumper
             0                               // Index attributes
         );
 
-        $header = pack(
-            'vC2v4C12@32',
+        $header = pack('vC2v4C12@32',
             32,                     // Header size
             0xDA, 0x27,             // Magic number 1 and 2
             20, 0, 0, 2,            // Rest of the header, ..., Size of a char

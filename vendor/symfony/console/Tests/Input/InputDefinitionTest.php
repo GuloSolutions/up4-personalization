@@ -182,21 +182,17 @@ class InputDefinitionTest extends TestCase
 
     public function testGetArgumentDefaults()
     {
-        $definition = new InputDefinition(
-            array(
+        $definition = new InputDefinition(array(
             new InputArgument('foo1', InputArgument::OPTIONAL),
             new InputArgument('foo2', InputArgument::OPTIONAL, '', 'default'),
             new InputArgument('foo3', InputArgument::OPTIONAL | InputArgument::IS_ARRAY),
-            //  new InputArgument('foo4', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, '', array(1, 2)),
-            )
-        );
+        //  new InputArgument('foo4', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, '', array(1, 2)),
+        ));
         $this->assertEquals(array('foo1' => null, 'foo2' => 'default', 'foo3' => array()), $definition->getArgumentDefaults(), '->getArgumentDefaults() return the default values for each argument');
 
-        $definition = new InputDefinition(
-            array(
+        $definition = new InputDefinition(array(
             new InputArgument('foo4', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, '', array(1, 2)),
-            )
-        );
+        ));
         $this->assertEquals(array('foo4' => array(1, 2)), $definition->getArgumentDefaults(), '->getArgumentDefaults() return the default values for each argument');
     }
 
@@ -339,8 +335,7 @@ class InputDefinitionTest extends TestCase
 
     public function testGetOptionDefaults()
     {
-        $definition = new InputDefinition(
-            array(
+        $definition = new InputDefinition(array(
             new InputOption('foo1', null, InputOption::VALUE_NONE),
             new InputOption('foo2', null, InputOption::VALUE_REQUIRED),
             new InputOption('foo3', null, InputOption::VALUE_REQUIRED, '', 'default'),
@@ -348,8 +343,7 @@ class InputDefinitionTest extends TestCase
             new InputOption('foo5', null, InputOption::VALUE_OPTIONAL, '', 'default'),
             new InputOption('foo6', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY),
             new InputOption('foo7', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', array(1, 2)),
-            )
-        );
+        ));
         $defaults = array(
             'foo1' => false,
             'foo2' => null,

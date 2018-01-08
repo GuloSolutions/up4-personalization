@@ -39,23 +39,23 @@ abstract class Descriptor implements DescriptorInterface
         $this->output = $output;
 
         switch (true) {
-        case $object instanceof InputArgument:
-            $this->describeInputArgument($object, $options);
-            break;
-        case $object instanceof InputOption:
-            $this->describeInputOption($object, $options);
-            break;
-        case $object instanceof InputDefinition:
-            $this->describeInputDefinition($object, $options);
-            break;
-        case $object instanceof Command:
-            $this->describeCommand($object, $options);
-            break;
-        case $object instanceof Application:
-            $this->describeApplication($object, $options);
-            break;
-        default:
-            throw new InvalidArgumentException(sprintf('Object of type "%s" is not describable.', get_class($object)));
+            case $object instanceof InputArgument:
+                $this->describeInputArgument($object, $options);
+                break;
+            case $object instanceof InputOption:
+                $this->describeInputOption($object, $options);
+                break;
+            case $object instanceof InputDefinition:
+                $this->describeInputDefinition($object, $options);
+                break;
+            case $object instanceof Command:
+                $this->describeCommand($object, $options);
+                break;
+            case $object instanceof Application:
+                $this->describeApplication($object, $options);
+                break;
+            default:
+                throw new InvalidArgumentException(sprintf('Object of type "%s" is not describable.', get_class($object)));
         }
     }
 

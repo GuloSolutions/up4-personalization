@@ -23,7 +23,7 @@ class Database
             'host'      => 'localhost',
             'port'      => '3306',
             'database'  => 'DB_NAME',
-            'username'  => 'DB_NAME',
+            'username'  => 'DB_USER',
             'password'  => 'DB_PASSWORD',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',

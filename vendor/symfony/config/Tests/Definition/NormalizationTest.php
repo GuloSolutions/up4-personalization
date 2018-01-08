@@ -25,16 +25,12 @@ class NormalizationTest extends TestCase
         $tb = new TreeBuilder();
         $tree = $tb
             ->root('root_name', 'array')
-            ->fixXmlConfig('encoder')
-            ->children()
-            ->node('encoders', 'array')
-            ->useAttributeAsKey('class')
-            ->prototype('array')
-            ->beforeNormalization()->ifString()->then(
-                function ($v) {
-                    return array('algorithm' => $v); 
-                }
-            )->end()
+                ->fixXmlConfig('encoder')
+                ->children()
+                    ->node('encoders', 'array')
+                        ->useAttributeAsKey('class')
+                        ->prototype('array')
+                            ->beforeNormalization()->ifString()->then(function ($v) { return array('algorithm' => $v); })->end()
                             ->children()
                                 ->node('algorithm', 'scalar')->end()
                             ->end()
@@ -42,7 +38,8 @@ class NormalizationTest extends TestCase
                     ->end()
                 ->end()
             ->end()
-            ->buildTree();
+            ->buildTree()
+        ;
 
         $normalized = array(
             'encoders' => array(
@@ -90,11 +87,9 @@ class NormalizationTest extends TestCase
             ),
         );
 
-        return array_map(
-            function ($v) {
-                return array($v);
-            }, $configs
-        );
+        return array_map(function ($v) {
+            return array($v);
+        }, $configs);
     }
 
     /**
@@ -105,18 +100,19 @@ class NormalizationTest extends TestCase
         $tb = new TreeBuilder();
         $tree = $tb
             ->root('root', 'array')
-            ->children()
-            ->node('logout', 'array')
-            ->fixXmlConfig('handler')
-            ->children()
-            ->node('handlers', 'array')
-            ->prototype('scalar')->end()
+                ->children()
+                    ->node('logout', 'array')
+                        ->fixXmlConfig('handler')
+                        ->children()
+                            ->node('handlers', 'array')
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->buildTree();
+            ->buildTree()
+        ;
 
         $normalized = array('logout' => array('handlers' => array('a', 'b', 'c')));
 
@@ -139,11 +135,7 @@ class NormalizationTest extends TestCase
             ),
         );
 
-        return array_map(
-            function ($v) {
-                return array($v); 
-            }, $configs
-        );
+        return array_map(function ($v) { return array($v); }, $configs);
     }
 
     /**
@@ -174,11 +166,7 @@ class NormalizationTest extends TestCase
             ),
         );
 
-        return array_map(
-            function ($v) {
-                return array($v); 
-            }, $configs
-        );
+        return array_map(function ($v) { return array($v); }, $configs);
     }
 
     /**
@@ -201,13 +189,14 @@ class NormalizationTest extends TestCase
         $tb = new TreeBuilder();
         $tree = $tb
             ->root('root', 'array')
-            ->prototype('array')
-            ->children()
-            ->node('foo', 'scalar')->end()
+                ->prototype('array')
+                    ->children()
+                        ->node('foo', 'scalar')->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->buildTree();
+            ->buildTree()
+        ;
 
         $data = array('first' => array('foo' => 'bar'));
 
@@ -224,16 +213,17 @@ class NormalizationTest extends TestCase
         $tb = new TreeBuilder();
         $tree = $tb
             ->root('root', 'array')
-            ->children()
-            ->node('thing', 'array')
-            ->useAttributeAsKey('id')
-            ->prototype('array')
-            ->prototype('scalar')->end()
+                ->children()
+                    ->node('thing', 'array')
+                        ->useAttributeAsKey('id')
+                        ->prototype('array')
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->buildTree();
+            ->buildTree()
+        ;
 
         return $tree;
     }

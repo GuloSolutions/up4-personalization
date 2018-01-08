@@ -132,21 +132,21 @@ class ClassExistenceResource implements SelfCheckingResourceInterface, \Serializ
 
         if (isset($trace[$i]['function']) && !isset($trace[$i]['class'])) {
             switch ($trace[$i]['function']) {
-            case 'get_class_methods':
-            case 'get_class_vars':
-            case 'get_parent_class':
-            case 'is_a':
-            case 'is_subclass_of':
-            case 'class_exists':
-            case 'class_implements':
-            case 'class_parents':
-            case 'trait_exists':
-            case 'defined':
-            case 'interface_exists':
-            case 'method_exists':
-            case 'property_exists':
-            case 'is_callable':
-                return;
+                case 'get_class_methods':
+                case 'get_class_vars':
+                case 'get_parent_class':
+                case 'is_a':
+                case 'is_subclass_of':
+                case 'class_exists':
+                case 'class_implements':
+                case 'class_parents':
+                case 'trait_exists':
+                case 'defined':
+                case 'interface_exists':
+                case 'method_exists':
+                case 'property_exists':
+                case 'is_callable':
+                    return;
             }
 
             $props = array(

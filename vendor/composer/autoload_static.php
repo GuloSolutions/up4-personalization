@@ -14,7 +14,6 @@ class ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'c65d09b6820da036953a371c8c73a9b1' => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook/polyfills.php',
-        '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -61,6 +60,7 @@ class ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892
         'C' => 
         array (
             'Controllers\\' => 12,
+            'Composer\\Installers\\' => 20,
             'Carbon\\' => 7,
         ),
     );
@@ -146,6 +146,10 @@ class ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892
         array (
             0 => __DIR__ . '/../..' . '/app/Controllers',
         ),
+        'Composer\\Installers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
@@ -154,12 +158,10 @@ class ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892
 
     public static function getInitializer(ClassLoader $loader)
     {
-        return \Closure::bind(
-            function () use ($loader) {
-                $loader->prefixLengthsPsr4 = ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892::$prefixLengthsPsr4;
-                $loader->prefixDirsPsr4 = ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892::$prefixDirsPsr4;
+        return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892::$prefixDirsPsr4;
 
-            }, null, ClassLoader::class
-        );
+        }, null, ClassLoader::class);
     }
 }

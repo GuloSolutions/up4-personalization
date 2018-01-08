@@ -281,18 +281,17 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
             ->treatTrueLike(array('enabled' => true))
             ->treatNullLike(array('enabled' => true))
             ->beforeNormalization()
-            ->ifArray()
-            ->then(
-                function ($v) {
-                        $v['enabled'] = isset($v['enabled']) ? $v['enabled'] : true;
+                ->ifArray()
+                ->then(function ($v) {
+                    $v['enabled'] = isset($v['enabled']) ? $v['enabled'] : true;
 
-                        return $v;
-                }
-            )
+                    return $v;
+                })
             ->end()
             ->children()
                 ->booleanNode('enabled')
-                    ->defaultFalse();
+                    ->defaultFalse()
+        ;
 
         return $this;
     }
@@ -312,8 +311,9 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
             ->treatTrueLike(array('enabled' => true))
             ->treatNullLike(array('enabled' => true))
             ->children()
-            ->booleanNode('enabled')
-            ->defaultTrue();
+                ->booleanNode('enabled')
+                    ->defaultTrue()
+        ;
 
         return $this;
     }

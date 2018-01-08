@@ -96,22 +96,16 @@ class GlobResource implements \IteratorAggregate, SelfCheckingResourceInterface,
         if (false === strpos($this->pattern, '/**/') && (defined('GLOB_BRACE') || false === strpos($this->pattern, '{'))) {
             foreach (glob($this->prefix.$this->pattern, defined('GLOB_BRACE') ? GLOB_BRACE : 0) as $path) {
                 if ($this->recursive && is_dir($path)) {
-                    $files = iterator_to_array(
-                        new \RecursiveIteratorIterator(
-                            new \RecursiveCallbackFilterIterator(
-                                new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS),
-                                function (\SplFileInfo $file) {
-                                    return '.' !== $file->getBasename()[0]; 
-                                }
-                            ),
-                            \RecursiveIteratorIterator::LEAVES_ONLY
-                        )
-                    );
-                    uasort(
-                        $files, function (\SplFileInfo $a, \SplFileInfo $b) {
-                            return (string) $a > (string) $b ? 1 : -1;
-                        }
-                    );
+                    $files = iterator_to_array(new \RecursiveIteratorIterator(
+                        new \RecursiveCallbackFilterIterator(
+                            new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS),
+                            function (\SplFileInfo $file) { return '.' !== $file->getBasename()[0]; }
+                        ),
+                        \RecursiveIteratorIterator::LEAVES_ONLY
+                    ));
+                    uasort($files, function (\SplFileInfo $a, \SplFileInfo $b) {
+                        return (string) $a > (string) $b ? 1 : -1;
+                    });
 
                     foreach ($files as $path => $info) {
                         if ($info->isFile()) {

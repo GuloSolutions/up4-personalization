@@ -273,14 +273,10 @@ class ArgvInputTest extends TestCase
         $this->assertSame(array('name' => array('foo', 'bar', '')), $input->getOptions(), '->parse() parses empty array options as null ("--option=value" syntax)');
 
         $input = new ArgvInput(array('cli.php', '--name', 'foo', '--name', 'bar', '--name', '--anotherOption'));
-        $input->bind(
-            new InputDefinition(
-                array(
-                new InputOption('name', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY),
-                new InputOption('anotherOption', null, InputOption::VALUE_NONE),
-                )
-            )
-        );
+        $input->bind(new InputDefinition(array(
+            new InputOption('name', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY),
+            new InputOption('anotherOption', null, InputOption::VALUE_NONE),
+        )));
         $this->assertSame(array('name' => array('foo', 'bar', null), 'anotherOption' => true), $input->getOptions(), '->parse() parses empty array options ("--option value" syntax)');
     }
 

@@ -170,12 +170,12 @@ class ArgvInput extends Input
             $arg = $this->definition->getArgument($c);
             $this->arguments[$arg->getName()] = $arg->isArray() ? array($token) : $token;
 
-            // if last argument isArray(), append token to last argument
+        // if last argument isArray(), append token to last argument
         } elseif ($this->definition->hasArgument($c - 1) && $this->definition->getArgument($c - 1)->isArray()) {
             $arg = $this->definition->getArgument($c - 1);
             $this->arguments[$arg->getName()][] = $token;
 
-            // unexpected argument
+        // unexpected argument
         } else {
             $all = $this->definition->getArguments();
             if (count($all)) {
@@ -331,19 +331,17 @@ class ArgvInput extends Input
      */
     public function __toString()
     {
-        $tokens = array_map(
-            function ($token) {
-                if (preg_match('{^(-[^=]+=)(.+)}', $token, $match)) {
-                    return $match[1].$this->escapeToken($match[2]);
-                }
+        $tokens = array_map(function ($token) {
+            if (preg_match('{^(-[^=]+=)(.+)}', $token, $match)) {
+                return $match[1].$this->escapeToken($match[2]);
+            }
 
-                if ($token && '-' !== $token[0]) {
-                    return $this->escapeToken($token);
-                }
+            if ($token && '-' !== $token[0]) {
+                return $this->escapeToken($token);
+            }
 
-                return $token;
-            }, $this->tokens
-        );
+            return $token;
+        }, $this->tokens);
 
         return implode(' ', $tokens);
     }

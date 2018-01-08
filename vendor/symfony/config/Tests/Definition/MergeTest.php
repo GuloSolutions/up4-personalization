@@ -24,13 +24,14 @@ class MergeTest extends TestCase
         $tb = new TreeBuilder();
         $tree = $tb
             ->root('root', 'array')
-            ->children()
-            ->node('foo', 'scalar')
-            ->cannotBeOverwritten()
+                ->children()
+                    ->node('foo', 'scalar')
+                        ->cannotBeOverwritten()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->buildTree();
+            ->buildTree()
+        ;
 
         $a = array(
             'foo' => 'bar',
@@ -48,23 +49,24 @@ class MergeTest extends TestCase
         $tb = new TreeBuilder();
         $tree = $tb
             ->root('root', 'array')
-            ->children()
-            ->node('foo', 'scalar')->end()
-            ->node('bar', 'scalar')->end()
-            ->node('unsettable', 'array')
-            ->canBeUnset()
-            ->children()
-            ->node('foo', 'scalar')->end()
-            ->node('bar', 'scalar')->end()
+                ->children()
+                    ->node('foo', 'scalar')->end()
+                    ->node('bar', 'scalar')->end()
+                    ->node('unsettable', 'array')
+                        ->canBeUnset()
+                        ->children()
+                            ->node('foo', 'scalar')->end()
+                            ->node('bar', 'scalar')->end()
+                        ->end()
+                    ->end()
+                    ->node('unsetted', 'array')
+                        ->canBeUnset()
+                        ->prototype('scalar')->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->node('unsetted', 'array')
-            ->canBeUnset()
-            ->prototype('scalar')->end()
-            ->end()
-            ->end()
-            ->end()
-            ->buildTree();
+            ->buildTree()
+        ;
 
         $a = array(
             'foo' => 'bar',
@@ -82,14 +84,12 @@ class MergeTest extends TestCase
             'unsetted' => array('a', 'b'),
         );
 
-        $this->assertEquals(
-            array(
+        $this->assertEquals(array(
             'foo' => 'moo',
             'bar' => 'b',
             'unsettable' => false,
             'unsetted' => array('a', 'b'),
-            ), $tree->merge($a, $b)
-        );
+        ), $tree->merge($a, $b));
     }
 
     /**
@@ -100,17 +100,17 @@ class MergeTest extends TestCase
         $tb = new TreeBuilder();
         $tree = $tb
             ->root('config', 'array')
-            ->children()
-            ->node('test', 'array')
-            ->disallowNewKeysInSubsequentConfigs()
-            ->useAttributeAsKey('key')
-            ->prototype('array')
-            ->children()
-            ->node('value', 'scalar')->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
+                ->children()
+                    ->node('test', 'array')
+                        ->disallowNewKeysInSubsequentConfigs()
+                        ->useAttributeAsKey('key')
+                        ->prototype('array')
+                            ->children()
+                                ->node('value', 'scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
             ->buildTree();
 
@@ -135,17 +135,18 @@ class MergeTest extends TestCase
 
         $tree = $tb
             ->root('config', 'array')
-            ->children()
-            ->node('no_deep_merging', 'array')
-            ->performNoDeepMerging()
-            ->children()
-            ->node('foo', 'scalar')->end()
-            ->node('bar', 'scalar')->end()
+                ->children()
+                    ->node('no_deep_merging', 'array')
+                        ->performNoDeepMerging()
+                        ->children()
+                            ->node('foo', 'scalar')->end()
+                            ->node('bar', 'scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->buildTree();
+            ->buildTree()
+        ;
 
         $a = array(
             'no_deep_merging' => array(
@@ -160,13 +161,11 @@ class MergeTest extends TestCase
             ),
         );
 
-        $this->assertEquals(
-            array(
+        $this->assertEquals(array(
             'no_deep_merging' => array(
                 'c' => 'd',
             ),
-            ), $tree->merge($a, $b)
-        );
+        ), $tree->merge($a, $b));
     }
 
     public function testPrototypeWithoutAKeyAttribute()
@@ -175,13 +174,14 @@ class MergeTest extends TestCase
 
         $tree = $tb
             ->root('config', 'array')
-            ->children()
-            ->arrayNode('append_elements')
-            ->prototype('scalar')->end()
+                ->children()
+                    ->arrayNode('append_elements')
+                        ->prototype('scalar')->end()
+                    ->end()
+                ->end()
             ->end()
-            ->end()
-            ->end()
-            ->buildTree();
+            ->buildTree()
+        ;
 
         $a = array(
             'append_elements' => array('a', 'b'),

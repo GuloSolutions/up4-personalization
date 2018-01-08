@@ -43,11 +43,9 @@ class MergeOperationTest extends AbstractOperationTest
     public function testGetResultFromSingleDomain()
     {
         $this->assertEquals(
-            new MessageCatalogue(
-                'en', array(
+            new MessageCatalogue('en', array(
                 'messages' => array('a' => 'old_a', 'b' => 'old_b', 'c' => 'new_c'),
-                )
-            ),
+            )),
             $this->createOperation(
                 new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b'))),
                 new MessageCatalogue('en', array('messages' => array('a' => 'new_a', 'c' => 'new_c')))

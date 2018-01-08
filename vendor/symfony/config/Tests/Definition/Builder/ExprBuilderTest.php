@@ -20,7 +20,7 @@ class ExprBuilderTest extends TestCase
     {
         $test = $this->getTestBuilder()
             ->always($this->returnClosure('new_value'))
-            ->end();
+        ->end();
 
         $this->assertFinalizedValueIs('new_value', $test);
     }
@@ -30,25 +30,17 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifTrue()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('new_value', $test, array('key' => true));
 
         $test = $this->getTestBuilder()
-            ->ifTrue(
-                function ($v) {
-                    return true; 
-                }
-            )
+            ->ifTrue(function ($v) { return true; })
             ->then($this->returnClosure('new_value'))
         ->end();
         $this->assertFinalizedValueIs('new_value', $test);
 
         $test = $this->getTestBuilder()
-            ->ifTrue(
-                function ($v) {
-                    return false; 
-                }
-            )
+            ->ifTrue(function ($v) { return false; })
             ->then($this->returnClosure('new_value'))
         ->end();
         $this->assertFinalizedValueIs('value', $test);
@@ -59,13 +51,13 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifString()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('new_value', $test);
 
         $test = $this->getTestBuilder()
             ->ifString()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs(45, $test, array('key' => 45));
     }
 
@@ -74,13 +66,13 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifNull()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('new_value', $test, array('key' => null));
 
         $test = $this->getTestBuilder()
             ->ifNull()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('value', $test);
     }
 
@@ -89,13 +81,13 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifEmpty()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('new_value', $test, array('key' => array()));
 
         $test = $this->getTestBuilder()
             ->ifEmpty()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('value', $test);
     }
 
@@ -104,13 +96,13 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifArray()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('new_value', $test, array('key' => array()));
 
         $test = $this->getTestBuilder()
             ->ifArray()
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('value', $test);
     }
 
@@ -119,13 +111,13 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifInArray(array('foo', 'bar', 'value'))
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('new_value', $test);
 
         $test = $this->getTestBuilder()
             ->ifInArray(array('foo', 'bar'))
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('value', $test);
     }
 
@@ -134,13 +126,13 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifNotInArray(array('foo', 'bar'))
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('new_value', $test);
 
         $test = $this->getTestBuilder()
             ->ifNotInArray(array('foo', 'bar', 'value_from_config'))
             ->then($this->returnClosure('new_value'))
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs('new_value', $test);
     }
 
@@ -149,7 +141,7 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifString()
             ->thenEmptyArray()
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs(array(), $test);
     }
 
@@ -160,7 +152,7 @@ class ExprBuilderTest extends TestCase
     {
         $test = $this->getTestBuilder()
             ->castToArray()
-            ->end();
+        ->end();
         $this->assertFinalizedValueIs($expectedValue, $test, array('key' => $configValue));
     }
 
@@ -180,7 +172,7 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifString()
             ->thenInvalid('Invalid value')
-            ->end();
+        ->end();
         $this->finalizeTestBuilder($test);
     }
 
@@ -189,7 +181,7 @@ class ExprBuilderTest extends TestCase
         $test = $this->getTestBuilder()
             ->ifString()
             ->thenUnset()
-            ->end();
+        ->end();
         $this->assertEquals(array(), $this->finalizeTestBuilder($test));
     }
 
@@ -226,7 +218,8 @@ class ExprBuilderTest extends TestCase
             ->root('test')
             ->children()
             ->variableNode('key')
-            ->validate();
+            ->validate()
+        ;
     }
 
     /**
@@ -245,7 +238,8 @@ class ExprBuilderTest extends TestCase
             ->end()
             ->end()
             ->buildTree()
-            ->finalize(null === $config ? array('key' => 'value') : $config);
+            ->finalize(null === $config ? array('key' => 'value') : $config)
+        ;
     }
 
     /**

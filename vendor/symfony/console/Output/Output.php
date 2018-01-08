@@ -151,14 +151,14 @@ abstract class Output implements OutputInterface
 
         foreach ($messages as $message) {
             switch ($type) {
-            case OutputInterface::OUTPUT_NORMAL:
-                $message = $this->formatter->format($message);
-                break;
-            case OutputInterface::OUTPUT_RAW:
-                break;
-            case OutputInterface::OUTPUT_PLAIN:
-                $message = strip_tags($this->formatter->format($message));
-                break;
+                case OutputInterface::OUTPUT_NORMAL:
+                    $message = $this->formatter->format($message);
+                    break;
+                case OutputInterface::OUTPUT_RAW:
+                    break;
+                case OutputInterface::OUTPUT_PLAIN:
+                    $message = strip_tags($this->formatter->format($message));
+                    break;
             }
 
             $this->doWrite($message, $newline);

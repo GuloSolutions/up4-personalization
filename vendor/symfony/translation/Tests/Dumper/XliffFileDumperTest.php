@@ -20,13 +20,11 @@ class XliffFileDumperTest extends TestCase
     public function testFormatCatalogue()
     {
         $catalogue = new MessageCatalogue('en_US');
-        $catalogue->add(
-            array(
+        $catalogue->add(array(
             'foo' => 'bar',
             'key' => '',
             'key.with.cdata' => '<source> & <target>',
-            )
-        );
+        ));
         $catalogue->setMetadata('foo', array('notes' => array(array('priority' => 1, 'from' => 'bar', 'content' => 'baz'))));
         $catalogue->setMetadata('key', array('notes' => array(array('content' => 'baz'), array('content' => 'qux'))));
 
@@ -41,13 +39,11 @@ class XliffFileDumperTest extends TestCase
     public function testFormatCatalogueXliff2()
     {
         $catalogue = new MessageCatalogue('en_US');
-        $catalogue->add(
-            array(
+        $catalogue->add(array(
             'foo' => 'bar',
             'key' => '',
             'key.with.cdata' => '<source> & <target>',
-            )
-        );
+        ));
         $catalogue->setMetadata('key', array('target-attributes' => array('order' => 1)));
 
         $dumper = new XliffFileDumper();
@@ -79,11 +75,9 @@ class XliffFileDumperTest extends TestCase
     public function testFormatCatalogueWithTargetAttributesMetadata()
     {
         $catalogue = new MessageCatalogue('en_US');
-        $catalogue->add(
-            array(
+        $catalogue->add(array(
             'foo' => 'bar',
-            )
-        );
+        ));
         $catalogue->setMetadata('foo', array('target-attributes' => array('state' => 'needs-translation')));
 
         $dumper = new XliffFileDumper();
@@ -97,25 +91,19 @@ class XliffFileDumperTest extends TestCase
     public function testFormatCatalogueWithNotesMetadata()
     {
         $catalogue = new MessageCatalogue('en_US');
-        $catalogue->add(
-            array(
+        $catalogue->add(array(
             'foo' => 'bar',
             'baz' => 'biz',
-            )
-        );
-        $catalogue->setMetadata(
-            'foo', array('notes' => array(
+        ));
+        $catalogue->setMetadata('foo', array('notes' => array(
             array('category' => 'state', 'content' => 'new'),
             array('category' => 'approved', 'content' => 'true'),
             array('category' => 'section', 'content' => 'user login', 'priority' => '1'),
-            ))
-        );
-        $catalogue->setMetadata(
-            'baz', array('notes' => array(
+        )));
+        $catalogue->setMetadata('baz', array('notes' => array(
             array('id' => 'x', 'content' => 'x_content'),
             array('appliesTo' => 'target', 'category' => 'quality', 'content' => 'Fuzzy'),
-            ))
-        );
+        )));
 
         $dumper = new XliffFileDumper();
 

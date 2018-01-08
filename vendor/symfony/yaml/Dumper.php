@@ -80,8 +80,7 @@ class Dumper
 
                 $willBeInlined = $inline - 1 <= 0 || !is_array($value) && $dumpObjectAsInlineMap || empty($value);
 
-                $output .= sprintf(
-                    '%s%s%s%s',
+                $output .= sprintf('%s%s%s%s',
                     $prefix,
                     $dumpAsMap ? Inline::dump($key, $flags).':' : '-',
                     $willBeInlined ? ' ' : "\n",

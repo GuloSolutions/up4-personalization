@@ -48,11 +48,9 @@ class XmlReferenceDumper
 
         // xml remapping
         if ($node->getParent()) {
-            $remapping = array_filter(
-                $node->getParent()->getXmlRemappings(), function ($mapping) use ($rootName) {
-                    return $rootName === $mapping[1];
-                }
-            );
+            $remapping = array_filter($node->getParent()->getXmlRemappings(), function ($mapping) use ($rootName) {
+                return $rootName === $mapping[1];
+            });
 
             if (count($remapping)) {
                 list($singular) = current($remapping);
@@ -102,25 +100,25 @@ class XmlReferenceDumper
                         $prototypeValue = $prototype->getDefaultValue();
                     } else {
                         switch (get_class($prototype)) {
-                        case 'Symfony\Component\Config\Definition\ScalarNode':
-                            $prototypeValue = 'scalar value';
-                            break;
+                            case 'Symfony\Component\Config\Definition\ScalarNode':
+                                $prototypeValue = 'scalar value';
+                                break;
 
-                        case 'Symfony\Component\Config\Definition\FloatNode':
-                        case 'Symfony\Component\Config\Definition\IntegerNode':
-                            $prototypeValue = 'numeric value';
-                            break;
+                            case 'Symfony\Component\Config\Definition\FloatNode':
+                            case 'Symfony\Component\Config\Definition\IntegerNode':
+                                $prototypeValue = 'numeric value';
+                                break;
 
-                        case 'Symfony\Component\Config\Definition\BooleanNode':
-                            $prototypeValue = 'true|false';
-                            break;
+                            case 'Symfony\Component\Config\Definition\BooleanNode':
+                                $prototypeValue = 'true|false';
+                                break;
 
-                        case 'Symfony\Component\Config\Definition\EnumNode':
-                            $prototypeValue = implode('|', array_map('json_encode', $prototype->getValues()));
-                            break;
+                            case 'Symfony\Component\Config\Definition\EnumNode':
+                                $prototypeValue = implode('|', array_map('json_encode', $prototype->getValues()));
+                                break;
 
-                        default:
-                            $prototypeValue = 'value';
+                            default:
+                                $prototypeValue = 'value';
                         }
                     }
                 }

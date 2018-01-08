@@ -23,6 +23,6 @@ class PhpFileLoader extends FileLoader
      */
     protected function loadResource($resource)
     {
-        return include $resource;
+        return require $resource;
     }
 }

@@ -21,41 +21,31 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 abstract class AbstractDescriptorTest extends TestCase
 {
-    /**
-     * @dataProvider getDescribeInputArgumentTestData 
-     */
+    /** @dataProvider getDescribeInputArgumentTestData */
     public function testDescribeInputArgument(InputArgument $argument, $expectedDescription)
     {
         $this->assertDescription($expectedDescription, $argument);
     }
 
-    /**
-     * @dataProvider getDescribeInputOptionTestData 
-     */
+    /** @dataProvider getDescribeInputOptionTestData */
     public function testDescribeInputOption(InputOption $option, $expectedDescription)
     {
         $this->assertDescription($expectedDescription, $option);
     }
 
-    /**
-     * @dataProvider getDescribeInputDefinitionTestData 
-     */
+    /** @dataProvider getDescribeInputDefinitionTestData */
     public function testDescribeInputDefinition(InputDefinition $definition, $expectedDescription)
     {
         $this->assertDescription($expectedDescription, $definition);
     }
 
-    /**
-     * @dataProvider getDescribeCommandTestData 
-     */
+    /** @dataProvider getDescribeCommandTestData */
     public function testDescribeCommand(Command $command, $expectedDescription)
     {
         $this->assertDescription($expectedDescription, $command);
     }
 
-    /**
-     * @dataProvider getDescribeApplicationTestData 
-     */
+    /** @dataProvider getDescribeApplicationTestData */
     public function testDescribeApplication(Application $application, $expectedDescription)
     {
         // Replaces the dynamic placeholders of the command help text with a static version.

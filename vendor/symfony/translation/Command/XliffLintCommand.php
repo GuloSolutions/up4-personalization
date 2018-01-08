@@ -50,8 +50,7 @@ class XliffLintCommand extends Command
             ->setDescription('Lints a XLIFF file and outputs encountered errors')
             ->addArgument('filename', null, 'A file or a directory or STDIN')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
-            ->setHelp(
-                <<<EOF
+            ->setHelp(<<<EOF
 The <info>%command.name%</info> command lints a XLIFF file and outputs to STDOUT
 the first encountered syntax error.
 
@@ -69,7 +68,8 @@ Or of a whole directory:
   <info>php %command.full_name% dirname --format=json</info>
 
 EOF
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -114,15 +114,13 @@ EOF
             return array('file' => $file, 'valid' => true);
         }
 
-        $errorMessages = array_map(
-            function ($error) {
-                return array(
+        $errorMessages = array_map(function ($error) {
+            return array(
                 'line' => $error->line,
                 'column' => $error->column,
                 'message' => trim($error->message),
-                );
-            }, libxml_get_errors()
-        );
+            );
+        }, libxml_get_errors());
 
         libxml_clear_errors();
         libxml_use_internal_errors(false);
@@ -133,12 +131,12 @@ EOF
     private function display(SymfonyStyle $io, array $files)
     {
         switch ($this->format) {
-        case 'txt':
-            return $this->displayTxt($io, $files);
-        case 'json':
-            return $this->displayJson($io, $files);
-        default:
-            throw new \InvalidArgumentException(sprintf('The format "%s" is not supported.', $this->format));
+            case 'txt':
+                return $this->displayTxt($io, $files);
+            case 'json':
+                return $this->displayJson($io, $files);
+            default:
+                throw new \InvalidArgumentException(sprintf('The format "%s" is not supported.', $this->format));
         }
     }
 
@@ -153,14 +151,10 @@ EOF
             } elseif (!$info['valid']) {
                 ++$erroredFiles;
                 $io->text('<error> ERROR </error>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
-                $io->listing(
-                    array_map(
-                        function ($error) {
-                            // general document errors have a '-1' line number
-                            return -1 === $error['line'] ? $error['message'] : sprintf('Line %d, Column %d: %s', $error['line'], $error['column'], $error['message']);
-                        }, $info['messages']
-                    )
-                );
+                $io->listing(array_map(function ($error) {
+                    // general document errors have a '-1' line number
+                    return -1 === $error['line'] ? $error['message'] : sprintf('Line %d, Column %d: %s', $error['line'], $error['column'], $error['message']);
+                }, $info['messages']));
             }
         }
 
@@ -177,14 +171,12 @@ EOF
     {
         $errors = 0;
 
-        array_walk(
-            $filesInfo, function (&$v) use (&$errors) {
-                $v['file'] = (string) $v['file'];
-                if (!$v['valid']) {
-                    ++$errors;
-                }
+        array_walk($filesInfo, function (&$v) use (&$errors) {
+            $v['file'] = (string) $v['file'];
+            if (!$v['valid']) {
+                ++$errors;
             }
-        );
+        });
 
         $io->writeln(json_encode($filesInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 

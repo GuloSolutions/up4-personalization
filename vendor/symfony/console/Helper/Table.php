@@ -618,21 +618,24 @@ class Table
         $borderless
             ->setHorizontalBorderChar('=')
             ->setVerticalBorderChar(' ')
-            ->setCrossingChar(' ');
+            ->setCrossingChar(' ')
+        ;
 
         $compact = new TableStyle();
         $compact
             ->setHorizontalBorderChar('')
             ->setVerticalBorderChar(' ')
             ->setCrossingChar('')
-            ->setCellRowContentFormat('%s');
+            ->setCellRowContentFormat('%s')
+        ;
 
         $styleGuide = new TableStyle();
         $styleGuide
             ->setHorizontalBorderChar('-')
             ->setVerticalBorderChar(' ')
             ->setCrossingChar(' ')
-            ->setCellHeaderFormat('%s');
+            ->setCellHeaderFormat('%s')
+        ;
 
         return array(
             'default' => new TableStyle(),

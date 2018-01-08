@@ -182,11 +182,9 @@ class XmlUtilsTest extends TestCase
         $originalDisableEntities = libxml_disable_entity_loader(false);
         $errorReporting = error_reporting(-1);
 
-        set_error_handler(
-            function ($errno, $errstr) {
-                throw new \Exception($errstr, $errno);
-            }
-        );
+        set_error_handler(function ($errno, $errstr) {
+            throw new \Exception($errstr, $errno);
+        });
 
         $file = __DIR__.'/../Fixtures/foo.xml';
         try {

@@ -34,8 +34,7 @@ class ListCommand extends Command
             ->setName('list')
             ->setDefinition($this->createDefinition())
             ->setDescription('Lists commands')
-            ->setHelp(
-                <<<'EOF'
+            ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command lists all commands:
 
   <info>php %command.full_name%</info>
@@ -52,7 +51,8 @@ It's also possible to get raw list of commands (useful for embedding command run
 
   <info>php %command.full_name% --raw</info>
 EOF
-            );
+            )
+        ;
     }
 
     /**
@@ -69,13 +69,11 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $helper = new DescriptorHelper();
-        $helper->describe(
-            $output, $this->getApplication(), array(
+        $helper->describe($output, $this->getApplication(), array(
             'format' => $input->getOption('format'),
             'raw_text' => $input->getOption('raw'),
             'namespace' => $input->getArgument('namespace'),
-            )
-        );
+        ));
     }
 
     /**
@@ -83,12 +81,10 @@ EOF
      */
     private function createDefinition()
     {
-        return new InputDefinition(
-            array(
+        return new InputDefinition(array(
             new InputArgument('namespace', InputArgument::OPTIONAL, 'The namespace name'),
             new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw command list'),
             new InputOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (txt, xml, json, or md)', 'txt'),
-            )
-        );
+        ));
     }
 }

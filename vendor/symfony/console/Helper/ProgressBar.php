@@ -399,14 +399,14 @@ final class ProgressBar
     {
         switch ($this->output->getVerbosity()) {
             // OutputInterface::VERBOSITY_QUIET: display is disabled anyway
-        case OutputInterface::VERBOSITY_VERBOSE:
-            return $this->max ? 'verbose' : 'verbose_nomax';
-        case OutputInterface::VERBOSITY_VERY_VERBOSE:
-            return $this->max ? 'very_verbose' : 'very_verbose_nomax';
-        case OutputInterface::VERBOSITY_DEBUG:
-            return $this->max ? 'debug' : 'debug_nomax';
-        default:
-            return $this->max ? 'normal' : 'normal_nomax';
+            case OutputInterface::VERBOSITY_VERBOSE:
+                return $this->max ? 'verbose' : 'verbose_nomax';
+            case OutputInterface::VERBOSITY_VERY_VERBOSE:
+                return $this->max ? 'very_verbose' : 'very_verbose_nomax';
+            case OutputInterface::VERBOSITY_DEBUG:
+                return $this->max ? 'debug' : 'debug_nomax';
+            default:
+                return $this->max ? 'normal' : 'normal_nomax';
         }
     }
 
@@ -505,11 +505,9 @@ final class ProgressBar
         $line = preg_replace_callback($regex, $callback, $this->format);
 
         // gets string length for each sub line with multiline format
-        $linesLength = array_map(
-            function ($subLine) {
-                return Helper::strlenWithoutDecoration($this->output->getFormatter(), rtrim($subLine, "\r"));
-            }, explode("\n", $line)
-        );
+        $linesLength = array_map(function ($subLine) {
+            return Helper::strlenWithoutDecoration($this->output->getFormatter(), rtrim($subLine, "\r"));
+        }, explode("\n", $line));
 
         $linesWidth = max($linesLength);
 

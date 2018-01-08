@@ -31,28 +31,27 @@ class AddConsoleCommandPassTest extends TestCase
         $container->addCompilerPass(new AddConsoleCommandPass());
         $container->setParameter('my-command.class', 'Symfony\Component\Console\Tests\DependencyInjection\MyCommand');
 
+        $id = 'my-command';
         $definition = new Definition('%my-command.class%');
         $definition->setPublic($public);
         $definition->addTag('console.command');
-        $container->setDefinition('my-command', $definition);
+        $container->setDefinition($id, $definition);
 
         $container->compile();
 
-        $alias = 'console.command.symfony_component_console_tests_dependencyinjection_mycommand';
+        $alias = 'console.command.public_alias.my-command';
 
         if ($public) {
             $this->assertFalse($container->hasAlias($alias));
-            $id = 'my-command';
         } else {
-            $id = $alias;
             // The alias is replaced by a Definition by the ReplaceAliasByActualDefinitionPass
             // in case the original service is private
-            $this->assertFalse($container->hasDefinition('my-command'));
+            $this->assertFalse($container->hasDefinition($id));
             $this->assertTrue($container->hasDefinition($alias));
         }
 
         $this->assertTrue($container->hasParameter('console.command.ids'));
-        $this->assertSame(array($alias => $id), $container->getParameter('console.command.ids'));
+        $this->assertSame(array($public ? $id : $alias), $container->getParameter('console.command.ids'));
     }
 
     public function testProcessRegistersLazyCommands()
@@ -62,7 +61,8 @@ class AddConsoleCommandPassTest extends TestCase
             ->register('my-command', MyCommand::class)
             ->setPublic(false)
             ->addTag('console.command', array('command' => 'my:command'))
-            ->addTag('console.command', array('command' => 'my:alias'));
+            ->addTag('console.command', array('command' => 'my:alias'))
+        ;
 
         (new AddConsoleCommandPass())->process($container);
 
@@ -72,8 +72,7 @@ class AddConsoleCommandPassTest extends TestCase
         $this->assertSame(ContainerCommandLoader::class, $commandLoader->getClass());
         $this->assertSame(array('my:command' => 'my-command', 'my:alias' => 'my-command'), $commandLoader->getArgument(1));
         $this->assertEquals(array(array('my-command' => new ServiceClosureArgument(new TypedReference('my-command', MyCommand::class)))), $commandLocator->getArguments());
-        $this->assertSame(array('console.command.symfony_component_console_tests_dependencyinjection_mycommand' => 'my-command'), $container->getParameter('console.command.ids'));
-        $this->assertSame(array('my-command' => true), $container->getParameter('console.lazy_command.ids'));
+        $this->assertSame(array(), $container->getParameter('console.command.ids'));
         $this->assertSame(array(array('setName', array('my:command')), array('setAliases', array(array('my:alias')))), $command->getMethodCalls());
     }
 
@@ -83,7 +82,8 @@ class AddConsoleCommandPassTest extends TestCase
         $container
             ->register('with-default-name', NamedCommand::class)
             ->setPublic(false)
-            ->addTag('console.command');
+            ->addTag('console.command')
+        ;
 
         $pass = new AddConsoleCommandPass();
         $pass->process($container);
@@ -94,14 +94,14 @@ class AddConsoleCommandPassTest extends TestCase
         $this->assertSame(ContainerCommandLoader::class, $commandLoader->getClass());
         $this->assertSame(array('default' => 'with-default-name'), $commandLoader->getArgument(1));
         $this->assertEquals(array(array('with-default-name' => new ServiceClosureArgument(new TypedReference('with-default-name', NamedCommand::class)))), $commandLocator->getArguments());
-        $this->assertSame(array('console.command.symfony_component_console_tests_dependencyinjection_namedcommand' => 'with-default-name'), $container->getParameter('console.command.ids'));
-        $this->assertSame(array('with-default-name' => true), $container->getParameter('console.lazy_command.ids'));
+        $this->assertSame(array(), $container->getParameter('console.command.ids'));
 
         $container = new ContainerBuilder();
         $container
             ->register('with-default-name', NamedCommand::class)
             ->setPublic(false)
-            ->addTag('console.command', array('command' => 'new-name'));
+            ->addTag('console.command', array('command' => 'new-name'))
+        ;
 
         $pass->process($container);
 
@@ -167,10 +167,9 @@ class AddConsoleCommandPassTest extends TestCase
 
         (new AddConsoleCommandPass())->process($container);
 
-        $alias1 = 'console.command.symfony_component_console_tests_dependencyinjection_mycommand';
-        $alias2 = $alias1.'_my-command2';
-        $this->assertTrue($container->hasAlias($alias1));
-        $this->assertTrue($container->hasAlias($alias2));
+        $aliasPrefix = 'console.command.public_alias.';
+        $this->assertTrue($container->hasAlias($aliasPrefix.'my-command1'));
+        $this->assertTrue($container->hasAlias($aliasPrefix.'my-command2'));
     }
 }
 

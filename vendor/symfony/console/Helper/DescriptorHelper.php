@@ -37,7 +37,8 @@ class DescriptorHelper extends Helper
             ->register('txt', new TextDescriptor())
             ->register('xml', new XmlDescriptor())
             ->register('json', new JsonDescriptor())
-            ->register('md', new MarkdownDescriptor());
+            ->register('md', new MarkdownDescriptor())
+        ;
     }
 
     /**
@@ -55,12 +56,10 @@ class DescriptorHelper extends Helper
      */
     public function describe(OutputInterface $output, $object, array $options = array())
     {
-        $options = array_merge(
-            array(
+        $options = array_merge(array(
             'raw_text' => false,
             'format' => 'txt',
-            ), $options
-        );
+        ), $options);
 
         if (!isset($this->descriptors[$options['format']])) {
             throw new InvalidArgumentException(sprintf('Unsupported format "%s".', $options['format']));

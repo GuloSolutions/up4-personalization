@@ -31,11 +31,7 @@ class CommandTesterTest extends TestCase
         $this->command = new Command('foo');
         $this->command->addArgument('command');
         $this->command->addArgument('foo');
-        $this->command->setCode(
-            function ($input, $output) {
-                $output->writeln('foo'); 
-            }
-        );
+        $this->command->setCode(function ($input, $output) { $output->writeln('foo'); });
 
         $this->tester = new CommandTester($this->command);
         $this->tester->execute(array('foo' => 'bar'), array('interactive' => false, 'decorated' => false, 'verbosity' => Output::VERBOSITY_VERBOSE));
@@ -81,11 +77,7 @@ class CommandTesterTest extends TestCase
         $application->setAutoExit(false);
 
         $command = new Command('foo');
-        $command->setCode(
-            function ($input, $output) {
-                $output->writeln('foo'); 
-            }
-        );
+        $command->setCode(function ($input, $output) { $output->writeln('foo'); });
 
         $application->add($command);
 
@@ -105,14 +97,12 @@ class CommandTesterTest extends TestCase
 
         $command = new Command('foo');
         $command->setHelperSet(new HelperSet(array(new QuestionHelper())));
-        $command->setCode(
-            function ($input, $output) use ($questions, $command) {
-                $helper = $command->getHelper('question');
-                $helper->ask($input, $output, new Question($questions[0]));
-                $helper->ask($input, $output, new Question($questions[1]));
-                $helper->ask($input, $output, new Question($questions[2]));
-            }
-        );
+        $command->setCode(function ($input, $output) use ($questions, $command) {
+            $helper = $command->getHelper('question');
+            $helper->ask($input, $output, new Question($questions[0]));
+            $helper->ask($input, $output, new Question($questions[1]));
+            $helper->ask($input, $output, new Question($questions[2]));
+        });
 
         $tester = new CommandTester($command);
         $tester->setInputs(array('Bobby', 'Fine', 'France'));
@@ -136,14 +126,12 @@ class CommandTesterTest extends TestCase
 
         $command = new Command('foo');
         $command->setHelperSet(new HelperSet(array(new QuestionHelper())));
-        $command->setCode(
-            function ($input, $output) use ($questions, $command) {
-                $helper = $command->getHelper('question');
-                $helper->ask($input, $output, new Question($questions[0]));
-                $helper->ask($input, $output, new Question($questions[1]));
-                $helper->ask($input, $output, new Question($questions[2]));
-            }
-        );
+        $command->setCode(function ($input, $output) use ($questions, $command) {
+            $helper = $command->getHelper('question');
+            $helper->ask($input, $output, new Question($questions[0]));
+            $helper->ask($input, $output, new Question($questions[1]));
+            $helper->ask($input, $output, new Question($questions[2]));
+        });
 
         $tester = new CommandTester($command);
         $tester->setInputs(array('Bobby', 'Fine'));
@@ -159,14 +147,12 @@ class CommandTesterTest extends TestCase
         );
 
         $command = new Command('foo');
-        $command->setCode(
-            function ($input, $output) use ($questions, $command) {
-                $io = new SymfonyStyle($input, $output);
-                $io->ask($questions[0]);
-                $io->ask($questions[1]);
-                $io->ask($questions[2]);
-            }
-        );
+        $command->setCode(function ($input, $output) use ($questions, $command) {
+            $io = new SymfonyStyle($input, $output);
+            $io->ask($questions[0]);
+            $io->ask($questions[1]);
+            $io->ask($questions[2]);
+        });
 
         $tester = new CommandTester($command);
         $tester->setInputs(array('Bobby', 'Fine', 'France'));

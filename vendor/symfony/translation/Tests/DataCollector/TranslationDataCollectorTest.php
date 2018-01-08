@@ -142,7 +142,8 @@ class TranslationDataCollectorTest extends TestCase
         $translator = $this
             ->getMockBuilder('Symfony\Component\Translation\DataCollectorTranslator')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMock()
+        ;
 
         return $translator;
     }

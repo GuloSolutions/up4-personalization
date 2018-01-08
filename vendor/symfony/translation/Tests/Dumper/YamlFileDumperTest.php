@@ -24,8 +24,7 @@ class YamlFileDumperTest extends TestCase
             array(
                 'foo.bar1' => 'value1',
                 'foo.bar2' => 'value2',
-            )
-        );
+            ));
 
         $dumper = new YamlFileDumper();
 
@@ -39,8 +38,7 @@ class YamlFileDumperTest extends TestCase
             array(
                 'foo.bar1' => 'value1',
                 'foo.bar2' => 'value2',
-            )
-        );
+            ));
 
         $dumper = new YamlFileDumper();
 

@@ -22,13 +22,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class SymfonyStyleTest extends TestCase
 {
-    /**
-     * @var Command 
-     */
+    /** @var Command */
     protected $command;
-    /**
-     * @var CommandTester 
-     */
+    /** @var CommandTester */
     protected $tester;
 
     protected function setUp()
@@ -50,7 +46,7 @@ class SymfonyStyleTest extends TestCase
      */
     public function testOutputs($inputCommandFilepath, $outputFilepath)
     {
-        $code = include $inputCommandFilepath;
+        $code = require $inputCommandFilepath;
         $this->command->setCode($code);
         $this->tester->execute(array(), array('interactive' => false, 'decorated' => false));
         $this->assertStringEqualsFile($outputFilepath, $this->tester->getDisplay(true));
@@ -61,7 +57,7 @@ class SymfonyStyleTest extends TestCase
      */
     public function testInteractiveOutputs($inputCommandFilepath, $outputFilepath)
     {
-        $code = include $inputCommandFilepath;
+        $code = require $inputCommandFilepath;
         $this->command->setCode($code);
         $this->tester->execute(array(), array('interactive' => true, 'decorated' => false));
         $this->assertStringEqualsFile($outputFilepath, $this->tester->getDisplay(true));

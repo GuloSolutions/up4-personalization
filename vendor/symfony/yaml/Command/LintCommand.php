@@ -54,8 +54,7 @@ class LintCommand extends Command
             ->addArgument('filename', null, 'A file or a directory or STDIN')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
             ->addOption('parse-tags', null, InputOption::VALUE_NONE, 'Parse custom tags')
-            ->setHelp(
-                <<<EOF
+            ->setHelp(<<<EOF
 The <info>%command.name%</info> command lints a YAML file and outputs to STDOUT
 the first encountered syntax error.
 
@@ -73,7 +72,8 @@ Or of a whole directory:
   <info>php %command.full_name% dirname --format=json</info>
 
 EOF
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -106,15 +106,13 @@ EOF
 
     private function validate($content, $flags, $file = null)
     {
-        $prevErrorHandler = set_error_handler(
-            function ($level, $message, $file, $line) use (&$prevErrorHandler) {
-                if (E_USER_DEPRECATED === $level) {
-                    throw new ParseException($message, $this->getParser()->getRealCurrentLineNb() + 1);
-                }
-
-                return $prevErrorHandler ? $prevErrorHandler($level, $message, $file, $line) : false;
+        $prevErrorHandler = set_error_handler(function ($level, $message, $file, $line) use (&$prevErrorHandler) {
+            if (E_USER_DEPRECATED === $level) {
+                throw new ParseException($message, $this->getParser()->getRealCurrentLineNb() + 1);
             }
-        );
+
+            return $prevErrorHandler ? $prevErrorHandler($level, $message, $file, $line) : false;
+        });
 
         try {
             $this->getParser()->parse($content, Yaml::PARSE_CONSTANT | $flags);
@@ -130,12 +128,12 @@ EOF
     private function display(SymfonyStyle $io, array $files)
     {
         switch ($this->format) {
-        case 'txt':
-            return $this->displayTxt($io, $files);
-        case 'json':
-            return $this->displayJson($io, $files);
-        default:
-            throw new \InvalidArgumentException(sprintf('The format "%s" is not supported.', $this->format));
+            case 'txt':
+                return $this->displayTxt($io, $files);
+            case 'json':
+                return $this->displayJson($io, $files);
+            default:
+                throw new \InvalidArgumentException(sprintf('The format "%s" is not supported.', $this->format));
         }
     }
 
@@ -167,14 +165,12 @@ EOF
     {
         $errors = 0;
 
-        array_walk(
-            $filesInfo, function (&$v) use (&$errors) {
-                $v['file'] = (string) $v['file'];
-                if (!$v['valid']) {
-                    ++$errors;
-                }
+        array_walk($filesInfo, function (&$v) use (&$errors) {
+            $v['file'] = (string) $v['file'];
+            if (!$v['valid']) {
+                ++$errors;
             }
-        );
+        });
 
         $io->writeln(json_encode($filesInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 

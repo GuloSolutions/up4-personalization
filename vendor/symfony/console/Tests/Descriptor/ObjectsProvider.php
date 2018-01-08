@@ -57,12 +57,10 @@ class ObjectsProvider
             'input_definition_1' => new InputDefinition(),
             'input_definition_2' => new InputDefinition(array(new InputArgument('argument_name', InputArgument::REQUIRED))),
             'input_definition_3' => new InputDefinition(array(new InputOption('option_name', 'o', InputOption::VALUE_NONE))),
-            'input_definition_4' => new InputDefinition(
-                array(
+            'input_definition_4' => new InputDefinition(array(
                 new InputArgument('argument_name', InputArgument::REQUIRED),
                 new InputOption('option_name', 'o', InputOption::VALUE_NONE),
-                )
-            ),
+            )),
         );
     }
 

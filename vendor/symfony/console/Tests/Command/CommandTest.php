@@ -31,7 +31,7 @@ class CommandTest extends TestCase
     public static function setUpBeforeClass()
     {
         self::$fixturesPath = __DIR__.'/../Fixtures/';
-        include_once self::$fixturesPath.'/TestCommand.php';
+        require_once self::$fixturesPath.'/TestCommand.php';
     }
 
     public function testConstructor()
@@ -351,11 +351,9 @@ class CommandTest extends TestCase
     public function testSetCode()
     {
         $command = new \TestCommand();
-        $ret = $command->setCode(
-            function (InputInterface $input, OutputInterface $output) {
-                $output->writeln('from the code...');
-            }
-        );
+        $ret = $command->setCode(function (InputInterface $input, OutputInterface $output) {
+            $output->writeln('from the code...');
+        });
         $this->assertEquals($command, $ret, '->setCode() implements a fluent interface');
         $tester = new CommandTester($command);
         $tester->execute(array());

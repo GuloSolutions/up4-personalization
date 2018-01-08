@@ -26,8 +26,8 @@ class ArrayNodeDefinitionTest extends TestCase
 
         $parent
             ->children()
-            ->scalarNode('foo')->end()
-            ->scalarNode('bar')->end()
+                ->scalarNode('foo')->end()
+                ->scalarNode('bar')->end()
             ->end()
             ->append($child);
 
@@ -67,7 +67,8 @@ class ArrayNodeDefinitionTest extends TestCase
         $node = new ArrayNodeDefinition('root');
         $node
             ->addDefaultsIfNotSet()
-            ->prototype('array');
+            ->prototype('array')
+        ;
         $node->getNode();
     }
 
@@ -80,7 +81,8 @@ class ArrayNodeDefinitionTest extends TestCase
         $node
             ->defaultValue(array())
             ->addDefaultChildrenIfNoneSet('foo')
-            ->prototype('array');
+            ->prototype('array')
+        ;
         $node->getNode();
     }
 
@@ -89,7 +91,8 @@ class ArrayNodeDefinitionTest extends TestCase
         $node = new ArrayNodeDefinition('root');
         $node
             ->addDefaultChildrenIfNoneSet()
-            ->prototype('array');
+            ->prototype('array')
+        ;
         $tree = $node->getNode();
         $this->assertEquals(array(array()), $tree->getDefaultValue());
     }
@@ -102,7 +105,8 @@ class ArrayNodeDefinitionTest extends TestCase
         $node = new ArrayNodeDefinition('root');
         $node
             ->addDefaultChildrenIfNoneSet($args)
-            ->prototype('array');
+            ->prototype('array')
+        ;
 
         try {
             $tree = $node->getNode();
@@ -116,7 +120,8 @@ class ArrayNodeDefinitionTest extends TestCase
         $node
             ->useAttributeAsKey('attr')
             ->addDefaultChildrenIfNoneSet($args)
-            ->prototype('array');
+            ->prototype('array')
+        ;
 
         try {
             $tree = $node->getNode();
@@ -145,7 +150,8 @@ class ArrayNodeDefinitionTest extends TestCase
         $nodeDefinition
             ->addDefaultChildrenIfNoneSet()
             ->prototype('array')
-            ->prototype('array');
+                  ->prototype('array')
+        ;
         $node = $nodeDefinition->getNode();
 
         $this->assertInstanceOf('Symfony\Component\Config\Definition\PrototypedArrayNode', $node);
@@ -158,7 +164,8 @@ class ArrayNodeDefinitionTest extends TestCase
         $node
             ->canBeEnabled()
             ->children()
-            ->scalarNode('foo')->defaultValue('bar')->end();
+                ->scalarNode('foo')->defaultValue('bar')->end()
+        ;
 
         $this->assertEquals(array('enabled' => false, 'foo' => 'bar'), $node->getNode()->getDefaultValue());
     }
@@ -173,7 +180,8 @@ class ArrayNodeDefinitionTest extends TestCase
         $node
             ->canBeEnabled()
             ->children()
-            ->scalarNode('foo')->defaultValue('bar')->end();
+                ->scalarNode('foo')->defaultValue('bar')->end()
+        ;
 
         $this->assertEquals(
             $expected,
@@ -309,8 +317,9 @@ class ArrayNodeDefinitionTest extends TestCase
         $node = new ArrayNodeDefinition('root');
         $node
             ->children()
-            ->arrayNode('foo')->setDeprecated('The "%path%" node is deprecated.')->end()
-            ->end();
+                ->arrayNode('foo')->setDeprecated('The "%path%" node is deprecated.')->end()
+            ->end()
+        ;
         $deprecatedNode = $node->getNode()->getChildren()['foo'];
 
         $this->assertTrue($deprecatedNode->isDeprecated());

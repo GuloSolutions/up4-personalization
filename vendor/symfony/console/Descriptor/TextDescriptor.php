@@ -42,16 +42,13 @@ class TextDescriptor extends Descriptor
         $totalWidth = isset($options['total_width']) ? $options['total_width'] : Helper::strlen($argument->getName());
         $spacingWidth = $totalWidth - strlen($argument->getName());
 
-        $this->writeText(
-            sprintf(
-                '  <info>%s</info>  %s%s%s',
-                $argument->getName(),
-                str_repeat(' ', $spacingWidth),
-                // + 4 = 2 spaces before <info>, 2 spaces after </info>
-                preg_replace('/\s*[\r\n]\s*/', "\n".str_repeat(' ', $totalWidth + 4), $argument->getDescription()),
-                $default
-            ), $options
-        );
+        $this->writeText(sprintf('  <info>%s</info>  %s%s%s',
+            $argument->getName(),
+            str_repeat(' ', $spacingWidth),
+            // + 4 = 2 spaces before <info>, 2 spaces after </info>
+            preg_replace('/\s*[\r\n]\s*/', "\n".str_repeat(' ', $totalWidth + 4), $argument->getDescription()),
+            $default
+        ), $options);
     }
 
     /**
@@ -75,25 +72,21 @@ class TextDescriptor extends Descriptor
         }
 
         $totalWidth = isset($options['total_width']) ? $options['total_width'] : $this->calculateTotalWidthForOptions(array($option));
-        $synopsis = sprintf(
-            '%s%s',
+        $synopsis = sprintf('%s%s',
             $option->getShortcut() ? sprintf('-%s, ', $option->getShortcut()) : '    ',
             sprintf('--%s%s', $option->getName(), $value)
         );
 
         $spacingWidth = $totalWidth - Helper::strlen($synopsis);
 
-        $this->writeText(
-            sprintf(
-                '  <info>%s</info>  %s%s%s%s',
-                $synopsis,
-                str_repeat(' ', $spacingWidth),
-                // + 4 = 2 spaces before <info>, 2 spaces after </info>
-                preg_replace('/\s*[\r\n]\s*/', "\n".str_repeat(' ', $totalWidth + 4), $option->getDescription()),
-                $default,
-                $option->isArray() ? '<comment> (multiple values allowed)</comment>' : ''
-            ), $options
-        );
+        $this->writeText(sprintf('  <info>%s</info>  %s%s%s%s',
+            $synopsis,
+            str_repeat(' ', $spacingWidth),
+            // + 4 = 2 spaces before <info>, 2 spaces after </info>
+            preg_replace('/\s*[\r\n]\s*/', "\n".str_repeat(' ', $totalWidth + 4), $option->getDescription()),
+            $default,
+            $option->isArray() ? '<comment> (multiple values allowed)</comment>' : ''
+        ), $options);
     }
 
     /**
@@ -209,15 +202,9 @@ class TextDescriptor extends Descriptor
             }
 
             // calculate max. width based on available commands per namespace
-            $width = $this->getColumnWidth(
-                call_user_func_array(
-                    'array_merge', array_map(
-                        function ($namespace) use ($commands) {
-                            return array_intersect($namespace['commands'], array_keys($commands));
-                        }, $namespaces
-                    )
-                )
-            );
+            $width = $this->getColumnWidth(call_user_func_array('array_merge', array_map(function ($namespace) use ($commands) {
+                return array_intersect($namespace['commands'], array_keys($commands));
+            }, $namespaces)));
 
             if ($describedNamespace) {
                 $this->writeText(sprintf('<comment>Available commands for the "%s" namespace:</comment>', $describedNamespace), $options);
@@ -226,11 +213,9 @@ class TextDescriptor extends Descriptor
             }
 
             foreach ($namespaces as $namespace) {
-                $namespace['commands'] = array_filter(
-                    $namespace['commands'], function ($name) use ($commands) {
-                        return isset($commands[$name]);
-                    }
-                );
+                $namespace['commands'] = array_filter($namespace['commands'], function ($name) use ($commands) {
+                    return isset($commands[$name]);
+                });
 
                 if (!$namespace['commands']) {
                     continue;
