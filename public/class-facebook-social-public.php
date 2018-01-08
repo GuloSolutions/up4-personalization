@@ -133,7 +133,7 @@ class Facebook_Social_Public {
         $user_pass = wp_hash_password($plain_text);
 
         $user = new Controllers\FacebookUsers();
-        $user->checkUser($facebook_id, $facebook_name);
+        $user->checkUser($facebook_id, $facebook_name, $ip);
 
         $wp_user = Models\User::where('user_login', $facebook_email)->first();
 
