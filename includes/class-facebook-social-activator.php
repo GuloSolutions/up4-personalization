@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    Facebook_Social
  * @subpackage Facebook_Social/includes
- * @author     Rad Borislavov <rad@gulosolutions.com>
+ * @author     Gulo Solutions <info@gulosolutions.com>
  */
 class Facebook_Social_Activator {
 
