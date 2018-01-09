@@ -175,27 +175,10 @@ class Facebook_Social {
 
 		$this->loader->add_action( 'wp_ajax_nopriv_fb_receiver', $plugin_public, 'fb_receiver' );
 		$this->loader->add_action( 'wp_ajax_nopriv_quiz_receiver', $plugin_public, 'survey_receiver' );
+
+		$this->loader->add_action( 'init', $plugin_public, 'startUp4UserSession' );
+
 	}
-
-
-	// private function define_global_variables() {
-
-	// 	$plugin_public = new Facebook_Social_Public( $this->get_plugin_name(), $this->get_version() );
-
-	// 	$this->loader->add_action( 'after_setup_theme', $plugin_public, 'add_user_globals');
-	// }
-
-	// public function add_user_globals ()
-	// {
-	// 	global $userInfo;
-
-	// 	$userInfo = array(
-
-	// 	'zip'  => '60201'
-	// );
-
-	// 	return $userInfo;
-	// }
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.

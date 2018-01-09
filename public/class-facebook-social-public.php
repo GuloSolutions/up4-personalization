@@ -111,21 +111,32 @@ class Facebook_Social_Public {
          */
 
         wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/survey-social-public.js', $this->version, false );
+        // wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/survey-social-public.js', $this->version, false );
         wp_localize_script( $this->plugin_name, 'ajax_receiver',
             [
                 'ajax_url' => admin_url( 'admin-ajax.php' )
             ]);
     }
 
+
+    function startUp4UserSession() {
+        if(!session_id()) {
+          $sh = new Controllers\Up4Sessions();
+          session_set_save_handler($sh);
+          session_start();
+        }
+}
+
     public function fb_receiver() {
 
         $ip = $_SERVER['REMOTE_ADDR'];
+
         $facebook_id = $_POST['response']['id'];
         $facebook_name = $_POST['response']['name'];
         $POST['response']['email'] = 'rad@uchicago.edu';
 
         $names = explode(' ', $facebook_name);
+
 
         $facebook_email = isset($POST['response']['email']) ? $POST['response']['email'] : self::emailGenerator();
 
@@ -133,6 +144,8 @@ class Facebook_Social_Public {
         $user_pass = wp_hash_password($plain_text);
 
         $user = new Controllers\FacebookUsers();
+
+
         $user->checkUser($facebook_id, $facebook_name, $ip);
 
         $wp_user = Models\User::where('user_login', $facebook_email)->first();
