@@ -8,13 +8,10 @@ class Up4_Session_Handler implements SessionHandlerInterface
 {
     protected $expiry;
 
-    protected $db;
-
     protected $collectGarbage = false;
 
     public function __construct()
     {
-        // $this->db = new Database;
         $this->expiry = 3600;
         error_log(print_r('iAM HERE NOW', true), 3, '/tmp/my-errors.log');
     }
