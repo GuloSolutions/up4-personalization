@@ -26,19 +26,14 @@ class FacebookUsers
         $location = $this->getLocation($ip);
         $weather = $this->getWeather($location);
 
-        error_log(print_r($weather, true),3, '/tmp/errors.log');
-
-
         $fb_user->facebook_id = $facebook_id;
         $fb_user->first_name = $names[0];
         $fb_user->last_name = $names[1];
 
-        $fb_user->zip = $location;
         $fb_user->temp = $weather[0];
         $fb_user->location = $weather[1];
         $fb_user->local_time = $weather[2];
         $fb_user->weather = $weather[3];
-
         $fb_user->save();
     }
 
