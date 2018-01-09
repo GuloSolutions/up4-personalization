@@ -1,92 +1,225 @@
 <?php
+
 /**
- * The plugin bootstrap file
+ * The file that defines the core plugin class
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
+ * A class definition that includes attributes and functions used across both the
+ * public-facing side of the site and the admin area.
  *
- * @link    www.gulosolutions.com/radboris
- * @since   1.0.0
- * @package Facebook_Social
+ * @link       www.gulosolutions.com/radboris
+ * @since      1.0.0
  *
- * @wordpress-plugin
- * Plugin Name:       up4-personalization
- * Plugin URI:        www.gulosolutions.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.0.0
- * Author:            Rad Borislavov
- * Author URI:        www.gulosolutions.com/radboris
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       facebook-social
- * Domain Path:       /languages
+ * @package    Facebook_Social
+ * @subpackage Facebook_Social/includes
  */
 
-// If this file is called directly, abort.
-if (! defined('WPINC') ) {
-    die;
+/**
+ * The core plugin class.
+ *
+ * This is used to define internationalization, admin-specific hooks, and
+ * public-facing site hooks.
+ *
+ * Also maintains the unique identifier of this plugin as well as the current
+ * version of the plugin.
+ *
+ * @since      1.0.0
+ * @package    Facebook_Social
+ * @subpackage Facebook_Social/includes
+ * @author     Gulo Solutions <info@gulosolutions.com>
+ */
+class Facebook_Social {
+
+    /**
+     * The loader that's responsible for maintaining and registering all hooks that power
+     * the plugin.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      Facebook_Social_Loader    $loader    Maintains and registers all hooks for the plugin.
+     */
+    protected $loader;
+
+    /**
+     * The unique identifier of this plugin.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+     */
+    protected $plugin_name;
+
+    /**
+     * The current version of the plugin.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      string    $version    The current version of the plugin.
+     */
+    protected $version;
+
+    /**
+     * Define the core functionality of the plugin.
+     *
+     * Set the plugin name and the plugin version that can be used throughout the plugin.
+     * Load the dependencies, define the locale, and set the hooks for the admin area and
+     * the public-facing side of the site.
+     *
+     * @since    1.0.0
+     */
+    public function __construct() {
+        if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
+            $this->version = PLUGIN_NAME_VERSION;
+        } else {
+            $this->version = '1.0.0';
+        }
+        $this->plugin_name = 'facebook-social';
+
+        $this->load_dependencies();
+        $this->set_locale();
+        $this->define_admin_hooks();
+        $this->define_public_hooks();
+
+    }
+
+    /**
+     * Load the required dependencies for this plugin.
+     *
+     * Include the following files that make up the plugin:
+     *
+     * - Facebook_Social_Loader. Orchestrates the hooks of the plugin.
+     * - Facebook_Social_i18n. Defines internationalization functionality.
+     * - Facebook_Social_Admin. Defines all hooks for the admin area.
+     * - Facebook_Social_Public. Defines all hooks for the public side of the site.
+     *
+     * Create an instance of the loader which will be used to register the hooks
+     * with WordPress.
+     *
+     * @since    1.0.0
+     * @access   private
+     */
+    private function load_dependencies() {
+
+        /**
+         * The class responsible for orchestrating the actions and filters of the
+         * core plugin.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-facebook-social-loader.php';
+
+        /**
+         * The class responsible for defining internationalization functionality
+         * of the plugin.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-facebook-social-i18n.php';
+
+        /**
+         * The class responsible for defining all actions that occur in the admin area.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-facebook-social-admin.php';
+
+        /**
+         * The class responsible for defining all actions that occur in the public-facing
+         * side of the site.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-facebook-social-public.php';
+
+        $this->loader = new Facebook_Social_Loader();
+
+    }
+
+    /**
+     * Define the locale for this plugin for internationalization.
+     *
+     * Uses the Facebook_Social_i18n class in order to set the domain and to register the hook
+     * with WordPress.
+     *
+     * @since    1.0.0
+     * @access   private
+     */
+    private function set_locale() {
+
+        $plugin_i18n = new Facebook_Social_i18n();
+
+        $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+
+    }
+
+    /**
+     * Register all of the hooks related to the admin area functionality
+     * of the plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     */
+    private function define_admin_hooks() {
+
+        $plugin_admin = new Facebook_Social_Admin( $this->get_plugin_name(), $this->get_version() );
+
+        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
+    }
+
+    /**
+     * Register all of the hooks related to the public-facing functionality
+     * of the plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     */
+    private function define_public_hooks() {
+
+        $plugin_public = new Facebook_Social_Public( $this->get_plugin_name(), $this->get_version() );
+
+        $this->loader->add_action( 'init', $plugin_public, 'startUp4UserSession', 1 );
+
+        $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+        $this->loader->add_action( 'wp_ajax_nopriv_fb_receiver', $plugin_public, 'fb_receiver' );
+        $this->loader->add_action( 'wp_ajax_nopriv_quiz_receiver', $plugin_public, 'survey_receiver' );
+
+        $this->loader->add_action( 'init', $plugin_public, 'return_facebook_button', 2);
+
+    }
+
+    /**
+     * Run the loader to execute all of the hooks with WordPress.
+     *
+     * @since    1.0.0
+     */
+    public function run() {
+        $this->loader->run();
+    }
+
+    /**
+     * The name of the plugin used to uniquely identify it within the context of
+     * WordPress and to define internationalization functionality.
+     *
+     * @since     1.0.0
+     * @return    string    The name of the plugin.
+     */
+    public function get_plugin_name() {
+        return $this->plugin_name;
+    }
+
+    /**
+     * The reference to the class that orchestrates the hooks with the plugin.
+     *
+     * @since     1.0.0
+     * @return    Facebook_Social_Loader    Orchestrates the hooks of the plugin.
+     */
+    public function get_loader() {
+        return $this->loader;
+    }
+
+    /**
+     * Retrieve the version number of the plugin.
+     *
+     * @since     1.0.0
+     * @return    string    The version number of the plugin.
+     */
+    public function get_version() {
+        return $this->version;
+    }
+
 }
-
-/**
- * Currently pligin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define('PLUGIN_NAME_VERSION', '1.0.0');
-
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-facebook-social-activator.php
- */
-function activate_facebook_social()
-{
-    include_once plugin_dir_path(__FILE__) . 'includes/class-facebook-social-activator.php';
-    Facebook_Social_Activator::activate();
-}
-
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-facebook-social-deactivator.php
- */
-function deactivate_facebook_social()
-{
-    include_once plugin_dir_path(__FILE__) . 'includes/class-facebook-social-deactivator.php';
-    Facebook_Social_Deactivator::deactivate();
-}
-
-register_activation_hook(__FILE__, 'activate_facebook_social');
-register_deactivation_hook(__FILE__, 'deactivate_facebook_social');
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path(__FILE__) . 'includes/class-facebook-social.php';
-require plugin_dir_path(__FILE__) . 'includes/class-database.php';
-require plugin_dir_path(__FILE__) . 'public/class-facebook-social-public.php';
-
-/**
- * The core app autoloader
- */
-require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
-
-/**
- * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since 1.0.0
- */
-function run_facebook_social()
-{
-    $database = new Database();
-
-    $plugin = new Facebook_Social();
-    $plugin->run();
-}
-
-run_facebook_social();

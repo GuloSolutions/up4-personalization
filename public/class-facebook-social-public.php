@@ -56,6 +56,8 @@ class Facebook_Social_Public
 
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+        $this->register_shortcodes();
+
 
     }
 
@@ -104,7 +106,7 @@ class Facebook_Social_Public
          */
 
         wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
-        // wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/survey-social-public.js', $this->version, false );
+        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/survey-social-public.js', $this->version, false );
         wp_localize_script( $this->plugin_name, 'ajax_receiver',
             [
                 'ajax_url' => admin_url( 'admin-ajax.php' )
@@ -113,7 +115,6 @@ class Facebook_Social_Public
 
     public function startUp4UserSession()
     {
-
         if(!session_id()) {
           $sh = new Controllers\Up4Sessions();
 
@@ -125,7 +126,6 @@ class Facebook_Social_Public
 
           $this->startUp4User();
         }
-
     }
 
     public function startUp4User()
@@ -136,9 +136,20 @@ class Facebook_Social_Public
 
     }
 
-    public function fb_receiver()
+    public function register_shortcodes() {
+
+        add_shortcode('facebookbutton', array($this, 'process_button'));
+    }
+
+    public function process_button ($attrs, $content)
     {
 
+        $content = '<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false"></div>';
+        return $content;
+    }
+
+    public function fb_receiver()
+    {
         $ip = $_SERVER['REMOTE_ADDR'];
 
         $facebook_id = $_POST['response']['id'];
@@ -182,7 +193,6 @@ class Facebook_Social_Public
         }
 
         wp_die();
-
     }
 
     public function survey_receiver()
@@ -197,7 +207,6 @@ class Facebook_Social_Public
 
     public static function emailGenerator()
     {
-
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $username_length = 10;
 
@@ -210,6 +219,5 @@ class Facebook_Social_Public
         $fullAddress = $randomName . '@' . 'example.com';
 
         return $fullAddress;
-
     }
 }
