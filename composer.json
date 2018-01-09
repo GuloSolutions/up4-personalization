@@ -1,4 +1,5 @@
-{   "name": "gulo-solutions/up4-personalization",
+{
+    "name": "gulo-solutions/up4-personalization",
     "description": "marketing",
     "keywords": ["API", "up4-personalization"],
     "version": "1.0",
@@ -11,14 +12,12 @@
         "guzzlehttp/guzzle": "^6.3",
         "composer/installers": "~1.0",
         "tedivm/stash": "0.14.*"
-
-
     },
     "autoload": {
         "psr-4": {
             "Models\\": "app/Models",
             "Controllers\\": "app/Controllers",
-	        "Migrations\\":"app/Migration"
+            "Migrations\\":"app/Migration"
         },
       "extra": {
         "installer-paths": {

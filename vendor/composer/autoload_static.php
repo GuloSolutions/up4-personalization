@@ -25,10 +25,12 @@ class ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892
             'Symfony\\Component\\Filesystem\\' => 29,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\Config\\' => 25,
+            'Stash\\' => 6,
         ),
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Cache\\' => 10,
             'Phinx\\' => 6,
         ),
         'M' => 
@@ -90,9 +92,17 @@ class ComposerStaticInitad3d58b01d873bd1c51d1dee401a3892
         array (
             0 => __DIR__ . '/..' . '/symfony/config',
         ),
+        'Stash\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tedivm/stash/src/Stash',
+        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'Phinx\\' => 
         array (

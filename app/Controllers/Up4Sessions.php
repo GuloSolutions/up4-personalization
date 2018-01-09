@@ -20,22 +20,31 @@ class Up4Sessions implements \SessionHandlerInterface
         $this->expiry = time() + self::CACHE_TIME;
     }
 
+    /*
+     * @return Boolean
+     */
     public function open($save_path, $name)
     {
         return true;
     }
 
+    /*
+     * @return String
+     */
     public function read($session_id)
     {
         $sess = Up4Session::where('sid', $session_id)->first();
 
-        if (!is_null($sess)) {
-            return $sess;
+        if ($sess instanceof Models\Up4Session) {
+            return serialize($sess);
         } else {
             return '';
         }
     }
 
+    /*
+     * @return Boolean
+     */
     public function write($session_id, $data)
     {
         $sess_write = Up4Session::firstOrNew(['sid' =>  $session_id, 'data' => $data, 'expiry' => $this->expiry]);
@@ -47,22 +56,34 @@ class Up4Sessions implements \SessionHandlerInterface
         return true;
     }
 
+    /*
+     * @return Boolean
+     */
     public function close()
     {
-        $deleted = Up4Session::where('created_at', '<', date('Y-m-d'))->delete();
         return true;
     }
 
+    /*
+     * @return Boolean
+     */
     public function destroy($session_id)
     {
         $sess = Up4Session::where('sid', $session_id)->delete();
+
         return true;
     }
 
+    /*
+     * @return Boolean
+     */
     public function gc($maxlifetime)
     {
-        $deleted = Up4Session::where('created_at', '<', date('Y-m-d'))->delete();
-        $this->collectGarbage = true;
+        if($maxlifetime < time()) {
+            $deleted = Up4Session::where('created_at', '<', date('Y-m-d'))->delete();
+            $this->collectGarbage = true;
+        }
+
         return true;
     }
 }

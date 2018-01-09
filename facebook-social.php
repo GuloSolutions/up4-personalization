@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -68,7 +67,6 @@ require plugin_dir_path(__FILE__) . 'includes/class-facebook-social.php';
 require plugin_dir_path(__FILE__) . 'includes/class-database.php';
 require plugin_dir_path(__FILE__) . 'public/class-facebook-social-public.php';
 
-
 /**
  * The core app autoloader
  */
@@ -86,10 +84,9 @@ require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 function run_facebook_social()
 {
     $database = new Database();
-    $facebook_social = new Facebook_Social_Public('facebook_social', '1.0.0');
+
     $plugin = new Facebook_Social();
     $plugin->run();
 }
 
 run_facebook_social();
-

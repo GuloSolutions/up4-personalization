@@ -19,10 +19,19 @@ class UsersController
     private function set()
     {
         $sess_id = $this->session_id;
+
         $current_user = Up4Session::where('sid', $sess_id)->first();
-        if (!is_null($current_user))  {
-            $this->user = $current_user->up4user()->first();
+
+        $this->user = $current_user->up4user()->first();
+
+        if (is_null($this->user))  {
+            $this->user = new Up4User();
         }
+    }
+
+    public function isLoggedIn()
+    {
+        return $this->user->id ? true : false;
     }
 
     public function get()

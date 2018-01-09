@@ -1,13 +1,4 @@
 <?php
-
-// use Illuminate\Database\Capsule\Manager as Capsule;
-// use Illuminate\Database\Query\Builder;
-// use Illuminate\Database\Eloquent\Model as Model;
-// use Models\FacebookUser;
-// use Models\WordPressClient;
-// use Controllers\UsersController;
-// session_save_path('/home/radboris/up4-probiotics/sessions');
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -33,9 +24,8 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model as Model;
 
-
-class Facebook_Social_Public {
-
+class Facebook_Social_Public
+{
     /**
      * The ID of this plugin.
      *
@@ -61,7 +51,8 @@ class Facebook_Social_Public {
      * @param      string    $plugin_name       The name of the plugin.
      * @param      string    $version    The version of this plugin.
      */
-    public function __construct( $plugin_name, $version ) {
+    public function __construct( $plugin_name, $version )
+    {
 
         $this->plugin_name = $plugin_name;
         $this->version = $version;
@@ -73,7 +64,8 @@ class Facebook_Social_Public {
      *
      * @since    1.0.0
      */
-    public function enqueue_styles() {
+    public function enqueue_styles()
+    {
 
         /**
          * This function is provided for demonstration purposes only.
@@ -96,7 +88,8 @@ class Facebook_Social_Public {
      *
      * @since    1.0.0
      */
-    public function enqueue_scripts() {
+    public function enqueue_scripts()
+    {
 
         /**
          * This function is provided for demonstration purposes only.
@@ -118,25 +111,40 @@ class Facebook_Social_Public {
             ]);
     }
 
+    public function startUp4UserSession()
+    {
 
-    function startUp4UserSession() {
         if(!session_id()) {
           $sh = new Controllers\Up4Sessions();
-          session_set_save_handler($sh);
-          session_start();
-        }
-}
 
-    public function fb_receiver() {
+          session_set_save_handler($sh, true);
+
+          register_shutdown_function('session_write_close');
+
+          session_start();
+
+          $this->startUp4User();
+        }
+
+    }
+
+    public function startUp4User()
+    {
+        global $up4User;
+
+        $up4User = new Controllers\UsersController();
+
+    }
+
+    public function fb_receiver()
+    {
 
         $ip = $_SERVER['REMOTE_ADDR'];
 
         $facebook_id = $_POST['response']['id'];
         $facebook_name = $_POST['response']['name'];
-        $POST['response']['email'] = 'rad@uchicago.edu';
 
         $names = explode(' ', $facebook_name);
-
 
         $facebook_email = isset($POST['response']['email']) ? $POST['response']['email'] : self::emailGenerator();
 
@@ -144,7 +152,6 @@ class Facebook_Social_Public {
         $user_pass = wp_hash_password($plain_text);
 
         $user = new Controllers\FacebookUsers();
-
 
         $user->checkUser($facebook_id, $facebook_name, $ip);
 
@@ -167,6 +174,7 @@ class Facebook_Social_Public {
                 'user_activation_key' => '12345666677',
                 'user_status' => 0
             ]);
+
             //add the WordPress users foreign key
             $wp_user->save();
             $up4_user = Models\Up4User::where('sess', session_id())->first();
@@ -174,30 +182,34 @@ class Facebook_Social_Public {
         }
 
         wp_die();
+
     }
 
-    public function survey_receiver() {
+    public function survey_receiver()
+    {
 
         $ip = $_SERVER['REMOTE_ADDR'];
         $user = new Controllers\SurveyUsers();
 
         wp_die();
+
     }
 
-    public static function emailGenerator () {
+    public static function emailGenerator()
+    {
 
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $username_length = 10;
-        $tld = array("com", "net", "biz");
+
         $randomName = '';
+
         for($j=0; $j<$username_length; $j++){
             $randomName .= $characters[rand(0, strlen($characters) -1)];
         }
 
-        $k = array_rand($tld);
-        $extension = $tld[$k];
         $fullAddress = $randomName . '@' . 'example.com';
 
         return $fullAddress;
+
     }
 }

@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Facebook_Social
  * @subpackage Facebook_Social/includes
- * @author     Rad Borislavov <rad@gulosolutions.com>
+ * @author     Gulo Solutions <info@gulosolutions.com>
  */
 class Facebook_Social {
 
@@ -170,13 +170,13 @@ class Facebook_Social {
 
 		$plugin_public = new Facebook_Social_Public( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'init', $plugin_public, 'startUp4UserSession', 1 );
+
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'wp_ajax_nopriv_fb_receiver', $plugin_public, 'fb_receiver' );
 		$this->loader->add_action( 'wp_ajax_nopriv_quiz_receiver', $plugin_public, 'survey_receiver' );
-
-		$this->loader->add_action( 'init', $plugin_public, 'startUp4UserSession' );
 
 	}
 
