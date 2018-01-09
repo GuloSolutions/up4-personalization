@@ -1,13 +1,4 @@
 <?php
-
-// use Illuminate\Database\Capsule\Manager as Capsule;
-// use Illuminate\Database\Query\Builder;
-// use Illuminate\Database\Eloquent\Model as Model;
-// use Models\FacebookUser;
-// use Models\WordPressClient;
-// use Controllers\UsersController;
-// session_save_path('/home/radboris/up4-probiotics/sessions');
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -32,7 +23,6 @@
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model as Model;
-
 
 class Facebook_Social_Public
 {
@@ -132,7 +122,17 @@ class Facebook_Social_Public
           register_shutdown_function('session_write_close');
 
           session_start();
+
+          $this->startUp4User();
         }
+
+    }
+
+    public function startUp4User()
+    {
+        global $up4User;
+
+        $up4User = new Controllers\UsersController();
 
     }
 
