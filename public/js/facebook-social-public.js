@@ -41,7 +41,7 @@ function connectToApp() {
 
     FB.api('/me', function(response) {
 
-        console.log('Successful login for: ' + response.name);
+        console.log('Successful login for: ' + response.email);
 
         sendToApp(response);
     });
