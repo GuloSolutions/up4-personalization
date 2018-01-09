@@ -25,12 +25,15 @@ class Up4Sessions implements \SessionHandlerInterface
         return true;
     }
 
+    /*
+     * @return String
+     */
     public function read($session_id)
     {
         $sess = Up4Session::where('sid', $session_id)->first();
 
-        if (!is_null($sess)) {
-            return $sess;
+        if ($sess instanceof Models\Up4Session) {
+            return serialize($sess);
         } else {
             return '';
         }
