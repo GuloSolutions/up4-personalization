@@ -67,7 +67,7 @@ class Facebook_Social
      *
      * @since 1.0.0
      */
-    public function __construct() 
+    public function __construct()
     {
         if (defined('PLUGIN_NAME_VERSION') ) {
             $this->version = PLUGIN_NAME_VERSION;
@@ -99,7 +99,7 @@ class Facebook_Social
      * @since  1.0.0
      * @access private
      */
-    private function load_dependencies() 
+    private function load_dependencies()
     {
 
         /**
@@ -138,7 +138,7 @@ class Facebook_Social
      * @since  1.0.0
      * @access private
      */
-    private function set_locale() 
+    private function set_locale()
     {
 
         $plugin_i18n = new Facebook_Social_i18n();
@@ -154,7 +154,7 @@ class Facebook_Social
      * @since  1.0.0
      * @access private
      */
-    private function define_admin_hooks() 
+    private function define_admin_hooks()
     {
 
         $plugin_admin = new Facebook_Social_Admin($this->get_plugin_name(), $this->get_version());
@@ -171,7 +171,7 @@ class Facebook_Social
      * @since  1.0.0
      * @access private
      */
-    private function define_public_hooks() 
+    private function define_public_hooks()
     {
 
         $plugin_public = new Facebook_Social_Public($this->get_plugin_name(), $this->get_version());
@@ -182,7 +182,7 @@ class Facebook_Social
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
         $this->loader->add_action('wp_ajax_nopriv_fb_receiver', $plugin_public, 'fb_receiver');
-        $this->loader->add_action('wp_ajax_nopriv_quiz_receiver', $plugin_public, 'survey_receiver');
+        $this->loader->add_action('wp_ajax_nopriv_survey_receiver', $plugin_public, 'survey_receiver');
 
     }
 
@@ -191,7 +191,7 @@ class Facebook_Social
      *
      * @since 1.0.0
      */
-    public function run() 
+    public function run()
     {
         $this->loader->run();
     }
@@ -203,7 +203,7 @@ class Facebook_Social
      * @since  1.0.0
      * @return string    The name of the plugin.
      */
-    public function get_plugin_name() 
+    public function get_plugin_name()
     {
         return $this->plugin_name;
     }
@@ -214,7 +214,7 @@ class Facebook_Social
      * @since  1.0.0
      * @return Facebook_Social_Loader    Orchestrates the hooks of the plugin.
      */
-    public function get_loader() 
+    public function get_loader()
     {
         return $this->loader;
     }
@@ -225,7 +225,7 @@ class Facebook_Social
      * @since  1.0.0
      * @return string    The version number of the plugin.
      */
-    public function get_version() 
+    public function get_version()
     {
         return $this->version;
     }
