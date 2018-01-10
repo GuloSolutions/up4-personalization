@@ -20,11 +20,13 @@ class UsersController
     {
         $sess_id = $this->session_id;
 
-        $current_user = Up4Session::where('sid', $sess_id)->first();
+        $up4_session = Up4Session::where('sid', $sess_id)->first();
 
-        $this->user = $current_user->up4user()->first();
+        if (!is_null($up4_session)) {
+            $this->user = $up4_session->up4User()->first();
+        }
 
-        if (is_null($this->user))  {
+        if (is_null($this->user)) {
             $this->user = new Up4User();
         }
     }
