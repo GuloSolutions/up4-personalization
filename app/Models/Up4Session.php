@@ -9,7 +9,7 @@ class Up4Session extends Model
     protected $fillable = ['sid', 'expiry', 'data'];
     public $timestamps = true;
 
-    public function up4user()
+    public function up4User()
     {
         return $this->hasOne('Models\Up4User', 'sessions_id');
     }

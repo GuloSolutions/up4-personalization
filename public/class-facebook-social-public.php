@@ -137,9 +137,9 @@ class Facebook_Social_Public
     public function startUp4User()
     {
 
-        global $up4User;
+        global $facebook_social_user;
 
-        $up4User = new Controllers\UsersController();
+        $facebook_social_user = new Controllers\UsersController();
 
     }
 
