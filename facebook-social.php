@@ -84,7 +84,6 @@ require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 function run_facebook_social()
 {
     $database = new Database();
-            error_log(print_r('hereat the beginnigj', true), 3, '/tmp/new_errors.log');
 
     $plugin = new Facebook_Social();
     $plugin->run();
