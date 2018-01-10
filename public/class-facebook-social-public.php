@@ -2,8 +2,8 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       www.gulosolutions.com/radboris
- * @since      1.0.0
+ * @link  www.gulosolutions.com/radboris
+ * @since 1.0.0
  *
  * @package    Facebook_Social
  * @subpackage Facebook_Social/public
@@ -29,27 +29,27 @@ class Facebook_Social_Public
     /**
      * The ID of this plugin.
      *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $plugin_name    The ID of this plugin.
+     * @since  1.0.0
+     * @access private
+     * @var    string    $plugin_name    The ID of this plugin.
      */
     private $plugin_name;
 
     /**
      * The version of this plugin.
      *
-     * @since    1.0.0
-     * @access   private
-     * @var      string    $version    The current version of this plugin.
+     * @since  1.0.0
+     * @access private
+     * @var    string    $version    The current version of this plugin.
      */
     private $version;
 
     /**
      * Initialize the class and set its properties.
      *
-     * @since    1.0.0
-     * @param      string    $plugin_name       The name of the plugin.
-     * @param      string    $version    The version of this plugin.
+     * @since 1.0.0
+     * @param string $plugin_name The name of the plugin.
+     * @param string $version     The version of this plugin.
      */
     public function __construct( $plugin_name, $version )
     {
@@ -64,7 +64,7 @@ class Facebook_Social_Public
     /**
      * Register the stylesheets for the public-facing side of the site.
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public function enqueue_styles()
     {
@@ -81,14 +81,14 @@ class Facebook_Social_Public
          * class.
          */
 
-        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/facebook-social-public.css', array(), $this->version, 'all' );
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/facebook-social-public.css', array(), $this->version, 'all');
 
     }
 
     /**
      * Register the JavaScript for the public-facing side of the site.
      *
-     * @since    1.0.0
+     * @since 1.0.0
      */
     public function enqueue_scripts()
     {
@@ -105,43 +105,51 @@ class Facebook_Social_Public
          * class.
          */
 
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/survey-social-public.js', $this->version, false );
-        wp_localize_script( $this->plugin_name, 'ajax_receiver',
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false);
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/survey-social-public.js', $this->version, false);
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/vue-form-wizard.js', $this->version, false);
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/vfg.js', $this->version, false);
+
+        wp_localize_script(
+            $this->plugin_name, 'ajax_receiver',
             [
-                'ajax_url' => admin_url( 'admin-ajax.php' )
-            ]);
+                'ajax_url' => admin_url('admin-ajax.php')
+            ]
+        );
     }
 
     public function startUp4UserSession()
     {
+
         if(!session_id()) {
-          $sh = new Controllers\Up4Sessions();
+            $sh = new Controllers\Up4Sessions();
 
-          session_set_save_handler($sh, true);
+            session_set_save_handler($sh, true);
 
-          register_shutdown_function('session_write_close');
+            register_shutdown_function('session_write_close');
 
-          session_start();
+            session_start();
 
-          $this->startUp4User();
+            $this->startUp4User();
         }
+
     }
 
     public function startUp4User()
     {
+
         global $up4User;
 
         $up4User = new Controllers\UsersController();
 
     }
 
-    public function register_shortcodes() {
-
-        add_shortcode('facebookbutton', array($this, 'process_button'));
+    public function register_shortcodes()
+    {
+        add_shortcode($this->plugin_name . '_facebook_login_button', array($this, 'process_button'));
     }
 
-    public function process_button ($attrs, $content)
+    public function process_button($attrs, $content)
     {
 
         $content = '<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false"></div>';
@@ -150,6 +158,7 @@ class Facebook_Social_Public
 
     public function fb_receiver()
     {
+
         $ip = $_SERVER['REMOTE_ADDR'];
 
         $facebook_id = $_POST['response']['id'];
@@ -174,7 +183,8 @@ class Facebook_Social_Public
 
         } else {
 
-            $wp_user = new Models\User([
+            $wp_user = new Models\User(
+                [
                 'user_login' => $facebook_email,
                 'user_pass' => $user_pass,
                 'user_email' => $facebook_email,
@@ -184,7 +194,8 @@ class Facebook_Social_Public
                 'user_registered' => new DateTime(),
                 'user_activation_key' => '12345666677',
                 'user_status' => 0
-            ]);
+                ]
+            );
 
             //add the WordPress users foreign key
             $wp_user->save();
@@ -193,6 +204,7 @@ class Facebook_Social_Public
         }
 
         wp_die();
+
     }
 
     public function survey_receiver()
@@ -207,6 +219,7 @@ class Facebook_Social_Public
 
     public static function emailGenerator()
     {
+
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $username_length = 10;
 
@@ -219,5 +232,6 @@ class Facebook_Social_Public
         $fullAddress = $randomName . '@' . 'example.com';
 
         return $fullAddress;
+
     }
 }
