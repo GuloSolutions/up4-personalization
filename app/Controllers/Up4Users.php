@@ -65,8 +65,7 @@ class Up4Users
 
         $this->picture = $response['picture']['data']['url'];
 
-        $this->email = isset($response['email']) ? $response['email'] : self::emailGenerator();
-
+        $this->email = isset($response['email']) ? $response['email'] : Facebook_Social_Public::emailGenerator();
     }
 
     private function linkToUser()
