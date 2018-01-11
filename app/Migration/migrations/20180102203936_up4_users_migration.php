@@ -31,13 +31,13 @@ class Up4UsersMigration extends Migration
     {
         $this->schema->create(
             'up4_users', function (Blueprint $table) {
-                //add nullable for next migration
                 $table->increments('id');
                 $table->integer('sessions_id')->unsigned();
                 $table->bigInteger('users_id')->unsigned()->nullable();
                 $table->string('first_name', 40)->nullable();
                 $table->string('last_name', 40)->nullable();
                 $table->string('facebook_id', 40)->nullable();
+                $table->string('picture')->nullable();
                 $table->string('gender', 10)->nullable();
                 $table->string('age', 5)->nullable();
                 $table->boolean('has_children')->nullable();
