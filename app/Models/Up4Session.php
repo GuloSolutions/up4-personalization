@@ -11,6 +11,6 @@ class Up4Session extends Model
 
     public function up4User()
     {
-        return $this->hasOne('Models\Up4User', 'sessions_id');
+        return $this->hasOne('Models\Up4User', 'session_id');
     }
 }
