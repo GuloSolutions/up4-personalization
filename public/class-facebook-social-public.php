@@ -162,6 +162,7 @@ class Facebook_Social_Public
 
     public function fb_receiver()
     {
+
         $response = $_POST['response'];
 
         $up4_user = new Controllers\Up4Users();

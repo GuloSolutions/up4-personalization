@@ -57,7 +57,7 @@ class Up4Users
         $this->facebook_id = $response['id'];
 
         $this->nice_name = preg_replace('/\s/', '-', $response['name']);
-        $names = explode('-', $this->name);
+        $names = explode('-', $this->nice_name);
 
         $this->first_name = isset($response['first_name']) ? $response['first_name'] : $names[0];
         $this->last_name = isset($response['last_name']) ? $response['last_name'] :

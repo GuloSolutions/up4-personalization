@@ -181,8 +181,12 @@ class Facebook_Social
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
+        // must have both an ajax action set for nopriv and for privs
         $this->loader->add_action('wp_ajax_nopriv_fb_receiver', $plugin_public, 'fb_receiver');
+        $this->loader->add_action('wp_ajax_fb_receiver', $plugin_public, 'fb_receiver');
+
         $this->loader->add_action('wp_ajax_nopriv_survey_receiver', $plugin_public, 'survey_receiver');
+        $this->loader->add_action('wp_ajax_survey_receiver', $plugin_public, 'survey_receiver');
 
     }
 
