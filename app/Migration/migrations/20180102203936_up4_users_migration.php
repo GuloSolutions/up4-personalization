@@ -32,7 +32,7 @@ class Up4UsersMigration extends Migration
         $this->schema->create(
             'up4_users', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('session_id')->unsigned();
+                $table->integer('session_id')->unsigned()->nullable();
                 $table->bigInteger('user_id')->unsigned()->nullable();
                 $table->string('first_name', 40)->nullable();
                 $table->string('last_name', 40)->nullable();
@@ -59,7 +59,7 @@ class Up4UsersMigration extends Migration
 
                 $table->foreign('session_id')
                     ->references('id')->on('sessions')
-                    ->onDelete('cascade');
+                    ->onDelete('set null');
 
                 $table->foreign('user_id')
                     ->references('ID')->on('users')

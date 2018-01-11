@@ -16,17 +16,21 @@ window.fbAsyncInit = function() {
     });
 
     FB.Event.subscribe('auth.logout', function(response) {
+        var receiver = {
+            'action': 'fb_logout'
+        };
+
+        jQuery.ajax({
+            url: ajax_receiver.ajax_url,
+            data: receiver,
+            method: 'POST'
+        });
+
         window.top.location = window.location.href;
     });
 
     facebookLogin();
 };
-
-// function facbookLogin() {
-//     FB.login(function() {}, {
-//         scope: 'email,user_friends,public_profile'
-//     });
-// }
 
 function facebookLogin() {
     FB.getLoginStatus(function(response) {

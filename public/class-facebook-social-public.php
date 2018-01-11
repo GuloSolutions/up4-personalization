@@ -183,6 +183,12 @@ class Facebook_Social_Public
 
     }
 
+    public function fb_logout()
+    {
+        session_destroy();
+        wp_logout();
+    }
+
     public static function emailGenerator()
     {
 
