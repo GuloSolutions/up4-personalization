@@ -13,19 +13,35 @@ the following commands.
   - Utility methods for accessing specific fields
 
 ```
+    // checks if fb user is logged in
+    $facebook_social_user->isLoggedIn());
+
+    // gets up4User object
     $facebook_social_user->get());
 
-    $facebook_social_user->getName());
-
+    // gets up4User id
     $facebook_social_user->getId());
 
+    // gets facebook id
     $facebook_social_user->getFacebookId());
 
+    // gets first name
+    $facebook_social_user->getName());
+
+    // gets weather conditions
+    $facebook_social_user->getConditions());
+
+    // gets temp
     $facebook_social_user->getWeather());
 
+    // gets zip
     $facebook_social_user->getZip());
 
-    $facebook_social_user->getLocalTime());
+    // get user's origin i.e. Chicago, IL
+    $facebook_social_user->getOrigin());
+
+    // get user's fb profile url
+    $facebook_social_user->getProfilePictureUrl());
 ```
 
 - For FB login use shortcode

@@ -31,48 +31,83 @@ class UsersController
         }
     }
 
+    /*
+     * @return boolean
+     */
     public function isLoggedIn()
     {
         return $this->user->id ? true : false;
     }
 
+    /*
+     * @return Up4User
+     */
     public function get()
     {
         return $this->user;
     }
 
+    /*
+     * @return string
+     */
     public function getName()
     {
         return $this->user->first_name;
     }
 
+    /*
+     * @return int
+     */
     public function getId()
     {
         return $this->user->id;
     }
 
+    /*
+     * @return int
+     */
     public function getFacebookId()
     {
         return $this->user->facebook_id;
     }
 
+    /*
+     * @return string
+     */
     public function getConditions()
     {
         return $this->user->conditions;
     }
 
+    /*
+     * @return string
+     */
     public function getWeather()
     {
         return $this->user->weather;
     }
 
+    /*
+     * @return string
+     */
     public function getZip()
     {
         return $this->user->zip;
     }
 
+    /*
+     * @return string
+     */
     public function getOrigin()
     {
         return $this->user->location;
+    }
+
+    /*
+     * @return string
+     */
+    public function getProfilePictureUrl()
+    {
+        return $this->user->picture;
     }
 }
