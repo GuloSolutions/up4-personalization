@@ -34,13 +34,12 @@ class Up4Users
 
     public function checkUser()
     {
-error_log(pr(__METHOD__));
         $this->up4Session = Up4Session::where('sid', session_id())
             ->first();
 
         $this->up4User = Up4User::where('session_id', $this->up4Session->id)
             ->first();
-// error_log(pr($this->up4User));
+
         if ($this->up4User === null) {
             $this->up4User = Up4User::where('facebook_id', $this->facebook_id)
                 ->first();
@@ -49,13 +48,12 @@ error_log(pr(__METHOD__));
         if ($this->up4User !== null) {
             $this->user = $this->up4User->user;
         }
-// error_log(pr($this->user));
+
         $this->linkToUser();
     }
 
     public function setupResponse($response)
     {
-error_log(pr(__METHOD__));
         $this->facebook_id = $response['id'];
 
         $this->nice_name = preg_replace('/\s/', '-', $response['name']);
@@ -73,7 +71,6 @@ error_log(pr(__METHOD__));
 
     private function linkToUser()
     {
-error_log(pr(__METHOD__));
         if ($this->user !== null) {
 
             wp_set_auth_cookie($this->user->ID);
@@ -88,7 +85,6 @@ error_log(pr(__METHOD__));
 
     private function update()
     {
-error_log(pr(__METHOD__));
         if ($this->up4User !== null) {
 
             $this->up4User->session_id = $this->up4Session->id;
@@ -100,9 +96,8 @@ error_log(pr(__METHOD__));
 
             $location = new Location();
             $weather = new Weather($location);
-error_log(pr($location));
+
             $this->up4User->location = $weather->getOrigin();
-error_log(pr($this->up4User->location));
             $this->up4User->weather = $weather->getTemperature();
             $this->up4User->conditions = $weather->getConditions();
 
@@ -110,12 +105,10 @@ error_log(pr($this->up4User->location));
         } else {
             $this->create();
         }
-error_log(pr(__METHOD__));
     }
 
     private function create()
     {
-error_log(pr(__METHOD__));
         $this->up4User = new Up4User();
 
         $this->up4User->facebook_id = $this->facebook_id;
@@ -127,7 +120,6 @@ error_log(pr(__METHOD__));
 
     private function setupWPUser()
     {
-error_log(pr(__METHOD__));
         // see if we already have a user
         $this->user = User::where('user_email', $this->email)
             ->first();
@@ -142,7 +134,6 @@ error_log(pr(__METHOD__));
 
     private function newWPUser()
     {
-error_log(pr(__METHOD__));
         $plain_text = wp_generate_password(20);
         $user_pass = wp_hash_password($plain_text);
 
