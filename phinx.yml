@@ -1,7 +1,7 @@
 paths:
-    migrations: /home/radboris/up4-probiotics/wp-content/plugins/up4-personalization/app/Migration/migrations
-    seeds: /home/radboris/up4-probiotics/wp-content/plugins/up4-personalization/app/Migration/seeds
-    migration_base_class: /home/radboris/up4-probiotics/wp-content/plugins/up4-personalization/app/Migration/Migration
+    migrations: ./app/Migration/migrations
+    seeds: ./app/Migration/seeds
+    migration_base_class: ./app/Migration/Migration
 environments:
     default_migration_table: phinxlog
     default_database: up4-probiotics
