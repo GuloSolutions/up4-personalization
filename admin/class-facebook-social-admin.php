@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link  www.gulosolutions.com/radboris
+ * @link  www.gulosolutions.com
  * @since 1.0.0
  *
  * @package    Facebook_Social
@@ -18,7 +18,7 @@
  *
  * @package    Facebook_Social
  * @subpackage Facebook_Social/admin
- * @author     Rad Borislavov <rad@gulosolutions.com>
+ * @author     Gulo Solutions <info@gulosolutions.com>
  */
 class Facebook_Social_Admin
 {
@@ -48,7 +48,7 @@ class Facebook_Social_Admin
      * @param string $plugin_name The name of this plugin.
      * @param string $version     The version of this plugin.
      */
-    public function __construct( $plugin_name, $version ) 
+    public function __construct( $plugin_name, $version )
     {
 
         $this->plugin_name = $plugin_name;
@@ -61,7 +61,7 @@ class Facebook_Social_Admin
      *
      * @since 1.0.0
      */
-    public function enqueue_styles() 
+    public function enqueue_styles()
     {
 
         /**
@@ -85,7 +85,7 @@ class Facebook_Social_Admin
      *
      * @since 1.0.0
      */
-    public function enqueue_scripts() 
+    public function enqueue_scripts()
     {
 
         /**

@@ -3,7 +3,7 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       www.gulosolutions.com/radboris
+ * @link       www.gulosolutions.com
  * @since      1.0.0
  *
  * @package    Facebook_Social

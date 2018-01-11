@@ -19,7 +19,7 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       www.gulosolutions.com/radboris
+ * @link       www.gulosolutions.com
  * @since      1.0.0
  *
  * @package    Facebook_Social
