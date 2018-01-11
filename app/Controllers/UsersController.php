@@ -43,7 +43,7 @@ class UsersController
 
     public function getName()
     {
-        return $this->user;
+        return $this->user->first_name;
     }
 
     public function getId()
@@ -56,6 +56,11 @@ class UsersController
         return $this->user->facebook_id;
     }
 
+    public function getConditions()
+    {
+        return $this->user->conditions;
+    }
+
     public function getWeather()
     {
         return $this->user->weather;
@@ -66,8 +71,8 @@ class UsersController
         return $this->user->zip;
     }
 
-    public function getlocalTime()
+    public function getOrigin()
     {
-        return $this->user->local_time;
+        return $this->user->location;
     }
 }
