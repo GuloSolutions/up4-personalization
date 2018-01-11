@@ -29,7 +29,6 @@ class Up4SessionsMigration extends Migration
      */
     public function up()
     {
-
         $this->schema->create(
             'sessions', function (Blueprint $table) {
                 $table->increments('id');

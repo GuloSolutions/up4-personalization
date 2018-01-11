@@ -5,7 +5,7 @@
  *
  * This file is used to markup the public-facing aspects of the plugin.
  *
- * @link       www.gulosolutions.com/radboris
+ * @link       www.gulosolutions.com
  * @since      1.0.0
  *
  * @package    Facebook_Social

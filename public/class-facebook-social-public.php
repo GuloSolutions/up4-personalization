@@ -2,7 +2,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link  www.gulosolutions.com/radboris
+ * @link  www.gulosolutions.com
  * @since 1.0.0
  *
  * @package    Facebook_Social
@@ -17,7 +17,7 @@
  *
  * @package    Facebook_Social
  * @subpackage Facebook_Social/public
- * @author     Rad Borislavov <rad@gulosolutions.com>
+ * @author     Gulo Solutions <info@gulosolutions.com>
  */
 
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -151,57 +151,22 @@ class Facebook_Social_Public
     public function process_button($attrs, $content)
     {
 
-        $content = '<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false"></div>';
+        $content = '<div class="fb-login-button" data-max-rows="1" data-size="large"
+                            data-button-type="continue_with" data-show-faces="false"
+                            data-auto-logout-link="true" data-use-continue-as="false"
+                            data-scope="email,user_friends,public_profile"></div>';
+
         return $content;
 
     }
 
     public function fb_receiver()
     {
+        $response = $_POST['response'];
 
-        $ip = $_SERVER['REMOTE_ADDR'];
-
-        $facebook_id = $_POST['response']['id'];
-        $facebook_name = $_POST['response']['name'];
-
-        $names = explode(' ', $facebook_name);
-
-        $facebook_email = isset($POST['response']['email']) ? $POST['response']['email'] : self::emailGenerator();
-
-        $plain_text = wp_generate_password(20);
-        $user_pass = wp_hash_password($plain_text);
-
-        $user = new Controllers\FacebookUsers();
-
-        $user->checkUser($facebook_id, $facebook_name, $ip);
-
-        $wp_user = Models\User::where('user_login', $facebook_email)->first();
-
-        if ($wp_user) {
-
-            wp_set_auth_cookie($wp_user->ID);
-
-        } else {
-
-            $wp_user = new Models\User(
-                [
-                'user_login' => $facebook_email,
-                'user_pass' => $user_pass,
-                'user_email' => $facebook_email,
-                'display_name' => $names[0],
-                'user_nicename' => 'testname',
-                'user_url' => 'testurl',
-                'user_registered' => new DateTime(),
-                'user_activation_key' => '12345666677',
-                'user_status' => 0
-                ]
-            );
-
-            //add the WordPress users foreign key
-            $wp_user->save();
-            $up4_user = Models\Up4User::where('sess', session_id())->first();
-            $up4_user->users_id = $wp_user->ID;
-        }
+        $up4_user = new Controllers\Up4Users();
+        $up4_user->setupResponse($response);
+        $up4_user->checkUser();
 
         wp_die();
 

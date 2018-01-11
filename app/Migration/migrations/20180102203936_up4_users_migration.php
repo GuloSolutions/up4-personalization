@@ -32,8 +32,8 @@ class Up4UsersMigration extends Migration
         $this->schema->create(
             'up4_users', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('sessions_id')->unsigned();
-                $table->bigInteger('users_id')->unsigned()->nullable();
+                $table->integer('session_id')->unsigned();
+                $table->bigInteger('user_id')->unsigned()->nullable();
                 $table->string('first_name', 40)->nullable();
                 $table->string('last_name', 40)->nullable();
                 $table->string('facebook_id', 40)->nullable();
@@ -43,7 +43,7 @@ class Up4UsersMigration extends Migration
                 $table->boolean('has_children')->nullable();
                 $table->string('temp', 5)->nullable();
                 $table->string('location')->nullable();
-                $table->string('local_time')->nullable();
+                $table->string('conditions')->nullable();
                 $table->string('weather')->nullable();
                 $table->boolean('travels_often')->nullable();
                 $table->boolean('is_50plus')->nullable();
@@ -57,11 +57,11 @@ class Up4UsersMigration extends Migration
                 $table->boolean('colon_health')->nullable();
                 $table->timestamps();
 
-                $table->foreign('sessions_id')
+                $table->foreign('session_id')
                     ->references('id')->on('sessions')
                     ->onDelete('cascade');
 
-                $table->foreign('users_id')
+                $table->foreign('user_id')
                     ->references('ID')->on('users')
                     ->onDelete('cascade');
             }

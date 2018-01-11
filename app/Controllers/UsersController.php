@@ -8,19 +8,19 @@ use Models\Up4Session;
 class UsersController
 {
     public $session_id;
+
     public $user;
 
     public function __construct()
     {
         $this->session_id = session_id();
+
         $this->set();
     }
 
     private function set()
     {
-        $sess_id = $this->session_id;
-
-        $up4_session = Up4Session::where('sid', $sess_id)->first();
+        $up4_session = Up4Session::where('sid', $this->session_id)->first();
 
         if (!is_null($up4_session)) {
             $this->user = $up4_session->up4User()->first();

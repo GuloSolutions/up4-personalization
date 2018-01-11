@@ -36,7 +36,7 @@ class Up4Sessions implements \SessionHandlerInterface
         $sess = Up4Session::where('sid', $session_id)->first();
 
         if ($sess instanceof Models\Up4Session) {
-            return serialize($sess);
+            return serialize($sess->data);
         } else {
             return '';
         }
@@ -47,11 +47,12 @@ class Up4Sessions implements \SessionHandlerInterface
      */
     public function write($session_id, $data)
     {
-        $sess_write = Up4Session::firstOrNew(['sid' =>  $session_id, 'data' => $data, 'expiry' => $this->expiry]);
-        $sess_write->save();
+        $session = Up4Session::firstOrNew(['sid' =>  $session_id]);
 
-        $user_sess = Up4User::firstOrNew(['sessions_id' => $sess_write->id]);
-        $user_sess->save();
+        $session->data = $data;
+        $session->expiry = $this->expiry;
+
+        $session->save();
 
         return true;
     }
@@ -86,4 +87,15 @@ class Up4Sessions implements \SessionHandlerInterface
 
         return true;
     }
+
+     public function updateTimestamp($session_id, $data)
+     {
+            Up4Session::where('sid', session_id)
+                ->update([
+                    'data' => $data,
+                    'expiry' => $this->expiry
+                ]);
+
+            return true;
+     }
 }

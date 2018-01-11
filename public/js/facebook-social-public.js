@@ -9,8 +9,24 @@ window.fbAsyncInit = function() {
         version    : 'v2.11'
     });
 
+    FB.Event.subscribe('auth.login', function(response) {
+        if (response.authResponse) {
+            window.top.location = window.location.href;
+        }
+    });
+
+    FB.Event.subscribe('auth.logout', function(response) {
+        window.top.location = window.location.href;
+    });
+
     facebookLogin();
 };
+
+// function facbookLogin() {
+//     FB.login(function() {}, {
+//         scope: 'email,user_friends,public_profile'
+//     });
+// }
 
 function facebookLogin() {
     FB.getLoginStatus(function(response) {
@@ -20,7 +36,6 @@ function facebookLogin() {
             var accessToken = response.authResponse.accessToken;
 
             connectToApp();
-            //window.location.href = 'http://goldmember.gulosolutions.com:3333/sample-page';
 
         } else if (response.status === 'not_authorized') {
 
@@ -37,14 +52,12 @@ function facebookLogin() {
 }
 
 function connectToApp() {
-    console.log('Fetching your information....');
-
-    FB.api('/me', function(response) {
-
-        console.log('Successful login for: ' + response.email);
-
-        sendToApp(response);
-    });
+    FB.api('/me',
+        {fields: 'id, name, first_name, last_name, email, picture.width(800).height(800)'},
+        function(response) {
+            sendToApp(response);
+        }
+    );
 }
 
 function sendToApp(response) {
@@ -52,6 +65,7 @@ function sendToApp(response) {
         'action': 'fb_receiver',
         'response': response
     };
+
     jQuery.ajax({
         url: ajax_receiver.ajax_url,
         data: receiver,
