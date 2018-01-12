@@ -104,7 +104,7 @@ class Up4Users
             $weather = new Weather($location);
 
             $this->up4User->location = $weather->getOrigin();
-            $this->up4User->weather = $weather->getTemperature();
+            $this->up4User->temperature = $weather->getTemperature();
             $this->up4User->conditions = $weather->getConditions();
 
             $this->up4User->save();

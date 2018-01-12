@@ -32,29 +32,26 @@ class Up4UsersMigration extends Migration
         $this->schema->create(
             'up4_users', function (Blueprint $table) {
                 $table->increments('id');
+
                 $table->integer('session_id')->unsigned()->nullable();
                 $table->bigInteger('user_id')->unsigned()->nullable();
+                $table->string('facebook_id', 40)->nullable();
+
                 $table->string('first_name', 40)->nullable();
                 $table->string('last_name', 40)->nullable();
-                $table->string('facebook_id', 40)->nullable();
                 $table->string('picture')->nullable();
+
                 $table->string('gender', 10)->nullable();
                 $table->string('age', 5)->nullable();
-                $table->boolean('has_children')->nullable();
-                $table->string('temp', 5)->nullable();
-                $table->string('location')->nullable();
-                $table->string('conditions')->nullable();
-                $table->string('weather')->nullable();
+
                 $table->boolean('travels_often')->nullable();
-                $table->boolean('is_50plus')->nullable();
-                $table->boolean('is_mom')->nullable();
-                $table->boolean('exercises_daily')->nullable();
-                $table->boolean('digestive_health')->nullable();
-                $table->boolean('immune_system_health')->nullable();
-                $table->boolean('urinary_health')->nullable();
-                $table->boolean('womens_health')->nullable();
-                $table->boolean('cholesterol_health')->nullable();
-                $table->boolean('colon_health')->nullable();
+                $table->boolean('has_children')->nullable();
+                $table->boolean('exercises_often')->nullable();
+
+                $table->string('location')->nullable();
+                $table->string('temperature', 5)->nullable();
+                $table->string('conditions')->nullable();
+
                 $table->timestamps();
 
                 $table->foreign('session_id')
