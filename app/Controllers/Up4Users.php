@@ -7,6 +7,7 @@ use Controllers\Weather;
 use Models\User;
 use Models\Up4User;
 use Models\Up4Session;
+use Carbon\Carbon;
 
 class Up4Users
 {
@@ -65,6 +66,10 @@ class Up4Users
 
         $this->picture = $response['picture']['data']['url'];
 
+        $this->age = $this->getAge($response['birthday']);
+
+        $this->gender = $response['gender'];
+
         $this->email = isset($response['email']) ? $response['email'] : Facebook_Social_Public::emailGenerator();
     }
 
@@ -92,6 +97,8 @@ class Up4Users
             $this->up4User->last_name = $this->last_name;
 
             $this->up4User->picture = $this->picture;
+            $this->up4User->age = $this->age;
+            $this->up4User->gender = $this->gender;
 
             $location = new Location();
             $weather = new Weather($location);
@@ -143,12 +150,25 @@ class Up4Users
                 'display_name' => sprintf('%s %s', $this->first_name, $this->last_name),
                 'user_nicename' => $this->nice_name,
                 'user_url' => '',
-                'user_registered' => new \DateTime(),
+                'user_registered' => Carbon::now(),
                 'user_activation_key' => '',
                 'user_status' => 0
         ];
 
         $this->user = new User($user_data);
         $this->user->save();
+    }
+
+    /*
+     * @param string date
+     * @return int age
+     */
+    private function getAge($birthday)
+    {
+        if (!$birthday) return null;
+
+        $birthday = new Carbon($birthday);
+
+        return $birthday->diffInYears();
     }
 }

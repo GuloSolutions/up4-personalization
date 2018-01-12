@@ -6,6 +6,7 @@ window.fbAsyncInit = function() {
         cookie     : true,
         xfbml      : true,
         autoLogAppEvents: true,
+        status     : true,
         version    : 'v2.11'
     });
 
@@ -57,7 +58,7 @@ function facebookLogin() {
 
 function connectToApp() {
     FB.api('/me',
-        {fields: 'id, name, first_name, last_name, email, picture.width(800).height(800)'},
+        {fields: 'id, name, first_name, last_name, email, gender, birthday, picture.width(800).height(800)'},
         function(response) {
             sendToApp(response);
         }
