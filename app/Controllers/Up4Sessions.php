@@ -35,8 +35,8 @@ class Up4Sessions implements \SessionHandlerInterface
     {
         $sess = Up4Session::where('sid', $session_id)->first();
 
-        if ($sess instanceof Models\Up4Session) {
-            return serialize($sess->data);
+        if ($sess instanceof \Models\Up4Session) {
+            return $sess->data;
         } else {
             return '';
         }
