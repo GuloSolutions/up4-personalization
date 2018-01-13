@@ -23,7 +23,7 @@ class Up4Users
     public $up4User;
 
     /*
-     * @var Up4Session
+     * @var wpUser
      */
 
     public $wpUser;
@@ -37,6 +37,11 @@ class Up4Users
      * @var string
      */
     private $facebook_id;
+
+    /*
+     * @var string
+     */
+    private $fb_user;
 
     /*
      * @var Array
@@ -55,6 +60,8 @@ class Up4Users
 
         $this->up4User = Up4User::where('session_id', $this->up4Session->id)
             ->first();
+
+            error_log(var_dump($this->user));
 
         if ($this->up4User === null) {
             $this->up4User = Up4User::where('facebook_id', $this->facebook_id)
@@ -164,5 +171,21 @@ class Up4Users
         $birthday = new Carbon($birthday);
 
         return $birthday->diffInYears();
+    }
+
+    /*
+     * @param null
+     * @return bool
+     */
+    private function isFBUserLoggedIn ()
+    {
+
+        $this->fb_user = Up4User::where('session_id', $this->up4Session->id)
+            ->where('facebook_id', $this->facebook_id)->first();
+
+            if (!$this->fb_user->id) {
+                return true;
+            }
+        return false;
     }
 }
