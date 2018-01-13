@@ -4,6 +4,7 @@ namespace Controllers;
 use Illuminate\Database\Eloquent\Model as Model;
 use Controllers\Location;
 use Controllers\Weather;
+use Controllers\WordpressUsers;
 use Models\User;
 use Models\Up4User;
 use Models\Up4Session;
@@ -24,6 +25,12 @@ class Up4Users
     /*
      * @var Up4Session
      */
+
+    public $wpUser;
+
+    /*
+     * @var Up4Session
+     */
     public $up4Session;
 
     /*
@@ -31,7 +38,15 @@ class Up4Users
      */
     private $facebook_id;
 
-    public function __construct() {}
+    /*
+     * @var Array
+     */
+    private $up4Data;
+
+    public function __construct() {
+
+        $this->wpUser = new WordpressUsers;
+    }
 
     public function checkUser()
     {
@@ -53,24 +68,38 @@ class Up4Users
         $this->linkToUser();
     }
 
-    public function setupResponse($response)
+    public function setupSurveyResponse($response)
+    {
+        $this->up4Data = $response;
+        $this->up4Data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
+        $this->up4Data['travels_often'] = $response['travels_often'] == 'yes' ? true : false;
+        $this->up4Data['exercises_often'] = $response['exercises_often'] == 'yes' ? true : false;
+        $this->up4Data['has_children'] = $response['has_children'] == 'yes' ? true : false;
+    }
+
+    public function setupFacebookResponse($response)
     {
         $this->facebook_id = $response['id'];
-
         $this->nice_name = preg_replace('/\s/', '-', $response['name']);
-        $names = explode('-', $this->nice_name);
-
+        $this->email = isset($response['email']) ? $response['email'] : Facebook_Social_Public::emailGenerator();
         $this->first_name = isset($response['first_name']) ? $response['first_name'] : $names[0];
         $this->last_name = isset($response['last_name']) ? $response['last_name'] :
              (!empty($names[2]) ? $names[2] : (!empty($names[1]) ? $names[1] : ''));
 
-        $this->picture = $response['picture']['data']['url'];
+        // setup our up4 detail data
+        $this->up4Data['facebook_id'] = $this->facebook_id;
 
-        $this->age = $this->getAge($response['birthday']);
+        // $this->up4Data['nice_name'] = $this->nice_name;
+        $names = explode('-', $this->nice_name);
 
-        $this->gender = $response['gender'];
+        $this->up4Data['first_name'] = $this->first_name;
+        $this->up4Data['last_name'] = $this->last_name;
 
-        $this->email = isset($response['email']) ? $response['email'] : Facebook_Social_Public::emailGenerator();
+        $this->up4Data['picture'] = $response['picture']['data']['url'];
+
+        $this->up4Data['age'] = $this->getAge($response['birthday']);
+
+        $this->up4Data['gender'] = $response['gender'];
     }
 
     private function linkToUser()
@@ -83,7 +112,8 @@ class Up4Users
 
         } else {
 
-            $this->setupWPUser();
+            $this->wpUser->setupWPUser($this->user);
+            $this->create();
         }
     }
 
@@ -93,12 +123,11 @@ class Up4Users
 
             $this->up4User->session_id = $this->up4Session->id;
 
-            $this->up4User->first_name = $this->first_name;
-            $this->up4User->last_name = $this->last_name;
-
-            $this->up4User->picture = $this->picture;
-            $this->up4User->age = $this->age;
-            $this->up4User->gender = $this->gender;
+            foreach ($this->up4Data as $key => $value) {
+                if (!empty($value)) {
+                    $this->up4User->{$key} = $value;
+                }
+            }
 
             $location = new Location();
             $weather = new Weather($location);
@@ -122,41 +151,6 @@ class Up4Users
         $this->up4User->user_id = $this->user->ID;
 
         $this->update();
-    }
-
-    private function setupWPUser()
-    {
-        // see if we already have a user
-        $this->user = User::where('user_email', $this->email)
-            ->first();
-
-        // add the WordPress users
-        if ($this->user === null) {
-            $this->newWPUser();
-        }
-
-        $this->create();
-    }
-
-    private function newWPUser()
-    {
-        $plain_text = wp_generate_password(20);
-        $user_pass = wp_hash_password($plain_text);
-
-        $user_data = [
-                'user_login' => $this->email,
-                'user_pass' => $user_pass,
-                'user_email' => $this->email,
-                'display_name' => sprintf('%s %s', $this->first_name, $this->last_name),
-                'user_nicename' => $this->nice_name,
-                'user_url' => '',
-                'user_registered' => Carbon::now(),
-                'user_activation_key' => '',
-                'user_status' => 0
-        ];
-
-        $this->user = new User($user_data);
-        $this->user->save();
     }
 
     /*
