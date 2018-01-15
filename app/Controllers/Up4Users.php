@@ -93,6 +93,14 @@ class Up4Users
         $this->last_name = isset($response['last_name']) ? $response['last_name'] :
              (!empty($names[2]) ? $names[2] : (!empty($names[1]) ? $names[1] : ''));
 
+        $this->wpData = [
+            'user_email' => $this->email,
+            'user_login' => $this->email,
+            'user_nicename' => $this->nice_name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name
+        ];
+
         // setup our up4 detail data
         $this->up4Data['facebook_id'] = $this->facebook_id;
 
@@ -119,7 +127,7 @@ class Up4Users
 
         } else {
 
-            $this->wpUser->setupWPUser($this->user);
+            $this->user = $this->wpUser->setupWPUser($this->wpData);
             $this->create();
         }
     }
