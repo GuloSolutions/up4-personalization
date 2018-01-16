@@ -9,7 +9,8 @@ class Up4User extends Model
 
     protected $fillable = [
         'age', 'first_name', 'last_name','session_id',
-        'facebook_id', 'digestive_health', 'zip',
+        'facebook_id', 'gender', 'zip',
+        'has_children', 'travels_often', 'exercises_often',
         'weather', 'local_time', 'picture'
     ];
 
