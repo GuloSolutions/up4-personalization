@@ -16,14 +16,10 @@ window.fbAsyncInit = function() {
 
     FB.Event.subscribe('auth.statusChange', function(response) {
         if (response.status === 'connected') {
-            var uid = response.authResponse.userID;
-            var accessToken = response.authResponse.accessToken;
-
             connectToApp();
         } else if (response.status === 'not_authorized') {
 
         } else {
-
           return;
         }
     });
@@ -47,6 +43,10 @@ function facebookLogout() {
 function facebookLogin() {
     FB.login(function(response) {
         up4_fb_data.trigger = true;
+
+        if (response.status === 'connected') {
+            connectToApp();
+        }
 
         return;
     }, {scope: 'email'});
