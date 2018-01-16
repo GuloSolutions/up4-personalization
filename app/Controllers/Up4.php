@@ -5,29 +5,34 @@ use Illuminate\Database\Eloquent\Model as Model;
 use Models\Up4User;
 use Models\Up4Session;
 
-class UsersController
+class Up4
 {
     public $session_id;
 
-    public $user;
+    public $up4User;
 
-    public function __construct()
+    public $up4Session;
+
+    public function __construct($session_id)
     {
-        $this->session_id = session_id();
-
-        $this->set();
+        $this->session_id = $session_id;
     }
 
-    private function set()
+    public function init()
     {
-        $up4_session = Up4Session::where('sid', $this->session_id)->first();
+        $this->up4Session = Up4Session::where('sid', $this->session_id)
+            ->first();
 
-        if (!is_null($up4_session)) {
-            $this->user = $up4_session->up4User()->first();
+        if (is_null($this->up4Session)) {
+            $this->up4Session = new up4Session();
         }
 
-        if (is_null($this->user)) {
-            $this->user = new Up4User();
+        if (!is_null($this->up4Session)) {
+            $this->up4User = $this->up4Session->up4User()->first();
+        }
+
+        if (is_null($this->up4User)) {
+            $this->up4User = new Up4User();
         }
     }
 
@@ -36,7 +41,7 @@ class UsersController
      */
     public function isLoggedIn()
     {
-        return $this->user->id ? true : false;
+        return $this->up4User->id ? true : false;
     }
 
     /*
@@ -44,7 +49,7 @@ class UsersController
      */
     public function get()
     {
-        return $this->user;
+        return $this->up4User;
     }
 
     /*
@@ -52,7 +57,7 @@ class UsersController
      */
     public function getName()
     {
-        return $this->user->first_name;
+        return $this->up4User->first_name;
     }
 
     /*
@@ -60,7 +65,7 @@ class UsersController
      */
     public function getId()
     {
-        return $this->user->id;
+        return $this->up4User->id;
     }
 
     /*
@@ -68,7 +73,7 @@ class UsersController
      */
     public function getFacebookId()
     {
-        return $this->user->facebook_id;
+        return $this->up4User->facebook_id;
     }
 
     /*
@@ -76,7 +81,7 @@ class UsersController
      */
     public function getConditions()
     {
-        return $this->user->conditions;
+        return $this->up4User->conditions;
     }
 
     /*
@@ -84,7 +89,7 @@ class UsersController
      */
     public function getWeather()
     {
-        return $this->user->weather;
+        return $this->up4User->weather;
     }
 
     /*
@@ -92,7 +97,7 @@ class UsersController
      */
     public function getZip()
     {
-        return $this->user->zip;
+        return $this->up4User->zip;
     }
 
     /*
@@ -100,7 +105,7 @@ class UsersController
      */
     public function getOrigin()
     {
-        return $this->user->location;
+        return $this->up4User->location;
     }
 
     /*
@@ -108,6 +113,6 @@ class UsersController
      */
     public function getProfilePictureUrl()
     {
-        return $this->user->picture;
+        return $this->up4User->picture;
     }
 }
