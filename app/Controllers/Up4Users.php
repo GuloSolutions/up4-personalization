@@ -23,12 +23,6 @@ class Up4Users
     public $up4User;
 
     /*
-     * @var wpUser
-     */
-
-    public $wpUser;
-
-    /*
      * @var Up4Session
      */
     public $up4Session;
@@ -44,32 +38,28 @@ class Up4Users
     private $fb_user;
 
     /*
-     * @var Array
+     * @var array
      */
-    private $up4Data;
+    private $data;
 
-    public function __construct() {
+    public function __construct(\Models\Up4User $up4User, \Models\Up4Session $up4Session)
+    {
+        $this->up4User = $up4User;
 
-        $this->wpUser = new WordpressUsers;
+        $this->up4Session = $up4Session;
     }
 
     public function checkUser()
     {
-        $this->up4Session = Up4Session::where('sid', session_id())
-            ->first();
-
-        $this->up4User = Up4User::where('session_id', $this->up4Session->id)
-            ->first();
-
-            error_log(var_dump($this->user));
-
-        if ($this->up4User === null) {
+        if (empty($this->up4User->facebook_id) && empty($this->up4User->session_id)) {
             $this->up4User = Up4User::where('facebook_id', $this->facebook_id)
                 ->first();
         }
 
         if ($this->up4User !== null) {
             $this->user = $this->up4User->user;
+        } else {
+            $this->up4User = new Up4User();
         }
 
         $this->linkToUser();
@@ -77,72 +67,64 @@ class Up4Users
 
     public function setupSurveyResponse($response)
     {
-        $this->up4Data = $response;
-        $this->up4Data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
-        $this->up4Data['travels_often'] = $response['travels_often'] == 'yes' ? true : false;
-        $this->up4Data['exercises_often'] = $response['exercises_often'] == 'yes' ? true : false;
-        $this->up4Data['has_children'] = $response['has_children'] == 'yes' ? true : false;
+        $this->data = $response;
+        $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
+        $this->data['travels_often'] = $response['travels_often'] == 'yes' ? true : false;
+        $this->data['exercises_often'] = $response['exercises_often'] == 'yes' ? true : false;
+        $this->data['has_children'] = $response['has_children'] == 'yes' ? true : false;
     }
 
     public function setupFacebookResponse($response)
     {
         $this->facebook_id = $response['id'];
-        $this->nice_name = preg_replace('/\s/', '-', $response['name']);
-        $this->email = isset($response['email']) ? $response['email'] : Facebook_Social_Public::emailGenerator();
-        $this->first_name = isset($response['first_name']) ? $response['first_name'] : $names[0];
-        $this->last_name = isset($response['last_name']) ? $response['last_name'] :
-             (!empty($names[2]) ? $names[2] : (!empty($names[1]) ? $names[1] : ''));
 
-        $this->wpData = [
-            'user_email' => $this->email,
-            'user_login' => $this->email,
-            'user_nicename' => $this->nice_name,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name
-        ];
+        $this->email = $response['email'];
+
+        $this->name = $response['name'];
+
+        $names = explode(' ', $this->name);
 
         // setup our up4 detail data
-        $this->up4Data['facebook_id'] = $this->facebook_id;
+        $this->data['facebook_id'] = $this->facebook_id;
 
-        // $this->up4Data['nice_name'] = $this->nice_name;
-        $names = explode('-', $this->nice_name);
+        $this->data['first_name'] = isset($response['first_name']) ? $response['first_name'] : $names[0];
 
-        $this->up4Data['first_name'] = $this->first_name;
-        $this->up4Data['last_name'] = $this->last_name;
+        $this->data['last_name'] = isset($response['last_name']) ? $response['last_name'] :
+             (!empty($names[2]) ? $names[2] : (!empty($names[1]) ? $names[1] : ''));
 
-        $this->up4Data['picture'] = $response['picture']['data']['url'];
+        $this->data['picture'] = $response['picture']['data']['url'];
 
-        $this->up4Data['age'] = $this->getAge($response['birthday']);
+        $this->data['age'] = $this->getAge($response['birthday']);
 
-        $this->up4Data['gender'] = $response['gender'];
+        $this->data['gender'] = $response['gender'];
     }
 
     private function linkToUser()
     {
         if ($this->user !== null) {
-
             wp_set_auth_cookie($this->user->ID);
 
             $this->update();
-
         } else {
-
-            $this->user = $this->wpUser->setupWPUser($this->wpData);
             $this->create();
+        }
+    }
+
+    private function setData()
+    {
+        foreach ($this->data as $key => $value) {
+            if (!empty($value)) {
+                $this->up4User->{$key} = $value;
+            }
         }
     }
 
     private function update()
     {
         if ($this->up4User !== null) {
-
             $this->up4User->session_id = $this->up4Session->id;
 
-            foreach ($this->up4Data as $key => $value) {
-                if (!empty($value)) {
-                    $this->up4User->{$key} = $value;
-                }
-            }
+            $this->setData();
 
             $location = new Location();
             $weather = new Weather($location);
@@ -159,7 +141,10 @@ class Up4Users
 
     private function create()
     {
-        $this->up4User = new Up4User();
+        $wpUser = new WordpressUsers($this->name, $this->email);
+        $this->user = $wpUser->setup();
+
+        $this->setData();
 
         $this->up4User->facebook_id = $this->facebook_id;
 
@@ -185,9 +170,8 @@ class Up4Users
      * @param null
      * @return bool
      */
-    private function isFBUserLoggedIn ()
+    private function isFBUserLoggedIn()
     {
-
         $this->fb_user = Up4User::where('session_id', $this->up4Session->id)
             ->where('facebook_id', $this->facebook_id)->first();
 
