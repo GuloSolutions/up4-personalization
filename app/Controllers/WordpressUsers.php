@@ -11,7 +11,7 @@ class WordpressUsers
 
     public function __construct($name, $email = null)
     {
-        $this->email = !empty($email) ? $email : Facebook_Social_Public::emailGenerator();
+        $this->email = !empty($email) ? $email : $this->emailGenerator();
         $this->nice_name = preg_replace('/\s/', '-', $name);
 
         $this->setData();
@@ -57,5 +57,21 @@ class WordpressUsers
         $user->save();
 
         return $user;
+    }
+
+    public static function emailGenerator()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $username_length = 10;
+
+        $randomName = '';
+
+        for($j=0; $j<$username_length; $j++){
+            $randomName .= $characters[rand(0, strlen($characters) -1)];
+        }
+
+        $fullAddress = $randomName . '@' . 'example.com';
+
+        return $fullAddress;
     }
 }

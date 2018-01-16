@@ -197,22 +197,4 @@ class Facebook_Social_Public
         wp_logout();
 
     }
-
-    public static function emailGenerator()
-    {
-
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $username_length = 10;
-
-        $randomName = '';
-
-        for($j=0; $j<$username_length; $j++){
-            $randomName .= $characters[rand(0, strlen($characters) -1)];
-        }
-
-        $fullAddress = $randomName . '@' . 'example.com';
-
-        return $fullAddress;
-
-    }
 }

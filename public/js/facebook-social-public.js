@@ -2,7 +2,7 @@
 
 var up4_fb_data = {};
 
-var up4_fb_scope = 'id, name, first_name, last_name, email, gender, birthday, picture.width(800).height(800)';
+var up4_fb_scope = 'id, name, email, first_name, last_name, gender, birthday, picture.width(800).height(800)';
 
 window.fbAsyncInit = function() {
     FB.init({
@@ -49,7 +49,7 @@ function facebookLogin() {
         up4_fb_data.trigger = true;
 
         return;
-    });
+    }, {scope: 'email'});
 }
 
 function connectToApp() {
