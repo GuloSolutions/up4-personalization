@@ -122,6 +122,7 @@ class Facebook_Social_Public
 
     public function startUp4Session()
     {
+
         if(!session_id()) {
             $sh = new Controllers\Up4Sessions();
 
@@ -142,6 +143,7 @@ class Facebook_Social_Public
 
     public function startUp4User()
     {
+
         global $up4_user;
 
         $up4_user = $this->up4;
@@ -155,10 +157,11 @@ class Facebook_Social_Public
     public function process_button($attrs, $content)
     {
 
-        $content = '<div class="fb-login-button" data-max-rows="1" data-size="large"
-                            data-button-type="continue_with" data-show-faces="false"
-                            data-auto-logout-link="true" data-use-continue-as="false"
-                            data-scope="email,user_friends,public_profile"></div>';
+        if($this->up4->isLoggedIn()) {
+            $content = '<button id="fb-logout">Facebook Logout</button>';
+        } else {
+            $content = '<button id="fb-login">Facebook Login</button>';
+        }
 
         return $content;
 
@@ -166,6 +169,7 @@ class Facebook_Social_Public
 
     public function fb_receiver()
     {
+
         $response = $_POST['response'];
 
         $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
@@ -188,8 +192,10 @@ class Facebook_Social_Public
 
     public function fb_logout()
     {
+
         session_destroy();
         wp_logout();
+
     }
 
     public static function emailGenerator()

@@ -1,5 +1,9 @@
 'use strict';
 
+var up4_fb_data = {};
+
+var up4_fb_scope = 'id, name, first_name, last_name, email, gender, birthday, picture.width(800).height(800)';
+
 window.fbAsyncInit = function() {
     FB.init({
         appId      : '1350071051786117',
@@ -10,79 +14,87 @@ window.fbAsyncInit = function() {
         version    : 'v2.11'
     });
 
-    FB.Event.subscribe('auth.login', function(response) {
-        if (response.authResponse) {
-            window.top.location = window.location.href;
-        }
-    });
-
-    FB.Event.subscribe('auth.logout', function(response) {
-        var receiver = {
-            'action': 'fb_logout'
-        };
-
-        jQuery.ajax({
-            url: ajax_receiver.ajax_url,
-            data: receiver,
-            method: 'POST'
-        });
-
-        window.top.location = window.location.href;
-    });
-
-    facebookLogin();
-};
-
-function facebookLogin() {
-    FB.getLoginStatus(function(response) {
+    FB.Event.subscribe('auth.statusChange', function(response) {
         if (response.status === 'connected') {
-
             var uid = response.authResponse.userID;
             var accessToken = response.authResponse.accessToken;
 
             connectToApp();
-
         } else if (response.status === 'not_authorized') {
-
-          //load survey
 
         } else {
 
-          //load survey
-
           return;
         }
-    }, true);
+    });
 
+    FB.Event.subscribe('auth.logout', function(response) {
+        up4_fb_data = {
+            'action': 'fb_logout',
+            'trigger': true
+        };
+
+        sendToApp();
+    });
+};
+
+function facebookLogout() {
+   FB.logout(function(response) {
+        return;
+   });
+}
+
+function facebookLogin() {
+    FB.login(function(response) {
+        up4_fb_data.trigger = true;
+
+        return;
+    });
 }
 
 function connectToApp() {
     FB.api('/me',
-        {fields: 'id, name, first_name, last_name, email, gender, birthday, picture.width(800).height(800)'},
+        {fields: up4_fb_scope},
         function(response) {
-            sendToApp(response);
+            up4_fb_data.action = 'fb_receiver';
+            up4_fb_data.response = response;
+
+            sendToApp();
         }
     );
 }
 
-function sendToApp(response) {
-    var receiver = {
-        'action': 'fb_receiver',
-        'response': response
-    };
-
+function sendToApp() {
     jQuery.ajax({
         url: ajax_receiver.ajax_url,
-        data: receiver,
+        data: up4_fb_data,
         method: 'POST',
         success: function(data) {
-            console.log(data);
+            if(up4_fb_data.trigger != undefined && up4_fb_data.trigger === true) {
+                window.top.location = window.location.href;
+            }
         },
         error: function(data) {
             console.log(data);
         }
     });
 }
+
+(function($) {
+    $(function() {
+        $('#fb-login').on('click', function(e) {
+            e.preventDefault();
+
+            facebookLogin();
+        });
+
+        $('#fb-logout').on('click', function(e) {
+            e.preventDefault();
+
+            facebookLogout();
+        });
+    });
+}) (jQuery);
 
 (function(d, s, id){
    var js, fjs = d.getElementsByTagName(s)[0];
