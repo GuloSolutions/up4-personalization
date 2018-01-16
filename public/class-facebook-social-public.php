@@ -44,6 +44,9 @@ class Facebook_Social_Public
      */
     private $version;
 
+
+    private $up4;
+
     /**
      * Initialize the class and set its properties.
      *
@@ -117,9 +120,8 @@ class Facebook_Social_Public
         );
     }
 
-    public function startUp4UserSession()
+    public function startUp4Session()
     {
-
         if(!session_id()) {
             $sh = new Controllers\Up4Sessions();
 
@@ -129,18 +131,20 @@ class Facebook_Social_Public
 
             session_start();
 
-            $this->startUp4User();
+            $session_id = session_id();
+
+            $this->up4 = new Controllers\Up4($session_id);
+
+            $this->up4->init();
         }
 
     }
 
     public function startUp4User()
     {
+        global $up4_user;
 
-        global $facebook_social_user;
-
-        $facebook_social_user = new Controllers\UsersController();
-
+        $up4_user = $this->up4;
     }
 
     public function register_shortcodes()
@@ -162,11 +166,10 @@ class Facebook_Social_Public
 
     public function fb_receiver()
     {
-
         $response = $_POST['response'];
 
-        $up4_user = new Controllers\Up4Users();
-        $up4_user->setupResponse($response);
+        $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
+        $up4_user->setupFacebookResponse($response);
         $up4_user->checkUser();
 
         wp_die();
