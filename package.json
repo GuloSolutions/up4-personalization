@@ -2,7 +2,7 @@
   "name": "survey",
   "description": "Vue project",
   "version": "1.0.0",
-  "author": "radboris <radboris@goldmember.gulosolutions.com>",
+  "author": "Gulo Solutions",
   "license": "MIT",
   "private": true,
   "scripts": {
