@@ -350,7 +350,6 @@ new _vue2.default({
         type: "radios",
         label: "Are you a woman?",
         model: "gender",
-        'prop': "diaabled",
         required: true,
         values: ["yes", "no", "Prefer not to say"],
         validator: _vueFormGenerator2.default.validators.required,
@@ -397,7 +396,24 @@ new _vue2.default({
       var params = new URLSearchParams();
 
       if (this.model.age == "under 24") {
-        this.model.age = 30;
+        this.model.age = 20;
+      }
+      if (this.model.exercises_often == "yes") {
+        this.model.exercises_often = 1;
+      } else {
+        this.model.exercises_often = 0;
+      }
+
+      if (this.model.travels_often == "yes") {
+        this.model.travels_often = 1;
+      } else {
+        this.model.travels_often = 0;
+      }
+
+      if (this.model.has_children == "yes") {
+        this.model.has_children = 1;
+      } else {
+        this.model.has_children = 0;
       }
 
       params.append('action', 'survey_receiver');
@@ -421,6 +437,9 @@ new _vue2.default({
     },
     validateSecondTab: function validateSecondTab() {
       return this.$refs.secondTabForm.validate();
+    },
+    beforeThirdTabSwitch: function beforeThirdTabSwitch() {
+      return this.model.travels_often == "yes" ? 1 : 0;
     },
     validateThirdTab: function validateThirdTab() {
       return this.$refs.thirdTabForm.validate();
