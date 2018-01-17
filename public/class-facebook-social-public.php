@@ -59,7 +59,8 @@ class Facebook_Social_Public
 
         $this->plugin_name = $plugin_name;
         $this->version = $version;
-        $this->register_shortcodes();
+        $this->register_facebook_shortcode();
+        $this->register_survey_shortcode();
 
     }
 
@@ -107,10 +108,10 @@ class Facebook_Social_Public
          * class.
          */
 
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false);
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/survey-social-public.js', $this->version, false);
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/vue-form-wizard.js', $this->version, false);
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/vfg.js', $this->version, false);
+        wp_enqueue_script( 'facebook-social-login', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
+
+        wp_enqueue_script( 'survey-social-form', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+            array(), $this->version, true );
 
         wp_localize_script(
             $this->plugin_name, 'ajax_receiver',
@@ -118,6 +119,13 @@ class Facebook_Social_Public
                 'ajax_url' => admin_url('admin-ajax.php')
             ]
         );
+    }
+
+    public function register_vue_script()
+    {
+
+        wp_register_script( 'survey-social-form', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+            array(), $this->version, true );
     }
 
     public function startUp4Session()
@@ -149,9 +157,15 @@ class Facebook_Social_Public
         $up4_user = $this->up4;
     }
 
-    public function register_shortcodes()
+    public function register_facebook_shortcode()
     {
         add_shortcode($this->plugin_name . '_facebook_login_button', array($this, 'process_button'));
+
+    }
+
+    public function register_survey_shortcode()
+    {
+        add_shortcode($this->plugin_name . '_survey_form', array($this, 'process_survey'));
     }
 
     public function process_button($attrs, $content)
@@ -162,6 +176,80 @@ class Facebook_Social_Public
         } else {
             $content = '<button id="fb-login">Sign In</button>';
         }
+
+        return $content;
+
+    }
+
+    public function process_survey($attrs, $content)
+    {
+
+        $content = <<<EOS
+<div id="app">
+        <form-wizard @on-complete="onComplete"
+                     color="gray"
+                     error-color="#a94442"
+                     >
+            <tab-content title="How old are you?"
+                         icon="ti-user" :before-change="validateFirstTab">
+               <vue-form-generator :model="model"
+                                   :schema="firstTabSchema"
+                                   :options="formOptions"
+                                   ref="firstTabForm"
+                                   >
+
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Are you a woman?"
+                         icon="ti-settings" :before-change="validateSecondTab">
+             <vue-form-generator :model="model"
+                                   :schema="secondTabSchema"
+                                   :options="formOptions"
+                                   ref="secondTabForm"
+                                   >
+               </vue-form-generator>
+
+            </tab-content>
+            <tab-content title="Do you travel often?"
+                         icon="ti-user" :before-change="validateThirdTab">
+               <vue-form-generator :model="model"
+                                   :schema="thirdTabSchema"
+                                   :options="formOptions"
+                                   ref="thirdTabForm"
+                                   >
+
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Do you have children?"
+                         icon="ti-user" :before-change="validateFourthTab">
+               <vue-form-generator :model="model"
+                                   :schema="fourthTabSchema"
+                                   :options="formOptions"
+                                   ref="fourthTabForm"
+                                   >
+
+               </vue-form-generator>
+            </tab-content>
+             <tab-content title="Do you exercise often?"
+                         icon="ti-user" :before-change="validateFifthTab">
+               <vue-form-generator :model="model"
+                                   :schema="fifthTabSchema"
+                                   :options="formOptions"
+                                   ref="fifthTabForm"
+                                   >
+
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Last step"
+                         icon="ti-check">
+              <h4>Your json is ready!</h4>
+              <div class="panel-body">
+                <pre v-if="model" v-html="prettyJSON(model)"></pre>
+              </div>
+            </tab-content>
+        </form-wizard>
+ </div>
+EOS;
 
         return $content;
 
