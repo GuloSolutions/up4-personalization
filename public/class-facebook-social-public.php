@@ -108,25 +108,38 @@ class Facebook_Social_Public
          * class.
          */
 
-        wp_enqueue_script( 'facebook-social-login', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( 'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
 
-        wp_enqueue_script( 'survey-social-form', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+        wp_enqueue_script( 'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
             array(), $this->version, true );
 
         wp_localize_script(
-            $this->plugin_name, 'ajax_receiver',
+            'facebook-social-public', 'ajax_receiver',
             [
                 'ajax_url' => admin_url('admin-ajax.php')
             ]
         );
+
+        wp_localize_script(
+            'survey-social-public', 'ajax_receiver',
+            [
+                'ajax_url' => admin_url('admin-ajax.php')
+            ]
+        );
+
     }
 
-    public function register_vue_script()
+    public function register_scripts()
     {
 
-        wp_register_script( 'survey-social-form', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+        wp_register_script( 'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
+            array(), $this->version, false );
+
+        wp_register_script( 'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
             array(), $this->version, true );
+
     }
+
 
     public function startUp4Session()
     {
