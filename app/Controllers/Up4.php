@@ -39,6 +39,16 @@ class Up4
     /*
      * @return boolean
      */
+    public function isSurveyTaken()
+    {
+        return is_null($this->up4User->travels_often) ||
+                is_null($this->up4User->exercises_often) ||
+                    is_null($this->up4User->has_children) ? false : true;
+    }
+
+    /*
+     * @return boolean
+     */
     public function isLoggedIn()
     {
         return $this->up4User->id ? true : false;
