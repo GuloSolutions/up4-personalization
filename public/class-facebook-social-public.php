@@ -169,6 +169,8 @@ class Facebook_Social_Public
     public function process_button($attrs, $content)
     {
 
+        wp_enqueue_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css' );
+
         wp_enqueue_script( 'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
 
         wp_localize_script(
@@ -179,9 +181,9 @@ class Facebook_Social_Public
         );
 
         if($this->up4->isLoggedIn()) {
-            $content = '<button id="fb-logout">Sign Out</button>';
+            $content = '<button id="fb-logout">Sign out</button>';
         } else {
-            $content = '<button id="fb-login">Sign In</button>';
+            $content = '<button id="fb-login">Sign in with Facebook</button>';
         }
 
         return $content;
