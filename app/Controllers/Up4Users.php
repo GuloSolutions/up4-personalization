@@ -69,13 +69,13 @@ class Up4Users
     {
         $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
 
+        $this->data['age'] = $response['age'];
+
         $this->data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
 
         $this->data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
 
         $this->data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
-
-        $this->data['age'] = $response['age'];
     }
 
     public function setupFacebookResponse($response)
@@ -121,7 +121,9 @@ class Up4Users
     private function setData()
     {
         foreach ($this->data as $key => $value) {
-            $this->up4User->{$key} = $value;
+            if ($value !== null) {
+                $this->up4User->{$key} = $value;
+            }
         }
     }
 
