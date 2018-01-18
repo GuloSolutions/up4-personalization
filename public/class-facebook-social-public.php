@@ -160,7 +160,10 @@ class Facebook_Social_Public
 
     public function register_survey_shortcode()
     {
+
         add_shortcode($this->plugin_name . '_survey_form', array($this, 'process_survey'));
+        add_shortcode($this->plugin_name . '_survey_form_no_gender', array($this, 'process_survey_no_gender'));
+
     }
 
     public function process_button($attrs, $content)
@@ -271,6 +274,81 @@ EOS;
 
     }
 
+    public function process_survey_no_gender ()
+    {
+        wp_enqueue_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css' );
+
+        wp_enqueue_script( 'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+            array(), $this->version, true );
+
+        wp_localize_script(
+            'survey-social-public', 'ajax_receiver',
+            [
+                'ajax_url' => admin_url('admin-ajax.php')
+            ]
+        );
+
+        $content = <<<EOS
+<div id="app">
+        <form-wizard @on-complete="onComplete"
+                     color="gray"
+                     error-color="#a94442"
+                     >
+            <tab-content title="How old are you?"
+                         icon="ti-user" :before-change="validateFirstTab">
+               <vue-form-generator :model="model"
+                                   :schema="firstTabSchema"
+                                   :options="formOptions"
+                                   ref="firstTabForm"
+                                   >
+
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Do you travel often?"
+                         icon="ti-user" :before-change="validateThirdTab">
+               <vue-form-generator :model="model"
+                                   :schema="thirdTabSchema"
+                                   :options="formOptions"
+                                   ref="thirdTabForm"
+                                   >
+
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Do you have children?"
+                         icon="ti-user" :before-change="validateFourthTab">
+               <vue-form-generator :model="model"
+                                   :schema="fourthTabSchema"
+                                   :options="formOptions"
+                                   ref="fourthTabForm"
+                                   >
+
+               </vue-form-generator>
+            </tab-content>
+             <tab-content title="Do you exercise often?"
+                         icon="ti-user" :before-change="validateFifthTab">
+               <vue-form-generator :model="model"
+                                   :schema="fifthTabSchema"
+                                   :options="formOptions"
+                                   ref="fifthTabForm"
+                                   >
+
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Last step"
+                         icon="ti-check">
+              <h4>Your json is ready!</h4>
+              <div class="panel-body">
+                <pre v-if="model" v-html="prettyJSON(model)"></pre>
+              </div>
+            </tab-content>
+        </form-wizard>
+ </div>
+EOS;
+
+        return $content;
+
+    }
+
     public function fb_receiver()
     {
 
@@ -286,9 +364,12 @@ EOS;
 
     public function survey_receiver()
     {
+        $response = $_POST['response'];
 
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $user = new Controllers\SurveyUsers();
+        // global $up4_user;
+        $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
+        $up4_user->setupSurveyResponse($response);
+        $up4_user->checkUser();
 
         wp_die();
 
