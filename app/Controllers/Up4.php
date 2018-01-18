@@ -49,6 +49,14 @@ class Up4
     /*
      * @return boolean
      */
+    public function isLoggedInFacebook()
+    {
+        return $this->up4User->facebook_id ? true : false;
+    }
+
+    /*
+     * @return boolean
+     */
     public function isLoggedIn()
     {
         return $this->up4User->id ? true : false;
