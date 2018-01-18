@@ -323,6 +323,7 @@ new _vue2.default({
     el: '#survey-social-public',
     data: {
         model: {
+            counter: 0,
             age: null,
             gender: null,
             travels_often: null,
@@ -407,6 +408,14 @@ new _vue2.default({
                 this.model.age = 40;
             }
 
+            if (this.model.gender == "yes") {
+                this.model.gender = "female";
+            } else if (this.model.gender = "no") {
+                this.model.gender = "male";
+            } else {
+                this.model.gender = NULL;
+            }
+
             if (this.model.has_children == "yes") {
                 this.model.has_children = 1;
             } else {
@@ -437,7 +446,7 @@ new _vue2.default({
                     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
                 }
             }).then(function (response) {
-                window.location = 'http://goldmember.gulosolutions.com:3333/hello-world';
+                window.location = window.location.href;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -456,6 +465,10 @@ new _vue2.default({
         },
         validateFifthTab: function validateFifthTab() {
             return this.$refs.fifthTabForm.validate();
+        },
+
+        incrementCounter: function incrementCounter(prevIndex, nextIndex) {
+            return this.counter++;
         },
 
         prettyJSON: function prettyJSON(json) {
