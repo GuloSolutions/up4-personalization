@@ -182,7 +182,7 @@ class Facebook_Social_Public
             ]
         );
 
-        if($this->up4->isLoggedIn()) {
+        if($this->up4->isLoggedInFacebook()) {
             $content = '<button id="fb-logout">Sign out</button>';
         } else {
             $content = '<button id="fb-login">Sign in with Facebook</button>';
