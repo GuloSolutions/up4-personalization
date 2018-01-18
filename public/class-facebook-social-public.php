@@ -210,13 +210,14 @@ class Facebook_Social_Public
         $content = <<<EOS
 <div id="survey-social-public">
         <form-wizard @on-complete="onComplete"
+                     @on-change="incrementCounter"
                      color="gray"
                      error-color="#a94442"
                      title=""
                      subtitle=""
                      >
             <tab-content title="How old are you?"
-                         icon="ti-user" :before-change="validateFirstTab" :on-change="incrementCounter">
+                         icon="ti-user" :before-change="validateFirstTab">
                <vue-form-generator :model="model"
                                    :schema="firstTabSchema"
                                    :options="formOptions"
@@ -290,6 +291,7 @@ EOS;
 <div id="survey-social-public">
 <div>
         <form-wizard @on-complete="onComplete"
+                     @on-change="incrementCounter"
                      color="gray"
                      error-color="#a94442"
                      title=""
@@ -322,7 +324,6 @@ EOS;
                                    :options="formOptions"
                                    ref="fifthTabForm"
                                    >
-
                </vue-form-generator>
             </tab-content>
 

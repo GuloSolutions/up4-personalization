@@ -3,12 +3,18 @@ import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
 
+var cMax = document.getElementById('survey-social-public').getElementsByTagName('li').length;
+
+console.log(cMax);
+
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
 Vue.prototype.$http = axios;
 new Vue({
  el: '#survey-social-public',
  data:{
+   counterMax: function() { return document.getElementById('survey-social-public').getElementsByTagName('li').length},
+   counter: 1,
    model:{
     age: null,
     gender: null,
@@ -121,6 +127,14 @@ if (this.model.age == "40+"){
     this.model.age = 40;
 }
 
+if (this.model.gender == "yes"){
+    this.model.gender = "female";
+} else if (this.model.gender = "no") {
+    this.model.gender = "male";
+} else {
+  this.model.gender = NULL;
+}
+
 if (this.model.has_children == "yes"){
     this.model.has_children = 1;
 } else {
@@ -157,12 +171,11 @@ axios.post(ajax_receiver.ajax_url,
 
   )
   .then(function (response) {
-        window.location = 'http://goldmember.gulosolutions.com:3333/hello-world';
+        window.location = window.location.href;
   })
   .catch(function (error) {
     console.log(error);
   });
-
 
    },
    validateFirstTab: function(){
@@ -179,6 +192,12 @@ axios.post(ajax_receiver.ajax_url,
    },
       validateFifthTab: function(){
      return this.$refs.fifthTabForm.validate();
+   },
+   incrementCounter: function(){
+      console.log(this.counter);
+      console.log(cMax);
+
+      return this.counter++;
    },
 
 

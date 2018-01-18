@@ -316,14 +316,19 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var cMax = document.getElementById('survey-social-public').getElementsByTagName('li').length;
+
+console.log(cMax);
+
 _vue2.default.use(_vueFormWizard2.default);
 _vue2.default.use(_vueFormGenerator2.default);
 _vue2.default.prototype.$http = _axios2.default;
 new _vue2.default({
     el: '#survey-social-public',
     data: {
+        counterMax: document.getElementById('survey-social-public').getElementsByTagName('li').length,
+        counter: 1,
         model: {
-            counter: 0,
             age: null,
             gender: null,
             travels_often: null,
@@ -466,8 +471,10 @@ new _vue2.default({
         validateFifthTab: function validateFifthTab() {
             return this.$refs.fifthTabForm.validate();
         },
+        incrementCounter: function incrementCounter() {
+            console.log(this.counter);
+            console.log(cMax);
 
-        incrementCounter: function incrementCounter(prevIndex, nextIndex) {
             return this.counter++;
         },
 
