@@ -7,7 +7,7 @@ Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
 Vue.prototype.$http = axios;
 new Vue({
- el: '#app',
+ el: '#survey-social-public',
  data:{
    model:{
     age: null,
@@ -43,7 +43,6 @@ new Vue({
         type: "radios",
         label: "Are you a woman?",
         model: "gender",
-        'prop': "diaabled",
         required:true,
         values: [
           "yes",
@@ -111,16 +110,42 @@ new Vue({
 var params = new URLSearchParams();
 
 if (this.model.age == "under 24"){
-    this.model.age = 30;
+    this.model.age = 20;
+}
+
+if (this.model.age == "24-39"){
+    this.model.age = 32;
+}
+
+if (this.model.age == "40+"){
+    this.model.age = 40;
+}
+
+if (this.model.has_children == "yes"){
+    this.model.has_children = 1;
+} else {
+    this.model.has_children = 0;
+}
+
+if (this.model.travels_often == "yes"){
+    this.model.travels_often = 1;
+} else {
+    this.model.has_children = 0;
+}
+
+if (this.model.exercises_often == "yes"){
+    this.model.exercises_often = 1;
+} else {
+    this.model.has_children = 0;
 }
 
 
 params.append('action', 'survey_receiver');
 params.append('response[age]', this.model.age);
+params.append('response[gender]', this.model.gender);
 params.append('response[has_children]', this.model.has_children);
 params.append('response[travels_often]', this.model.travels_often);
 params.append('response[exercises_often]', this.model.exercises_often);
-
 
 axios.post(ajax_receiver.ajax_url,
     params,
@@ -132,11 +157,12 @@ axios.post(ajax_receiver.ajax_url,
 
   )
   .then(function (response) {
-    console.log(response);
+        window.location = 'http://goldmember.gulosolutions.com:3333/hello-world';
   })
   .catch(function (error) {
     console.log(error);
   });
+
 
    },
    validateFirstTab: function(){
@@ -154,6 +180,7 @@ axios.post(ajax_receiver.ajax_url,
       validateFifthTab: function(){
      return this.$refs.fifthTabForm.validate();
    },
+
 
    prettyJSON: function(json) {
             if (json) {

@@ -119,9 +119,11 @@ class Facebook_Social_Public
     }
 
 
-    public function register_survey_style()
+    public function register_styles()
     {
         wp_register_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css' ) ;
+        wp_register_style( 'facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css' ) ;
+
     }
 
     public function startUp4Session()
@@ -169,7 +171,7 @@ class Facebook_Social_Public
     public function process_button($attrs, $content)
     {
 
-        wp_enqueue_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css' );
+        wp_enqueue_style( 'facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css' );
 
         wp_enqueue_script( 'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
 
@@ -206,10 +208,12 @@ class Facebook_Social_Public
         );
 
         $content = <<<EOS
-<div id="app">
+<div id="survey-social-public">
         <form-wizard @on-complete="onComplete"
                      color="gray"
                      error-color="#a94442"
+                     title=""
+                     subtitle=""
                      >
             <tab-content title="How old are you?"
                          icon="ti-user" :before-change="validateFirstTab">
@@ -258,15 +262,7 @@ class Facebook_Social_Public
                                    :options="formOptions"
                                    ref="fifthTabForm"
                                    >
-
                </vue-form-generator>
-            </tab-content>
-            <tab-content title="Last step"
-                         icon="ti-check">
-              <h4>Your json is ready!</h4>
-              <div class="panel-body">
-                <pre v-if="model" v-html="prettyJSON(model)"></pre>
-              </div>
             </tab-content>
         </form-wizard>
  </div>
@@ -291,10 +287,13 @@ EOS;
         );
 
         $content = <<<EOS
-<div id="app">
+<div id="survey-social-public">
+<div>
         <form-wizard @on-complete="onComplete"
                      color="gray"
                      error-color="#a94442"
+                     title=""
+                     subtitle=""
                      >
             <tab-content title="How old are you?"
                          icon="ti-user" :before-change="validateFirstTab">
@@ -336,14 +335,9 @@ EOS;
 
                </vue-form-generator>
             </tab-content>
-            <tab-content title="Last step"
-                         icon="ti-check">
-              <h4>Your json is ready!</h4>
-              <div class="panel-body">
-                <pre v-if="model" v-html="prettyJSON(model)"></pre>
-              </div>
-            </tab-content>
+
         </form-wizard>
+        </div>
  </div>
 EOS;
 
@@ -368,7 +362,6 @@ EOS;
     {
         $response = $_POST['response'];
 
-        // global $up4_user;
         $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
         $up4_user->setupSurveyResponse($response);
         $up4_user->checkUser();
