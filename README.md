@@ -50,5 +50,11 @@ the following commands.
     echo do_shortcode('[facebook-social_facebook_login_button]');
 ```
 
+- For Survey use shortcode
+
+```
+    echo do_shortcode('[facebook-social_survey_form]');
+```
+
 - For the logged in WordPress user (if one exists, i.e. we have Facebook email)
   - var_dump(wp_get_current_user());
