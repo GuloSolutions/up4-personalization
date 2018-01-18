@@ -398,6 +398,7 @@ new _vue2.default({
       if (this.model.age == "under 24") {
         this.model.age = 20;
       }
+
       if (this.model.exercises_often == "yes") {
         this.model.exercises_often = 1;
       } else {
@@ -418,6 +419,7 @@ new _vue2.default({
 
       params.append('action', 'survey_receiver');
       params.append('response[age]', this.model.age);
+      params.append('response[gender]', this.model.gender);
       params.append('response[has_children]', this.model.has_children);
       params.append('response[travels_often]', this.model.travels_often);
       params.append('response[exercises_often]', this.model.exercises_often);
@@ -437,9 +439,6 @@ new _vue2.default({
     },
     validateSecondTab: function validateSecondTab() {
       return this.$refs.secondTabForm.validate();
-    },
-    beforeThirdTabSwitch: function beforeThirdTabSwitch() {
-      return this.model.travels_often == "yes" ? 1 : 0;
     },
     validateThirdTab: function validateThirdTab() {
       return this.$refs.thirdTabForm.validate();
