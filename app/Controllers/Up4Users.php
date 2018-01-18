@@ -67,11 +67,14 @@ class Up4Users
 
     public function setupSurveyResponse($response)
     {
-        $this->data = $response;
-        $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
-        $this->data['travels_often'] = $response['travels_often'] == 'yes' ? true : false;
-        $this->data['exercises_often'] = $response['exercises_often'] == 'yes' ? true : false;
-        $this->data['has_children'] = $response['has_children'] == 'yes' ? true : false;
+        error_log(print_r(intval($response['travels_often']) , true));
+        // $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
+        $response['travels_often'] = intval ($response['travels_often']);
+        error_log(print_r(gettype($response['travels_often']) , true));
+
+        $this->data['travels_often'] = $response['travels_often'];
+        $this->data['exercises_often'] = intval ($response['exercises_often']);
+        $this->data['has_children'] = intval ($response['has_children']);
     }
 
     public function setupFacebookResponse($response)
@@ -94,7 +97,10 @@ class Up4Users
 
         $this->data['picture'] = $response['picture']['data']['url'];
 
-        $this->data['age'] = $this->getAge($response['birthday']);
+
+
+        array_key_exists($birthday, $response) ?  $this->data['age'] = $this->getAge($response['birthday']) :  $this->data['age'] = NULL;
+
 
         $this->data['gender'] = $response['gender'];
     }
@@ -150,7 +156,7 @@ class Up4Users
 
         $this->up4User->user_id = $this->user->ID;
 
-        $this->update();
+        $this->up4User->save();
     }
 
     /*
