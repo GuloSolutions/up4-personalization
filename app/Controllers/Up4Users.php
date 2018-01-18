@@ -120,6 +120,8 @@ class Up4Users
      */
     private function setData()
     {
+        $this->up4User->session_id = $this->up4Session->id;
+
         foreach ($this->data as $key => $value) {
             if ($value !== null) {
                 $this->up4User->{$key} = $value;
@@ -130,8 +132,6 @@ class Up4Users
     private function update()
     {
         if ($this->up4User !== null) {
-            $this->up4User->session_id = $this->up4Session->id;
-
             $this->setData();
 
             $this->updateMetaAndSave();
