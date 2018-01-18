@@ -42,7 +42,7 @@ class Up4UsersMigration extends Migration
                 $table->string('picture')->nullable();
 
                 $table->string('gender', 10)->nullable();
-                $table->string('age', 5)->nullable();
+                $table->int('age', 2)->nullable();
 
                 $table->boolean('travels_often')->nullable();
                 $table->boolean('has_children')->nullable();
