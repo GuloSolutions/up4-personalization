@@ -216,7 +216,7 @@ class Facebook_Social_Public
                      subtitle=""
                      >
             <tab-content title="How old are you?"
-                         icon="ti-user" :before-change="validateFirstTab">
+                         icon="ti-user" :before-change="validateFirstTab" :on-change="incrementCounter">
                <vue-form-generator :model="model"
                                    :schema="firstTabSchema"
                                    :options="formOptions"
@@ -295,16 +295,6 @@ EOS;
                      title=""
                      subtitle=""
                      >
-            <tab-content title="How old are you?"
-                         icon="ti-user" :before-change="validateFirstTab">
-               <vue-form-generator :model="model"
-                                   :schema="firstTabSchema"
-                                   :options="formOptions"
-                                   ref="firstTabForm"
-                                   >
-
-               </vue-form-generator>
-            </tab-content>
             <tab-content title="Do you travel often?"
                          icon="ti-user" :before-change="validateThirdTab">
                <vue-form-generator :model="model"
