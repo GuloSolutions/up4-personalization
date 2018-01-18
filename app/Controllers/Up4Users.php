@@ -67,14 +67,15 @@ class Up4Users
 
     public function setupSurveyResponse($response)
     {
-        //error_log(print_r(intval($response['travels_often']) , true));
         $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
-        $response['travels_often'] = intval ($response['travels_often']);
-        //error_log(print_r(gettype($response['travels_often']) , true));
 
-        $this->data['travels_often'] = $response['travels_often'];
-        $this->data['exercises_often'] = intval ($response['exercises_often']);
-        $this->data['has_children'] = intval ($response['has_children']);
+        $this->data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
+
+        $this->data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
+
+        $this->data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
+
+        $this->data['age'] = $response['age'];
     }
 
     public function setupFacebookResponse($response)
@@ -97,7 +98,8 @@ class Up4Users
 
         $this->data['picture'] = $response['picture']['data']['url'];
 
-        array_key_exists($birthday, $response) ?  $this->data['age'] = $this->getAge($response['birthday']) :  $this->data['age'] = NULL;
+        $this->data['age'] = array_key_exists('birthday', $response) ?
+            $this->getAge($response['birthday']) :  null;
 
         $this->data['gender'] = $response['gender'];
     }
@@ -113,12 +115,13 @@ class Up4Users
         }
     }
 
+    /*
+     * Sets up4User properties
+     */
     private function setData()
     {
         foreach ($this->data as $key => $value) {
-            if (!empty($value)) {
-                $this->up4User->{$key} = $value;
-            }
+            $this->up4User->{$key} = $value;
         }
     }
 
@@ -129,14 +132,7 @@ class Up4Users
 
             $this->setData();
 
-            $location = new Location();
-            $weather = new Weather($location);
-
-            $this->up4User->location = $weather->getOrigin();
-            $this->up4User->temperature = $weather->getTemperature();
-            $this->up4User->conditions = $weather->getConditions();
-
-            $this->up4User->save();
+            $this->updateMetaAndSave();
         } else {
             $this->create();
         }
@@ -152,6 +148,20 @@ class Up4Users
         $this->up4User->facebook_id = $this->facebook_id;
 
         $this->up4User->user_id = $this->user->ID;
+
+        $this->updateMetaAndSave();
+    }
+
+    private function updateMetaAndSave()
+    {
+        if ($this->up4User === null) return;
+
+        $location = new Location();
+        $weather = new Weather($location);
+
+        $this->up4User->location = $weather->getOrigin();
+        $this->up4User->temperature = $weather->getTemperature();
+        $this->up4User->conditions = $weather->getConditions();
 
         $this->up4User->save();
     }
@@ -178,9 +188,10 @@ class Up4Users
         $this->fb_user = Up4User::where('session_id', $this->up4Session->id)
             ->where('facebook_id', $this->facebook_id)->first();
 
-            if (!$this->fb_user->id) {
-                return true;
-            }
+        if (!$this->fb_user->id) {
+            return true;
+        }
+
         return false;
     }
 }
