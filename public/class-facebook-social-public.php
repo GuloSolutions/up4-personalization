@@ -209,8 +209,13 @@ class Facebook_Social_Public
 
         $content = <<<EOS
 <div id="survey-social-public">
+{{ counter }}
+{{ counterMax }}
+
+
         <form-wizard @on-complete="onComplete"
                      @on-change="incrementCounter"
+                     @before-change="countElems"
                      color="gray"
                      error-color="#a94442"
                      title=""
@@ -289,9 +294,14 @@ EOS;
 
         $content = <<<EOS
 <div id="survey-social-public">
+{{ counter }}
+{{ counterMax }}
+
+
 <div>
         <form-wizard @on-complete="onComplete"
                      @on-change="incrementCounter"
+                     @before-change="countElems"
                      color="gray"
                      error-color="#a94442"
                      title=""
