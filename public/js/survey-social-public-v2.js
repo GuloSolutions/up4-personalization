@@ -3,18 +3,23 @@ import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
 
-var cMax = document.getElementById('survey-social-public').getElementsByTagName('li').length;
 
-console.log(cMax);
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
+Vue.config.devtools = false;
+Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
-new Vue({
+
+
+var vm = new Vue({
  el: '#survey-social-public',
+  // beforeMount: function () {
+  //       this.counterMax = this.$el.attributes['counterMax'] = this.countElems();
+  //   },
  data:{
-   counterMax: function() { return document.getElementById('survey-social-public').getElementsByTagName('li').length},
    counter: 1,
+   counterMax: null,
    model:{
     age: null,
     gender: null,
@@ -109,6 +114,7 @@ new Vue({
      },
      ]
    },
+   // counterMax: null,
  },
  methods: {
   onComplete: function() {
@@ -193,14 +199,15 @@ axios.post(ajax_receiver.ajax_url,
       validateFifthTab: function(){
      return this.$refs.fifthTabForm.validate();
    },
-   incrementCounter: function(){
-      console.log(this.counter);
-      console.log(cMax);
-
-      return this.counter++;
+    incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
+      this.counter = activeTabIndex + 1;
+      this.counterMax = document.getElementById('survey-social-public').getElementsByTagName('li').length;
+      return [this.counter , this.counterMax];
    },
-
-
+   countElems: function() {
+      this.counterMax = document.getElementById('survey-social-public').getElementsByTagName('li').length;
+      return this.counterMax;
+   },
    prettyJSON: function(json) {
             if (json) {
                 json = JSON.stringify(json, undefined, 4);
@@ -222,5 +229,10 @@ axios.post(ajax_receiver.ajax_url,
                 });
             }
         }
+  },
+
+  ready: function() {
+     this.countElems();
   }
+
 })
