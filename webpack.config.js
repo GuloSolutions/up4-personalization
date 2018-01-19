@@ -19,7 +19,8 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['env'],
-            plugins: ['transform-runtime'],
+            plugins: ['transform-runtime'
+            ],
           },
         },
       },
@@ -40,6 +41,13 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+        'process.env': {
+        NODE_ENV: JSON.stringify('production')
+        }
+       })
+  ],
 
   resolve: {
     alias: {
