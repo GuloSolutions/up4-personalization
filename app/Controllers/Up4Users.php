@@ -49,6 +49,12 @@ class Up4Users
         $this->up4Session = $up4Session;
     }
 
+    private function lookupFacebookUser()
+    {
+        return Up4User::where('facebook_id', $this->facebook_id)
+                ->first();
+    }
+
     public function checkUser()
     {
         if (empty($this->up4User->facebook_id) && empty($this->up4User->session_id)) {
@@ -131,10 +137,31 @@ class Up4Users
 
     private function update()
     {
-        if ($this->up4User !== null) {
-            $this->setData();
 
-            $this->updateMetaAndSave();
+        if (!$this->up4User->facebook_id && $this->up4User->travels_often != null) {
+
+            $up4FBUser = $this->lookupFacebookUser();
+
+            if ($up4FBUser != null && $up4FBUser->facebook_id) {
+
+                $up4SurveyUser = clone $this->up4User;
+
+                $wp_user_to_delete = User::find($this->up4User->user_id)->delete();
+
+                $up4FBUser->travels_often = $up4SurveyUser->travels_often;
+                $up4FBUser->exercises_often = $up4SurveyUser->exercises_often;
+                $up4FBUser->has_children = $up4SurveyUser->has_children;
+                $up4FBUser->session_id = $up4SurveyUser->session_id;
+
+                $up4FBUser->save();
+
+                $wp_user_to_delete =
+
+                $this->up4User->user()->delete();
+
+                $this->updateMetaAndSave();
+            }
+
         } else {
             $this->create();
         }
