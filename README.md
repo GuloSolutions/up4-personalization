@@ -61,7 +61,7 @@ the following commands.
   
   
   
-- How to user the survey form from the theme: 
+- How to use the survey form inside the theme: 
 ```
    global $up4_user;
 
