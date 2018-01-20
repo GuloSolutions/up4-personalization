@@ -155,8 +155,6 @@ class Up4Users
 
                 $up4FBUser->save();
 
-                $wp_user_to_delete =
-
                 $this->up4User->user()->delete();
 
                 $this->updateMetaAndSave();
