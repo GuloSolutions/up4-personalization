@@ -216,136 +216,102 @@ class Facebook_Social_Public
             ]
         );
 
-        $content = <<<EOS
-<div id="survey-social-public">
+        if (!$this->up4->isSurveyTaken()) {
+            $content = <<<EOS
 {{ counter }}
 {{ counterMax }}
+
+<button id="showSurvey" onclick="showSurveyFromButton()">Fill out survey</button>
+
+<div id="survey-social-public">
+
         <form-wizard @on-complete="onComplete"
-                     @on-change="incrementCounter"
+         @on-change="incrementCounter"
                      color="gray"
                      error-color="#a94442"
                      title=""
                      subtitle=""
-                     >
+                    >
+EOS;
+
+            if (!$this->up4->get()->age) {
+            $questions[] = '
             <tab-content title="How old are you?"
-                         icon="ti-user" :before-change="validateFirstTab">
+                         icon="ti-user" :before-change="validateAgeTab">
                <vue-form-generator :model="model"
-                                   :schema="firstTabSchema"
+                                   :schema="ageTabSchema"
                                    :options="formOptions"
-                                   ref="firstTabForm"
+                                   ref="ageTabForm"
                                    >
-
                </vue-form-generator>
-            </tab-content>
+            </tab-content>';
+            }
+
+            if (!$this->up4->get()->gender) {
+                $questions[] = '
             <tab-content title="Are you a woman?"
-                         icon="ti-settings" :before-change="validateSecondTab">
-             <vue-form-generator :model="model"
-                                   :schema="secondTabSchema"
+                         icon="ti-settings" :before-change="validateGenderTab">
+                <vue-form-generator :model="model"
+                                   :schema="genderTabSchema"
                                    :options="formOptions"
-                                   ref="secondTabForm"
+                                   ref="genderTabForm"
                                    >
-               </vue-form-generator>
+                </vue-form-generator>
+            </tab-content>';
+            }
 
-            </tab-content>
+            $questions[] = '
             <tab-content title="Do you travel often?"
-                         icon="ti-user" :before-change="validateThirdTab">
-               <vue-form-generator :model="model"
-                                   :schema="thirdTabSchema"
+                         icon="ti-user" :before-change="validateTravelTab">
+                <vue-form-generator :model="model"
+                                   :schema="travelTabSchema"
                                    :options="formOptions"
-                                   ref="thirdTabForm"
+                                   ref="travelTabForm"
                                    >
+                </vue-form-generator>
+            </tab-content>';
 
-               </vue-form-generator>
-            </tab-content>
+            $questions[] = '
             <tab-content title="Do you have children?"
-                         icon="ti-user" :before-change="validateFourthTab">
-               <vue-form-generator :model="model"
-                                   :schema="fourthTabSchema"
+                         icon="ti-user" :before-change="validateChildrenTab">
+                <vue-form-generator :model="model"
+                                   :schema="childrenTabSchema"
                                    :options="formOptions"
-                                   ref="fourthTabForm"
+                                   ref="childrenTabForm"
                                    >
+                </vue-form-generator>
+            </tab-content>';
 
-               </vue-form-generator>
-            </tab-content>
-             <tab-content title="Do you exercise often?"
-                         icon="ti-user" :before-change="validateFifthTab">
-               <vue-form-generator :model="model"
-                                   :schema="fifthTabSchema"
+            $questions[] = '
+            <tab-content title="Do you exercise often?"
+                         icon="ti-user" :before-change="validateExerciseTab">
+                <vue-form-generator :model="model"
+                                   :schema="exerciseTabSchema"
                                    :options="formOptions"
-                                   ref="fifthTabForm"
+                                   ref="exerciseTabForm"
                                    >
-               </vue-form-generator>
+                </vue-form-generator>
+            </tab-content>';
+
+            foreach ($questions as $question) {
+                $content .= $question;
+            }
+
+            $content .= <<<EOS
+            <tab-content title="Last step" icon="ti-check">
+              <h4>Your json is ready!</h4>
+              <div class="panel-body">
+                <pre v-if="model" v-html="prettyJSON(model)"></pre>
+              </div>
             </tab-content>
         </form-wizard>
  </div>
 EOS;
 
-        return $content;
+            return $content;
+        }
 
-    }
-
-    public function process_survey_no_gender ()
-    {
-        wp_enqueue_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css' );
-
-        wp_enqueue_script( 'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js', array(), $this->version, false );
-
-        wp_enqueue_script( 'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-            array(), $this->version, true );
-
-        wp_localize_script(
-            'survey-social-public', 'ajax_receiver',
-            [
-                'ajax_url' => admin_url('admin-ajax.php')
-            ]
-        );
-
-        $content = <<<EOS
-<div id="survey-social-public">
-{{ counter }}
-{{ counterMax }}
-        <form-wizard @on-complete="onComplete"
-                     @on-change="incrementCounter"
-                     color="gray"
-                     error-color="#a94442"
-                     title=""
-                     subtitle=""
-                     >
-            <tab-content title="Do you travel often?"
-                         icon="ti-user" :before-change="validateThirdTab">
-               <vue-form-generator :model="model"
-                                   :schema="thirdTabSchema"
-                                   :options="formOptions"
-                                   ref="thirdTabForm"
-                                   >
-
-               </vue-form-generator>
-            </tab-content>
-            <tab-content title="Do you have children?"
-                         icon="ti-user" :before-change="validateFourthTab">
-               <vue-form-generator :model="model"
-                                   :schema="fourthTabSchema"
-                                   :options="formOptions"
-                                   ref="fourthTabForm"
-                                   >
-
-               </vue-form-generator>
-            </tab-content>
-             <tab-content title="Do you exercise often?"
-                         icon="ti-user" :before-change="validateFifthTab">
-               <vue-form-generator :model="model"
-                                   :schema="fifthTabSchema"
-                                   :options="formOptions"
-                                   ref="fifthTabForm"
-                                   >
-               </vue-form-generator>
-            </tab-content>
-
-        </form-wizard>
-        </div>
-EOS;
-
-        return $content;
+        return;
 
     }
 
@@ -366,6 +332,7 @@ EOS;
     {
         $response = $_POST['response'];
 
+        // global $up4_user;
         $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
         $up4_user->setupSurveyResponse($response);
         $up4_user->checkUser();

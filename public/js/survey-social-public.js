@@ -417,7 +417,7 @@ var vm = new _vue2.default({
             validationSuccessClass: "has-success",
             validateAfterChanged: true
         },
-        firstTabSchema: {
+        ageTabSchema: {
             fields: [{
                 type: "radios",
                 label: "How old are you?",
@@ -428,7 +428,7 @@ var vm = new _vue2.default({
                 styleClasses: 'col-xs-6'
             }]
         },
-        secondTabSchema: {
+        genderTabSchema: {
             fields: [{
                 type: "radios",
                 label: "Are you a woman?",
@@ -439,7 +439,7 @@ var vm = new _vue2.default({
                 styleClasses: 'col-xs-9'
             }]
         },
-        thirdTabSchema: {
+        travelTabSchema: {
             fields: [{
                 type: "radios",
                 label: "Do you travel often?",
@@ -450,7 +450,7 @@ var vm = new _vue2.default({
                 styleClasses: 'col-xs-9'
             }]
         },
-        fourthTabSchema: {
+        childrenTabSchema: {
             fields: [{
                 type: "radios",
                 label: "Do you have children?",
@@ -461,7 +461,7 @@ var vm = new _vue2.default({
                 styleClasses: 'col-xs-9'
             }]
         },
-        fifthTabSchema: {
+        exerciseTabSchema: {
             fields: [{
                 type: "radios",
                 label: "Do you exercise often?",
@@ -533,20 +533,20 @@ var vm = new _vue2.default({
                 console.log(error);
             });
         },
-        validateFirstTab: function validateFirstTab() {
-            return this.$refs.firstTabForm.validate();
+        validateAgeTab: function validateAgeTab() {
+            return this.$refs.ageTabForm.validate();
         },
-        validateSecondTab: function validateSecondTab() {
-            return this.$refs.secondTabForm.validate();
+        validateGenderTab: function validateGenderTab() {
+            return this.$refs.genderTabForm.validate();
         },
-        validateThirdTab: function validateThirdTab() {
-            return this.$refs.thirdTabForm.validate();
+        validateTravelTab: function validateTravelTab() {
+            return this.$refs.travelTabForm.validate();
         },
-        validateFourthTab: function validateFourthTab() {
-            return this.$refs.fourthTabForm.validate();
+        validateChildrenTab: function validateChildrenTab() {
+            return this.$refs.childrenTabForm.validate();
         },
-        validateFifthTab: function validateFifthTab() {
-            return this.$refs.fifthTabForm.validate();
+        validateExerciseTab: function validateExerciseTab() {
+            return this.$refs.exerciseTabForm.validate();
         },
         incrementCounter: function incrementCounter(tabIndex, activeTabIndex, prevIndex, nextIndex) {
             this.counter = activeTabIndex + 1;
@@ -576,9 +576,6 @@ var vm = new _vue2.default({
             }
         }
     },
-    // beforeMount: function () {
-    //     document.getElementById('survey-social-public').hide();
-    // },
 
     mounted: function mounted() {
         this.$nextTick(function () {

@@ -27,7 +27,7 @@ var vm = new Vue({
     validationSuccessClass: "has-success",
     validateAfterChanged: true
    },
-   firstTabSchema:{
+   ageTabSchema:{
      fields:[{
         type: "radios",
         label: "How old are you?",
@@ -43,7 +43,7 @@ var vm = new Vue({
      },
      ]
    },
-   secondTabSchema:{
+   genderTabSchema:{
      fields:[
      {
         type: "radios",
@@ -60,7 +60,7 @@ var vm = new Vue({
      },
      ]
    },
-   thirdTabSchema:{
+   travelTabSchema:{
      fields:[
      {
         type: "radios",
@@ -77,7 +77,7 @@ var vm = new Vue({
 
      ]
    },
-   fourthTabSchema:{
+   childrenTabSchema:{
      fields:[
      {
         type: "radios",
@@ -93,7 +93,7 @@ var vm = new Vue({
      },
      ]
    },
-   fifthTabSchema:{
+   exerciseTabSchema:{
      fields:[
      {
         type: "radios",
@@ -179,20 +179,20 @@ axios.post(ajax_receiver.ajax_url,
   });
 
    },
-   validateFirstTab: function(){
-     return this.$refs.firstTabForm.validate();
+   validateAgeTab: function(){
+     return this.$refs.ageTabForm.validate();
    },
-   validateSecondTab: function(){
-     return this.$refs.secondTabForm.validate();
+   validateGenderTab: function(){
+     return this.$refs.genderTabForm.validate();
    },
-      validateThirdTab: function(){
-     return this.$refs.thirdTabForm.validate();
+      validateTravelTab: function(){
+     return this.$refs.travelTabForm.validate();
    },
-      validateFourthTab: function(){
-     return this.$refs.fourthTabForm.validate();
+      validateChildrenTab: function(){
+     return this.$refs.childrenTabForm.validate();
    },
-      validateFifthTab: function(){
-     return this.$refs.fifthTabForm.validate();
+      validateExerciseTab: function(){
+     return this.$refs.exerciseTabForm.validate();
    },
     incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
       this.counter = activeTabIndex + 1;
@@ -222,9 +222,6 @@ axios.post(ajax_receiver.ajax_url,
             }
         }
   },
-  // beforeMount: function () {
-  //     document.getElementById('survey-social-public').hide();
-  // },
 
   mounted: function() {
       this.$nextTick(function () {
