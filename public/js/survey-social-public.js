@@ -394,9 +394,6 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import { countList } from './countElems';
-
-
 _vue2.default.use(_vueFormWizard2.default);
 _vue2.default.use(_vueFormGenerator2.default);
 _vue2.default.config.devtools = false;
@@ -579,10 +576,14 @@ var vm = new _vue2.default({
             }
         }
     },
+    // beforeMount: function () {
+    //     document.getElementById('survey-social-public').hide();
+    // },
 
     mounted: function mounted() {
         this.$nextTick(function () {
             this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
+            document.getElementById('survey-social-public').style.display = "none";
         });
     }
 

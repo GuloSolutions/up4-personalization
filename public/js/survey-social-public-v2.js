@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
-// import { countList } from './countElems';
 
 
 Vue.use(VueFormWizard)
@@ -223,10 +222,15 @@ axios.post(ajax_receiver.ajax_url,
             }
         }
   },
+  // beforeMount: function () {
+  //     document.getElementById('survey-social-public').hide();
+  // },
 
-mounted: function() {
-this.$nextTick(function () {
+  mounted: function() {
+      this.$nextTick(function () {
       this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
+      document.getElementById('survey-social-public').style.display = "none";
+
   })
 }
 

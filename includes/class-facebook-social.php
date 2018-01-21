@@ -181,6 +181,8 @@ class Facebook_Social
         $this->loader->add_action('init', $plugin_public, 'startUp4User', 100);
 
         $this->loader->add_action('wp_register_scripts', $plugin_public, 'register_scripts', 10);
+        $this->loader->add_action('wp_register_scripts', $plugin_public, 'register_helper_scripts', 5);
+
         $this->loader->add_action('wp_register_style', $plugin_public, 'register_styles', 10);
 
         $this->loader->add_action('wp_ajax_nopriv_fb_receiver', $plugin_public, 'fb_receiver');

@@ -119,6 +119,13 @@ class Facebook_Social_Public
     }
 
 
+    public function register_helper_scripts ()
+    {
+         wp_register_script( 'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js',
+            array(), $this->version, true );
+    }
+
+
     public function register_styles()
     {
         wp_register_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css' ) ;
@@ -197,6 +204,8 @@ class Facebook_Social_Public
 
         wp_enqueue_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css' );
 
+        wp_enqueue_script( 'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js', array(), $this->version, false );
+
         wp_enqueue_script( 'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
             array(), $this->version, true );
 
@@ -211,11 +220,8 @@ class Facebook_Social_Public
 <div id="survey-social-public">
 {{ counter }}
 {{ counterMax }}
-
-
         <form-wizard @on-complete="onComplete"
                      @on-change="incrementCounter"
-                     @before-change="countElems"
                      color="gray"
                      error-color="#a94442"
                      title=""
@@ -282,6 +288,8 @@ EOS;
     {
         wp_enqueue_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css' );
 
+        wp_enqueue_script( 'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js', array(), $this->version, false );
+
         wp_enqueue_script( 'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
             array(), $this->version, true );
 
@@ -296,12 +304,8 @@ EOS;
 <div id="survey-social-public">
 {{ counter }}
 {{ counterMax }}
-
-
-<div>
         <form-wizard @on-complete="onComplete"
                      @on-change="incrementCounter"
-                     @before-change="countElems"
                      color="gray"
                      error-color="#a94442"
                      title=""
@@ -339,7 +343,6 @@ EOS;
 
         </form-wizard>
         </div>
- </div>
 EOS;
 
         return $content;
