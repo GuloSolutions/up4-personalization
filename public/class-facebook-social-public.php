@@ -218,12 +218,13 @@ class Facebook_Social_Public
 
         if (!$this->up4->isSurveyTaken()) {
             $content = <<<EOS
-{{ counter }}
-{{ counterMax }}
 
 <button id="showSurvey" onclick="showSurveyFromButton()">Fill out survey</button>
 
 <div id="survey-social-public">
+
+{{ counter }}
+{{ counterMax }}
 
         <form-wizard @on-complete="onComplete"
          @on-change="incrementCounter"
@@ -298,12 +299,6 @@ EOS;
             }
 
             $content .= <<<EOS
-            <tab-content title="Last step" icon="ti-check">
-              <h4>Your json is ready!</h4>
-              <div class="panel-body">
-                <pre v-if="model" v-html="prettyJSON(model)"></pre>
-              </div>
-            </tab-content>
         </form-wizard>
  </div>
 EOS;
