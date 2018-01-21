@@ -61,7 +61,7 @@ the following commands.
   
   
   
-- How to use the survey form inside the theme: 
+- How to use the survey form from inside theme: 
 ```
    global $up4_user;
 
@@ -75,3 +75,8 @@ the following commands.
    }
 
 ```
+- Test button to display survey from inside theme: 
+```
+    <button id="showSurvey" onclick="showSurveyFromButton()">Fill out survey</button>
+```
+
