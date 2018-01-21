@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
-
+// import { countList } from './countElems';
 
 
 Vue.use(VueFormWizard)
@@ -11,15 +11,11 @@ Vue.config.devtools = false;
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
-
 var vm = new Vue({
  el: '#survey-social-public',
-  // beforeMount: function () {
-  //       this.counterMax = this.$el.attributes['counterMax'] = this.countElems();
-  //   },
  data:{
    counter: 1,
-   counterMax: null,
+   counterMax: 0,
    model:{
     age: null,
     gender: null,
@@ -114,34 +110,34 @@ var vm = new Vue({
      },
      ]
    },
-   // counterMax: null,
+    counterMax: document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length,
  },
  methods: {
   onComplete: function() {
 
 var params = new URLSearchParams();
 
-if (this.model.age == "under 24"){
+if (this.model.age === "under 24"){
     this.model.age = 20;
 }
 
-if (this.model.age == "24-39"){
+if (this.model.age === "24-39"){
     this.model.age = 32;
 }
 
-if (this.model.age == "40+"){
+if (this.model.age === "40+"){
     this.model.age = 40;
 }
 
-if (this.model.gender == "yes"){
+if (this.model.gender === "yes"){
     this.model.gender = "female";
-} else if (this.model.gender = "no") {
+} else if (this.model.gender === "no") {
     this.model.gender = "male";
 } else {
   this.model.gender = NULL;
 }
 
-if (this.model.has_children == "yes"){
+if (this.model.has_children === "yes"){
     this.model.has_children = 1;
 } else {
     this.model.has_children = 0;
@@ -153,7 +149,7 @@ if (this.model.travels_often == "yes"){
     this.model.has_children = 0;
 }
 
-if (this.model.exercises_often == "yes"){
+if (this.model.exercises_often === "yes"){
     this.model.exercises_often = 1;
 } else {
     this.model.has_children = 0;
@@ -201,13 +197,10 @@ axios.post(ajax_receiver.ajax_url,
    },
     incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
       this.counter = activeTabIndex + 1;
-      this.counterMax = document.getElementById('survey-social-public').getElementsByTagName('li').length;
-      return [this.counter , this.counterMax];
+      this.$forceUpdate();
+      return [this.counter, this.counterMax];
    },
-   countElems: function() {
-      this.counterMax = document.getElementById('survey-social-public').getElementsByTagName('li').length;
-      return this.counterMax;
-   },
+
    prettyJSON: function(json) {
             if (json) {
                 json = JSON.stringify(json, undefined, 4);
@@ -231,8 +224,10 @@ axios.post(ajax_receiver.ajax_url,
         }
   },
 
-  ready: function() {
-     this.countElems();
-  }
+mounted: function() {
+this.$nextTick(function () {
+      this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
+  })
+}
 
 })
