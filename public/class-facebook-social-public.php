@@ -352,15 +352,10 @@ EOS;
 
     public function getFormFieldsEmail()
     {
+
         if ($this->up4->isLoggedInFacebook())
             return $this->up4->up4User->user->display_name;
 
     }
 
-    public function getFormFieldsDateOfBirth()
-    {
-
-        return $this->up4->up4User->getAge();
-
-    }
 }
