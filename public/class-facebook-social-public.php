@@ -357,8 +357,10 @@ EOS;
 
     }
 
-    // public function getFormFieldsDateOfBirth()
-    // {
-    //     return $this->up4->getEmail();
-    // }
+    public function getFormFieldsDateOfBirth()
+    {
+
+        return $this->up4->up4User->getAge();
+
+    }
 }
