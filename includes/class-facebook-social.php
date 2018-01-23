@@ -200,8 +200,6 @@ class Facebook_Social
         $this->loader->add_filter('gform_field_value_date_of_birth', $plugin_public, 'getFormFieldsDateOfBirth');
 
 
-
-
     }
 
     /**

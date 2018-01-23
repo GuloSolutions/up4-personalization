@@ -346,14 +346,14 @@ EOS;
     {
 
         if ($this->up4->isLoggedInFacebook())
-            return $this->up4->getName();
+            return $this->up4->user->user_email;
 
     }
 
     public function getFormFieldsEmail()
     {
         if ($this->up4->isLoggedInFacebook())
-            return $this->up4->getEmail();
+            return $this->up4->user->display_name;
 
     }
 
