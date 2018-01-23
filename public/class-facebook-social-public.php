@@ -232,7 +232,7 @@ class Facebook_Social_Public
                      title=""
                      subtitle=""
                     >
-            EOS;
+EOS;
 
             if (!$this->up4->get()->age) {
             $questions[] = '
