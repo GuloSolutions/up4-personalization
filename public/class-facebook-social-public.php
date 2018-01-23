@@ -223,8 +223,7 @@ class Facebook_Social_Public
 
 <div id="survey-social-public">
 
-{{ counter }}
-{{ counterMax }}
+{{ counter }} / {{ counterMax }}
 
         <form-wizard @on-complete="onComplete"
          @on-change="incrementCounter"
@@ -327,7 +326,6 @@ EOS;
     {
         $response = $_POST['response'];
 
-        // global $up4_user;
         $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
         $up4_user->setupSurveyResponse($response);
         $up4_user->checkUser();
