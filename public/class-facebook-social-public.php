@@ -236,7 +236,7 @@ EOS;
 
             if (!$this->up4->get()->age) {
             $questions[] = '
-            <tab-content title="How old are you?"
+            <tab-content
                          icon="ti-user" :before-change="validateAgeTab">
                <vue-form-generator :model="model"
                                    :schema="ageTabSchema"
@@ -249,7 +249,7 @@ EOS;
 
             if (!$this->up4->get()->gender) {
                 $questions[] = '
-            <tab-content title="Are you a woman?"
+            <tab-content
                          icon="ti-settings" :before-change="validateGenderTab">
                 <vue-form-generator :model="model"
                                    :schema="genderTabSchema"
@@ -261,7 +261,7 @@ EOS;
             }
 
             $questions[] = '
-            <tab-content title="Do you travel often?"
+            <tab-content
                          icon="ti-user" :before-change="validateTravelTab">
                 <vue-form-generator :model="model"
                                    :schema="travelTabSchema"
@@ -272,7 +272,7 @@ EOS;
             </tab-content>';
 
             $questions[] = '
-            <tab-content title="Do you have children?"
+            <tab-content
                          icon="ti-user" :before-change="validateChildrenTab">
                 <vue-form-generator :model="model"
                                    :schema="childrenTabSchema"
@@ -283,7 +283,7 @@ EOS;
             </tab-content>';
 
             $questions[] = '
-            <tab-content title="Do you exercise often?"
+            <tab-content
                          icon="ti-user" :before-change="validateExerciseTab">
                 <vue-form-generator :model="model"
                                    :schema="exerciseTabSchema"
