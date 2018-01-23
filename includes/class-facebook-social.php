@@ -194,6 +194,14 @@ class Facebook_Social
         $this->loader->add_action('wp_ajax_nopriv_fb_logout', $plugin_public, 'fb_logout');
         $this->loader->add_action('wp_ajax_fb_logout', $plugin_public, 'fb_logout');
 
+
+        $this->loader->add_filter('gform_field_value_name', $plugin_public, 'getFormFieldsName');
+        $this->loader->add_filter('gform_field_value_email', $plugin_public, 'getFormFieldsEmail');
+        $this->loader->add_filter('gform_field_value_date_of_birth', $plugin_public, 'getFormFieldsDateOfBirth');
+
+
+
+
     }
 
     /**

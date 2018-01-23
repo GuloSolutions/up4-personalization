@@ -219,20 +219,20 @@ class Facebook_Social_Public
         if (!$this->up4->isSurveyTaken()) {
             $content = <<<EOS
 
-<button id="showSurvey" onclick="showSurveyFromButton()">Fill out survey</button>
+            <button id="showSurvey" onclick="showSurveyFromButton()">Fill out survey</button>
 
-<div id="survey-social-public">
+            <div id="survey-social-public">
 
-{{ counter }} / {{ counterMax }}
+            {{ counter }} / {{ counterMax }}
 
-        <form-wizard @on-complete="onComplete"
-         @on-change="incrementCounter"
+            <form-wizard @on-complete="onComplete"
+                @on-change="incrementCounter"
                      color="gray"
                      error-color="#a94442"
                      title=""
                      subtitle=""
                     >
-EOS;
+            EOS;
 
             if (!$this->up4->get()->age) {
             $questions[] = '
@@ -297,9 +297,9 @@ EOS;
                 $content .= $question;
             }
 
-            $content .= <<<EOS
-        </form-wizard>
- </div>
+                $content .= <<<EOS
+            </form-wizard>
+        </div>
 EOS;
 
             return $content;
@@ -341,4 +341,24 @@ EOS;
         wp_logout();
 
     }
+
+    public function getFormFieldsName()
+    {
+
+        if ($this->up4->isLoggedInFacebook())
+            return $this->up4->getName();
+
+    }
+
+    public function getFormFieldsEmail()
+    {
+        if ($this->up4->isLoggedInFacebook())
+            return $this->up4->getEmail();
+
+    }
+
+    // public function getFormFieldsDateOfBirth()
+    // {
+    //     return $this->up4->getEmail();
+    // }
 }
