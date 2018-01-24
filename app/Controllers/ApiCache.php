@@ -12,21 +12,19 @@ class ApiCache
 
     public function __construct()
     {
-
         $this->driver = new Stash\Driver\FileSystem(array());
         $this->pool = new Stash\Pool($this->driver);
-        $this->cache = true;
-
+        $this->setCache();
     }
 
-    public function getCachedItem($cachedItem)
+    public function getCachedItem ($cachedItem)
     {
-        if ($this->returnCache() === true)  {
+        if ($this->getCache() === true)  {
             $this->item = $this->pool->getItem($cachedItem);
             $data = $this->item->get();
         }
 
-        if($data === false){
+        if ($data === false){
             return false;
         }
 
@@ -38,20 +36,23 @@ class ApiCache
         $this->pool->save($this->item->set($data));
     }
 
-    public function enableCache()
-
+    public function setCache()
     {
         $this->cache = true;
     }
 
-    public function disableCache()
+    public function disableCache ()
     {
         $this->cache = false;
     }
 
-    public function returnCache()
+    public function getCache()
     {
         return $this->cache;
     }
 
+    public function setExpirationTime($expiration)
+    {
+        $this->item->expiresAfter($expiration);
+    }
 }
