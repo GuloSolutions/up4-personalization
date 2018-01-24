@@ -2,8 +2,10 @@
 namespace Controllers;
 
 use Controllers\Location;
+use Controllers\ApiCache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Stream\Stream;
+use Carbon\Carbon;
 
 class Weather
 {
@@ -32,13 +34,33 @@ class Weather
      */
     public $location;
 
+    /*
+     * @var Weather
+     */
+    public $currentTime;
+
+    /*
+     * @var Weather
+     */
+    public $localTime;
+
+    /*
+     * @var ApiCache
+     */
+    public $apiCache;
+
+
     public function __construct(Location $location)
     {
+
         $this->location = $location;
+
+        $this->apiCache = new ApiCache;
 
         $this->setResponse();
 
         $this->setProperties();
+
     }
 
     public function getTemperature()
@@ -56,15 +78,33 @@ class Weather
         return $this->conditions;
     }
 
+    public function getCurrentTime()
+    {
+        $this->currentTime = Carbon::now($this->localTime)->format('g:i A');
+
+        return $this->currentTime;
+    }
+
     private function setResponse()
     {
-        $base_uri = sprintf(self::BASE_URI, $this->location->getZip());
 
-        $client = new Client();
+        if (!$this->apiCache->getCachedItem('weather')) {
 
-        $response = $client->request('GET', $base_uri);
+            $base_uri = sprintf(self::BASE_URI, $this->location->getZip());
 
-        $this->response = json_decode($response->getBody());
+            $client = new Client();
+
+            $response = $client->request('GET', $base_uri);
+
+            $this->response = json_decode($response->getBody());
+
+            $this->apiCache->saveItemInCache($this->response);
+
+        } else {
+
+            $this->response = $this->apiCache->getCachedItem('weather');
+
+        }
     }
 
     private function setProperties()
@@ -74,5 +114,8 @@ class Weather
         $this->origin = $this->response->{'current_observation'}->{'display_location'}->{'full'};
 
         $this->conditions =  $this->response->{'current_observation'}->{'weather'};
+
+        $this->localTime =  $this->response->{'current_observation'}->{'local_tz_long'};
+
     }
 }

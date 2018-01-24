@@ -4,6 +4,8 @@ namespace Controllers;
 use Controllers\IpAddress;
 use GuzzleHttp\Client;
 use GuzzleHttp\Stream\Stream;
+use Controllers\ApiCache;
+
 
 class Location
 {
@@ -29,11 +31,20 @@ class Location
      */
     private $response;
 
+    /*
+     * @var Object
+     */
+    private $apiCache;
+
     public function __construct()
     {
+
+        $this->apiCache = new ApiCache;
+
         $this->ip = new IpAddress();
 
         $this->setResponse();
+
     }
 
     public function getIp()
@@ -57,12 +68,21 @@ class Location
 
     private function setResponse()
     {
-        $base_uri = sprintf(self::BASE_URI, $this->ip->getAddress());
+        if (!$this->apiCache->getCachedItem('location')) {
 
-        $client = new Client();
+            $base_uri = sprintf(self::BASE_URI, $this->ip->getAddress());
 
-        $response = $client->request('GET', $base_uri);
+            $client = new Client();
 
-        $this->response = json_decode($response->getBody());
+            $response = $client->request('GET', $base_uri);
+
+            $this->response = json_decode($response->getBody());
+
+            $this->apiCache->saveItemInCache($this->response);
+
+        } else {
+
+            $this->response = $this->apiCache->getCachedItem('location');
+        }
     }
 }
