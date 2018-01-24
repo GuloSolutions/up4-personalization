@@ -55,4 +55,9 @@ class ApiCache
     {
         $this->item->expiresAfter($expiration);
     }
+
+    public function getRandomKey()
+    {
+        return bin2hex(random_bytes(24));
+    }
 }
