@@ -49,6 +49,14 @@ class Weather
      */
     public $apiCache;
 
+    /*
+     * @var ApiCache
+     */
+    public $cacheKey;
+
+
+    const EXPIRATION = 10800;
+
 
     public function __construct(Location $location)
     {
@@ -60,6 +68,8 @@ class Weather
         $this->setResponse();
 
         $this->setProperties();
+
+        // $this->cacheKey = $this->apiCache->getRandomKey();
 
     }
 
@@ -88,7 +98,10 @@ class Weather
     private function setResponse()
     {
 
-        if (!$this->apiCache->getCachedItem('weather')) {
+        is_null($this->cacheKey) ? $this->cacheKey = $this->apiCache->getRandomKey() : $this->cacheKey;
+
+
+        if (!$this->apiCache->getCachedItem($this->cacheKey)) {
 
             $base_uri = sprintf(self::BASE_URI, $this->location->getZip());
 
@@ -98,12 +111,11 @@ class Weather
 
             $this->response = json_decode($response->getBody());
 
-            $this->apiCache->saveItemInCache($this->response);
+            $this->apiCache->saveItemInCache($this->response, self::EXPIRATION);
 
         } else {
 
-            $this->response = $this->apiCache->getCachedItem('weather');
-
+            $this->response = $this->apiCache->getCachedItem($this->cacheKey);
         }
     }
 

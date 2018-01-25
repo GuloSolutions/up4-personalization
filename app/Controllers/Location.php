@@ -11,6 +11,8 @@ class Location
 {
     const BASE_URI = 'https://freegeoip.net/json/%s';
 
+    const EXPIRATION = 2592000;
+
     /*
      * @var string
      */
@@ -35,6 +37,11 @@ class Location
      * @var Object
      */
     private $apiCache;
+
+    /*
+     * @var Object
+     */
+    private $cacheKey;
 
     public function __construct()
     {
@@ -68,7 +75,11 @@ class Location
 
     private function setResponse()
     {
-        if (!$this->apiCache->getCachedItem('location')) {
+
+        is_null($this->cacheKey) ? $this->cacheKey = $this->apiCache->getRandomKey() : $this->cacheKey;
+
+
+        if (!$this->apiCache->getCachedItem($this->cacheKey)) {
 
             $base_uri = sprintf(self::BASE_URI, $this->ip->getAddress());
 
@@ -78,11 +89,11 @@ class Location
 
             $this->response = json_decode($response->getBody());
 
-            $this->apiCache->saveItemInCache($this->response);
+            $this->apiCache->saveItemInCache($this->response, self::EXPIRATION);
 
         } else {
 
-            $this->response = $this->apiCache->getCachedItem('location');
+            $this->response = $this->apiCache->getCachedItem($this->cacheKey);
         }
     }
 }

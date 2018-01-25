@@ -5,6 +5,9 @@ use Stash;
 
 class ApiCache
 {
+
+    const STRING_LENGTH = 10;
+
     public $driver;
     public $pool;
     public $cache;
@@ -14,7 +17,8 @@ class ApiCache
     {
         $this->driver = new Stash\Driver\FileSystem(array());
         $this->pool = new Stash\Pool($this->driver);
-        $this->setCache();
+        $this->cache = true;
+
     }
 
     public function getCachedItem ($cachedItem)
@@ -31,9 +35,10 @@ class ApiCache
         return $data;
     }
 
-    public function saveItemInCache ($data)
+    public function saveItemInCache ($data, $expiration)
     {
         $this->pool->save($this->item->set($data));
+        $this->item->expiresAfter($expiration);
     }
 
     public function setCache()
@@ -51,13 +56,8 @@ class ApiCache
         return $this->cache;
     }
 
-    public function setExpirationTime($expiration)
-    {
-        $this->item->expiresAfter($expiration);
-    }
-
     public function getRandomKey()
     {
-        return bin2hex(random_bytes(24));
+        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(self::STRING_LENGTH/strlen($x)) )),1,self::STRING_LENGTH);
     }
 }
