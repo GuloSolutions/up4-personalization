@@ -49,7 +49,7 @@ function facebookLogin() {
         }
 
         return;
-    }, {scope: 'email'});
+    }, {scope: 'email, user_birthday'});
 }
 
 function connectToApp() {
