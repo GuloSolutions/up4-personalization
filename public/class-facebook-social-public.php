@@ -219,7 +219,7 @@ class Facebook_Social_Public
         if (!$this->up4->isSurveyTaken()) {
             $content = <<<EOS
 
-            <button id="showSurvey" onclick="showSurveyFromButton()">Fill out survey</button>
+            <button id="showSurvey">Fill out survey</button>
 
             <div id="survey-social-public">
 
@@ -343,46 +343,5 @@ EOS;
         session_destroy();
         wp_logout();
 
-    }
-
-    public function getFormFieldsName()
-    {
-
-        if ($this->up4->isLoggedInFacebook())
-            return $this->up4->up4User->user->display_name;
-
-    }
-
-    public function getFormFieldsEmail()
-    {
-
-        if ($this->up4->isLoggedInFacebook())
-            return $this->up4->up4User->user->user_email;
-
-    }
-
-    public function post_to_coupons_dot_com($form, $entry, $ajax)
-    {
-
-        if ($form['id'] == 3) {
-            $post_url = 'http://bricks.coupons.com/enable.asp?';
-            $new_coupon = Controllers\Coupon();
-            $pinCode = rgar($entry, 2);
-
-            //add config variables from coupons.com
-            $new_coupon_data = $new_coupon->encodeRequest($pinCode);
-            $body     = array(
-                'o' => $new_coupon_data['o'],
-                'c'  => $new_coupon_data['c'] ,
-                'p'    => $pincode,
-                'cpt'    => $new_coupon_data['cpt'],
-            );
-
-            $confirmation = array( 'redirect' => $post_url . $body );
-
-            error_log(print_r($confirmation, true), 3, '/tmp/errorsa.log ');
-        }
-
-        return $confirmation;
     }
 }
