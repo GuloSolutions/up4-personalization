@@ -61,6 +61,7 @@ class Facebook_Social_Public
         $this->version = $version;
         $this->register_facebook_shortcode();
         $this->register_survey_shortcode();
+        $this->register_survey_button();
 
     }
 
@@ -110,26 +111,32 @@ class Facebook_Social_Public
     public function register_scripts()
     {
 
-        wp_register_script( 'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
-            array(), $this->version, false );
+        wp_register_script(
+            'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
+            array(), $this->version, false 
+        );
 
-        wp_register_script( 'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-            array(), $this->version, true );
+        wp_register_script(
+            'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+            array(), $this->version, true 
+        );
 
     }
 
 
-    public function register_helper_scripts ()
+    public function register_helper_scripts()
     {
-         wp_register_script( 'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js',
-            array(), $this->version, true );
+         wp_register_script(
+             'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js',
+             array(), $this->version, true 
+         );
     }
 
 
     public function register_styles()
     {
-        wp_register_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css' ) ;
-        wp_register_style( 'facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css' ) ;
+        wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
+        wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
 
     }
 
@@ -171,16 +178,22 @@ class Facebook_Social_Public
     {
 
         add_shortcode($this->plugin_name . '_survey_form', array($this, 'process_survey'));
-        // add_shortcode($this->plugin_name . '_survey_form_no_gender', array($this, 'process_survey_no_gender'));
+
+    }
+
+    public function register_survey_button()
+    {
+
+        add_shortcode($this->plugin_name . '_survey_button', array($this, 'process_survey_button'));
 
     }
 
     public function process_button($attrs, $content)
     {
 
-        wp_enqueue_style( 'facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css' );
+        wp_enqueue_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
 
-        wp_enqueue_script( 'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script('facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false);
 
         wp_localize_script(
             'facebook-social-public', 'ajax_receiver',
@@ -202,12 +215,17 @@ class Facebook_Social_Public
     public function process_survey($attrs, $content)
     {
 
-        wp_enqueue_style( 'survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css' );
+        if ($this->up4->isSurveyTaken()) {
 
-        wp_enqueue_script( 'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js', array(), $this->version, false );
+        }
+        wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
 
-        wp_enqueue_script( 'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-            array(), $this->version, true );
+        wp_enqueue_script('survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js', array(), $this->version, false);
+
+        wp_enqueue_script(
+            'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+            array(), $this->version, true 
+        );
 
         wp_localize_script(
             'survey-social-public', 'ajax_receiver',
@@ -233,7 +251,7 @@ class Facebook_Social_Public
 EOS;
 
             if (!$this->up4->get()->age) {
-            $questions[] = '
+                $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateAgeTab">
                <vue-form-generator :model="model"
@@ -323,6 +341,15 @@ EOS;
 
     }
 
+    public function process_survey_button($content, $attrs)
+    {
+        if ($this->up4->isLoggedInFacebook() && $this->up4->isSurveyTaken() ) {
+            return $content = '';
+        } else {
+            return $content = '<button id="show-survey">Fill out survey</button>';
+        }
+    }
+
     public function survey_receiver()
     {
         $response = $_POST['response'];
@@ -341,46 +368,5 @@ EOS;
         session_destroy();
         wp_logout();
 
-    }
-
-    public function getFormFieldsName()
-    {
-
-        if ($this->up4->isLoggedInFacebook())
-            return $this->up4->up4User->user->user_email;
-
-    }
-
-    public function getFormFieldsEmail()
-    {
-
-        if ($this->up4->isLoggedInFacebook())
-            return $this->up4->up4User->user->display_name;
-
-    }
-
-    public function post_to_coupons_dot_com($form, $entry, $ajax)
-    {
-
-        if ($form['id'] == 3) {
-            $post_url = 'http://bricks.coupons.com/enable.asp?';
-            $new_coupon = Controllers\Coupon();
-            $pinCode = rgar($entry, 2);
-
-            //add config variables from coupons.com
-            $new_coupon_data = $new_coupon->encodeRequest($pinCode);
-            $body     = array(
-                'o' => $new_coupon_data['o'],
-                'c'  => $new_coupon_data['c'] ,
-                'p'    => $pincode,
-                'cpt'    => $new_coupon_data['cpt'],
-            );
-
-            $confirmation = array( 'redirect' => $post_url . $body );
-
-            error_log(print_r($confirmation, true), 3, '/tmp/errorsa.log ');
-        }
-
-        return $confirmation;
     }
 }
