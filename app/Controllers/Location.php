@@ -74,9 +74,6 @@ class Location
     private function setResponse()
     {
 
-        is_null($this->cacheKey) ? $this->cacheKey = $this->apiCache->getRandomKey() : $this->cacheKey;
-
-
         if (!$this->apiCache->getCachedItem( $this->ip->getAddress() )) {
 
             $base_uri = sprintf(self::BASE_URI, $this->ip->getAddress());
