@@ -113,12 +113,12 @@ class Facebook_Social_Public
 
         wp_register_script(
             'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
-            array(), $this->version, false 
+            array(), $this->version, false
         );
 
         wp_register_script(
             'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-            array(), $this->version, true 
+            array(), $this->version, true
         );
 
     }
@@ -128,7 +128,7 @@ class Facebook_Social_Public
     {
          wp_register_script(
              'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js',
-             array(), $this->version, true 
+             array(), $this->version, true
          );
     }
 
@@ -224,7 +224,7 @@ class Facebook_Social_Public
 
         wp_enqueue_script(
             'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-            array(), $this->version, true 
+            array(), $this->version, true
         );
 
         wp_localize_script(
@@ -344,7 +344,7 @@ EOS;
     public function process_survey_button($content, $attrs)
     {
         if ($this->up4->isLoggedInFacebook() && $this->up4->isSurveyTaken() ) {
-            return $content = '';
+            return;
         } else {
             return $content = '<button id="show-survey">Fill out survey</button>';
         }
@@ -354,9 +354,26 @@ EOS;
     {
         $response = $_POST['response'];
 
-        $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
-        $up4_user->setupSurveyResponse($response);
-        $up4_user->checkUser();
+        if ($this->up4->isLoggedInFacebook()) {
+
+            $survey_user =  $this->up4->get();
+
+            error_log(print_r($survey_user->travel_often, true));
+
+            $survey_user->travels_often = $response['travels_often'];
+            $survey_user->exercises_often = $response['exercises_often'];
+            $survey_user->has_children = $response['has_children'];
+            $survey_user->save();
+        }
+
+        else {
+
+            $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
+
+            $survey_up4_user->setupSurveyResponse($response);
+
+            $survey_up4_user->checkUser();
+        }
 
         wp_die();
 
@@ -364,9 +381,7 @@ EOS;
 
     public function fb_logout()
     {
-
         session_destroy();
         wp_logout();
-
     }
 }
