@@ -60,8 +60,8 @@ class Facebook_Social_Public
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $this->register_facebook_shortcode();
-        $this->register_survey_shortcode();
         $this->register_survey_button();
+        $this->survey_loader_helper();
 
     }
 
@@ -116,10 +116,25 @@ class Facebook_Social_Public
             array(), $this->version, false
         );
 
-        wp_register_script(
-            'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-            array(), $this->version, true
-        );
+        if ($this->up4 && $this->up4->isSurveyTaken()) {
+
+            wp_register_script(
+                'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+                array(), $this->version, true
+            );
+        } else {
+
+            wp_register_script(
+            'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
+            array(), $this->version, false
+            );
+
+             wp_register_script(
+                'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+                array(), $this->version, true
+            );
+
+        }
 
     }
 
@@ -135,8 +150,16 @@ class Facebook_Social_Public
 
     public function register_styles()
     {
-        wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
-        wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
+
+        if ($this->up4 && $this->up4->isSurveyTaken()) {
+            wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
+
+        } else {
+
+            wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
+            wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
+        }
+
 
     }
 
@@ -359,8 +382,11 @@ EOS;
             $survey_user =  $this->up4->get();
 
             $survey_user->travels_often = $response['travels_often'];
+
             $survey_user->exercises_often = $response['exercises_often'];
+
             $survey_user->has_children = $response['has_children'];
+
             $survey_user->save();
         }
 
@@ -393,4 +419,17 @@ EOS;
             show_admin_bar (false);
         }
     }
+
+
+    public function survey_loader_helper()
+    {
+        if ($this->up4 && $this->up4->isSurveyTaken()) {
+
+            return;
+        }
+        else {
+            $this->register_survey_shortcode();
+        }
+    }
+
 }
