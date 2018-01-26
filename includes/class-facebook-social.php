@@ -194,6 +194,9 @@ class Facebook_Social
         $this->loader->add_action('wp_ajax_nopriv_fb_logout', $plugin_public, 'fb_logout');
         $this->loader->add_action('wp_ajax_fb_logout', $plugin_public, 'fb_logout');
 
+        $this->loader->add_action('show_admin_bar', $plugin_public, '__return_false');
+
+
     }
 
     /**
