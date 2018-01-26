@@ -376,6 +376,8 @@ var _defineProperty2 = __webpack_require__(12);
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
+var _data;
+
 var _vue = __webpack_require__(25);
 
 var _vue2 = _interopRequireDefault(_vue);
@@ -402,7 +404,7 @@ _vue2.default.prototype.$http = _axios2.default;
 
 var vm = new _vue2.default({
     el: '#survey-social-public',
-    data: (0, _defineProperty3.default)({
+    data: (_data = {
         counter: 1,
         counterMax: 0,
         model: {
@@ -472,7 +474,11 @@ var vm = new _vue2.default({
                 styleClasses: 'col-xs-9'
             }]
         }
-    }, 'counterMax', document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length),
+    }, (0, _defineProperty3.default)(_data, 'counterMax', document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length), (0, _defineProperty3.default)(_data, 'computed', {
+        dynamicAge: function dynamicAge() {
+            return this.model.age;
+        }
+    }), _data),
     methods: {
         onComplete: function onComplete() {
 
@@ -494,9 +500,11 @@ var vm = new _vue2.default({
                 this.model.gender = "female";
             } else if (this.model.gender === "no") {
                 this.model.gender = "male";
-            } else {
-                this.model.gender = NULL;
             }
+
+            // else {
+            //   this.model.gender = NULL;
+            // }
 
             if (this.model.has_children === "yes") {
                 this.model.has_children = 1;
@@ -550,7 +558,7 @@ var vm = new _vue2.default({
         },
         incrementCounter: function incrementCounter(tabIndex, activeTabIndex, prevIndex, nextIndex) {
             this.counter = activeTabIndex + 1;
-            this.$forceUpdate();
+            // this.$forceUpdate();
             return [this.counter, this.counterMax];
         },
 
@@ -580,7 +588,12 @@ var vm = new _vue2.default({
     mounted: function mounted() {
         this.$nextTick(function () {
             this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
-            document.getElementById('survey-social-public').style.display = "none";
+            // document.getElementById('survey-social-public').style.display = "none";
+
+
+            //   document.getElementById('show-survey').on('click', function () { document.getElementById('survey-social-public').style.display='none';
+            // })
+
         });
     }
 

@@ -110,6 +110,12 @@ var vm = new Vue({
      ]
    },
     counterMax: document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length,
+    computed: {
+    dynamicAge: function () {
+      return this.model.age;
+      }
+  }
+
  },
  methods: {
   onComplete: function() {
@@ -132,9 +138,11 @@ if (this.model.gender === "yes"){
     this.model.gender = "female";
 } else if (this.model.gender === "no") {
     this.model.gender = "male";
-} else {
-  this.model.gender = NULL;
 }
+
+// else {
+//   this.model.gender = NULL;
+// }
 
 if (this.model.has_children === "yes"){
     this.model.has_children = 1;
@@ -196,7 +204,7 @@ axios.post(ajax_receiver.ajax_url,
    },
     incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
       this.counter = activeTabIndex + 1;
-      this.$forceUpdate();
+      // this.$forceUpdate();
       return [this.counter, this.counterMax];
    },
 
@@ -225,8 +233,7 @@ axios.post(ajax_receiver.ajax_url,
 
   mounted: function() {
       this.$nextTick(function () {
-      this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
-      document.getElementById('survey-social-public').style.display = "none";
+      this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length
 
   })
 }
