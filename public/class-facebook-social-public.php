@@ -358,8 +358,6 @@ EOS;
 
             $survey_user =  $this->up4->get();
 
-            error_log(print_r($survey_user->travel_often, true));
-
             $survey_user->travels_often = $response['travels_often'];
             $survey_user->exercises_often = $response['exercises_often'];
             $survey_user->has_children = $response['has_children'];
@@ -383,5 +381,16 @@ EOS;
     {
         session_destroy();
         wp_logout();
+    }
+
+    public function disableAdminBarforUserRole()
+    {
+
+        $id = get_current_user_id();
+        $user = get_userdata($id);
+
+        if(empty($user->roles) || in_array('user', $user->roles)) {
+            show_admin_bar (false);
+        }
     }
 }
