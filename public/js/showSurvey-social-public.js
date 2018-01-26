@@ -1,3 +1,11 @@
-function showSurveyFromButton() {
-    document.getElementById("survey-social-public").style.display = "block";
-}
+$(function() {
+    $.ajax({
+    url: ajax_receiver.ajax_url,
+}).success(function (e) {
+    $('#show-survey').on('click', function(e) {
+
+    $('#survey-social-public').show();
+        });
+    })
+});
+
