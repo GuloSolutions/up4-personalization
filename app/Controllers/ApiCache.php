@@ -5,19 +5,20 @@ use Stash;
 
 class ApiCache
 {
-
-    const STRING_LENGTH = 10;
+    const CACHE_EXPIRE = 3600;
 
     public $driver;
     public $pool;
     public $cache;
     public $item;
+    public $expiration;
 
-    public function __construct()
+    public function __construct( $expiration )
     {
         $this->driver = new Stash\Driver\FileSystem(array());
         $this->pool = new Stash\Pool($this->driver);
-        $this->cache = true;
+        $this->expiration = is_null($expiration) ? $expiration : self::CACHE_EXPIRE;
+        $this->setCache(true);
 
     }
 
@@ -35,15 +36,15 @@ class ApiCache
         return $data;
     }
 
-    public function saveItemInCache ($data, $expiration)
+    public function saveItemInCache ($data)
     {
         $this->pool->save($this->item->set($data));
-        $this->item->expiresAfter($expiration);
+        $this->item->expiresAfter($this->expiration);
     }
 
-    public function setCache()
+    public function setCache( bool $value)
     {
-        $this->cache = true;
+        $this->cache = $value;
     }
 
     public function disableCache ()
@@ -56,8 +57,4 @@ class ApiCache
         return $this->cache;
     }
 
-    public function getRandomKey()
-    {
-        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(self::STRING_LENGTH/strlen($x)) )),1,self::STRING_LENGTH);
-    }
 }

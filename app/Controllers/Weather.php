@@ -55,17 +55,12 @@ class Weather
     public $cacheKey;
 
 
-    const EXPIRATION = 10800;
-
-
     public function __construct(Location $location)
     {
 
         $this->location = $location;
 
-        error_log(print_r($this->location->getZip(), true));
-
-        $this->apiCache = new ApiCache;
+        $this->apiCache = new ApiCache(10800);
 
         $this->setResponse();
 
@@ -108,7 +103,7 @@ class Weather
 
             $this->response = json_decode($response->getBody());
 
-            $this->apiCache->saveItemInCache($this->response, self::EXPIRATION);
+            $this->apiCache->saveItemInCache($this->response);
 
         } else {
 

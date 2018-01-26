@@ -11,8 +11,6 @@ class Location
 {
     const BASE_URI = 'https://freegeoip.net/json/%s';
 
-    const EXPIRATION = 2592000;
-
     /*
      * @var string
      */
@@ -46,7 +44,7 @@ class Location
     public function __construct()
     {
 
-        $this->apiCache = new ApiCache;
+        $this->apiCache = new ApiCache(2592000);
 
         $this->ip = new IpAddress();
 
@@ -89,7 +87,7 @@ class Location
 
             $this->response = json_decode($response->getBody());
 
-            $this->apiCache->saveItemInCache($this->response, self::EXPIRATION);
+            $this->apiCache->saveItemInCache($this->response);
 
         } else {
 
