@@ -63,13 +63,13 @@ class Weather
 
         $this->location = $location;
 
+        error_log(print_r($this->location->getZip(), true));
+
         $this->apiCache = new ApiCache;
 
         $this->setResponse();
 
         $this->setProperties();
-
-        // $this->cacheKey = $this->apiCache->getRandomKey();
 
     }
 
@@ -98,10 +98,7 @@ class Weather
     private function setResponse()
     {
 
-        is_null($this->cacheKey) ? $this->cacheKey = $this->apiCache->getRandomKey() : $this->cacheKey;
-
-
-        if (!$this->apiCache->getCachedItem($this->cacheKey)) {
+        if (!$this->apiCache->getCachedItem($this->location->getZip())) {
 
             $base_uri = sprintf(self::BASE_URI, $this->location->getZip());
 
@@ -115,7 +112,7 @@ class Weather
 
         } else {
 
-            $this->response = $this->apiCache->getCachedItem($this->cacheKey);
+            $this->response = $this->apiCache->getCachedItem($this->location->getZip());
         }
     }
 

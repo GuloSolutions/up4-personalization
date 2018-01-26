@@ -79,7 +79,7 @@ class Location
         is_null($this->cacheKey) ? $this->cacheKey = $this->apiCache->getRandomKey() : $this->cacheKey;
 
 
-        if (!$this->apiCache->getCachedItem($this->cacheKey)) {
+        if (!$this->apiCache->getCachedItem( $this->ip->getAddress() )) {
 
             $base_uri = sprintf(self::BASE_URI, $this->ip->getAddress());
 
@@ -93,7 +93,7 @@ class Location
 
         } else {
 
-            $this->response = $this->apiCache->getCachedItem($this->cacheKey);
+            $this->response = $this->apiCache->getCachedItem( $this->ip->getAddress());
         }
     }
 }
