@@ -13,11 +13,11 @@ class ApiCache
     public $item;
     public $expiration;
 
-    public function __construct( $expiration )
+    public function __construct( $expiration = null )
     {
         $this->driver = new Stash\Driver\FileSystem(array());
         $this->pool = new Stash\Pool($this->driver);
-        $this->expiration = is_null($expiration) ? $expiration : self::CACHE_EXPIRE;
+        $this->expiration = !is_null($expiration) ? $expiration : self::CACHE_EXPIRE;
         $this->setCache(true);
 
     }
