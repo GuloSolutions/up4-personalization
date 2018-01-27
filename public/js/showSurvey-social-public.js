@@ -4,7 +4,7 @@ $(function() {
         }).success(function (e) {
         $('#show-survey').on('click', function(e) {
 
-        $('#survey-social-public').insertAfter($('head'));
+        $('#survey-social-public').insertAfter($('header'));
 
         $('#survey-social-public').show();
         });
