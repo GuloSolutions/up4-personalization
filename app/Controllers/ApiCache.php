@@ -23,12 +23,12 @@ class ApiCache
 
     public function getCachedItem($cachedItem)
     {
-        if ($this->getCache() === true)  {
+        if ($this->getCache() === true) {
             $this->item = $this->pool->getItem($cachedItem);
             $data = $this->item->get();
         }
 
-        if ($data === false){
+        if ($data === false) {
             return false;
         }
 

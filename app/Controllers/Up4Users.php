@@ -137,13 +137,10 @@ class Up4Users
 
     private function update()
     {
-
         if (!$this->up4User->facebook_id && $this->up4User->travels_often != null) {
-
             $up4FBUser = $this->lookupFacebookUser();
 
             if ($up4FBUser != null && $up4FBUser->facebook_id) {
-
                 $up4SurveyUser = clone $this->up4User;
 
                 $wp_user_to_delete = User::find($this->up4User->user_id)->delete();
@@ -159,7 +156,6 @@ class Up4Users
 
                 $this->updateMetaAndSave();
             }
-
         } else {
             $this->create();
         }
@@ -181,7 +177,9 @@ class Up4Users
 
     private function updateMetaAndSave()
     {
-        if ($this->up4User === null) return;
+        if ($this->up4User === null) {
+            return;
+        }
 
         $location = new Location();
         $weather = new Weather($location);
@@ -199,7 +197,9 @@ class Up4Users
      */
     private function getAge($birthday)
     {
-        if (!$birthday) return null;
+        if (!$birthday) {
+            return null;
+        }
 
         $birthday = new Carbon($birthday);
 

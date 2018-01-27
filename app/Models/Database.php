@@ -36,4 +36,3 @@ class Database
         $this->capsule->bootEloquent();
     }
 }
-

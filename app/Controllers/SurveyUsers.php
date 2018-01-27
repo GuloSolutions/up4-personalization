@@ -6,7 +6,7 @@ use Models\FacebookUser;
 
 class SurveyUsers
 {
-    public function __construct() 
+    public function __construct()
     {
     }
 
@@ -49,5 +49,3 @@ class SurveyUsers
         return [$temp_f, $full_location, $lt, $local_weather];
     }
 }
-
-
