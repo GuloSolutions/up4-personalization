@@ -11,11 +11,17 @@ class Weather
 {
     const BASE_URI = 'http://api.wunderground.com/api/c816c11b8d0fb0e6/geolookup/conditions/q/%s.json';
 
+    /*
+     * Cache life
+     * 3 hours
+     */
+    const CACHE_EXPIRE = 10800;
+
     private $response;
 
     /*
      * @var string
-     */
+     */*
     private $temperature;
 
     /*
@@ -59,7 +65,7 @@ class Weather
     {
         $this->location = $location;
 
-        $this->apiCache = new ApiCache(10800);
+        $this->apiCache = new ApiCache(self::CACHE_EXPIRE);
 
         $this->setResponse();
 

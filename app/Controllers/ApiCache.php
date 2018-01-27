@@ -7,11 +7,11 @@ class ApiCache
 {
     const CACHE_EXPIRE = 3600;
 
-    public $driver;
-    public $pool;
-    public $cache;
-    public $item;
-    public $expiration;
+    private $driver;
+    private $pool;
+    private $cache;
+    private $item;
+    private $expiration;
 
     public function __construct($expiration = null)
     {
@@ -54,5 +54,10 @@ class ApiCache
     public function getCache()
     {
         return $this->cache;
+    }
+
+    public function setExpiration($expiration)
+    {
+        $this->expiration = $expiration;
     }
 }
