@@ -73,15 +73,27 @@ class Up4Users
 
     public function setupSurveyResponse($response)
     {
-        $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
 
-        $this->data['age'] = $response['age'];
+        if ($this->lookupFacebookUser()) {
 
-        $this->data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
+            $this->data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
 
-        $this->data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
+            $this->data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
 
-        $this->data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
+            $this->data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
+
+        } else {
+
+            $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
+
+            $this->data['age'] = $response['age'];
+
+            $this->data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
+
+            $this->data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
+
+            $this->data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
+        }
     }
 
     public function setupFacebookResponse($response)

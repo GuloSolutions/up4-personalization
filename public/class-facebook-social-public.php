@@ -47,6 +47,10 @@ class Facebook_Social_Public
 
     private $up4;
 
+
+    private $fbUser;
+
+
     /**
      * Initialize the class and set its properties.
      *
@@ -60,7 +64,6 @@ class Facebook_Social_Public
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $this->register_facebook_shortcode();
-        $this->register_survey_button();
         $this->survey_loader_helper();
 
     }
@@ -124,7 +127,7 @@ class Facebook_Social_Public
             );
         } else {
 
-            wp_register_script(
+          wp_register_script(
             'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
             array(), $this->version, false
             );
@@ -238,9 +241,7 @@ class Facebook_Social_Public
     public function process_survey($attrs, $content)
     {
 
-        if ($this->up4->isSurveyTaken()) {
 
-        }
         wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
 
         wp_enqueue_script('survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js', array(), $this->version, false);
@@ -375,6 +376,9 @@ EOS;
 
     public function survey_receiver()
     {
+
+        global $up4_user;
+
         $response = $_POST['response'];
 
         if ($this->up4->isLoggedInFacebook()) {
@@ -388,6 +392,9 @@ EOS;
             $survey_user->has_children = $response['has_children'];
 
             $survey_user->save();
+
+            $survey_user->checkUser();
+
         }
 
         else {
@@ -428,6 +435,9 @@ EOS;
             return;
         }
         else {
+
+            $this->register_survey_button();
+
             $this->register_survey_shortcode();
         }
     }

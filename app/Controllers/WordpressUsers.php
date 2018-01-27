@@ -9,10 +9,10 @@ class WordpressUsers
 {
     private $data;
 
-    public function __construct($name, $email = null)
+    public function __construct($name = null, $email = null)
     {
         $this->email = !empty($email) ? $email : $this->emailGenerator();
-        $this->nice_name = preg_replace('/\s/', '-', $name);
+        $this->nice_name = !empty($name) ? $preg_replace('/\s/', '-', $name) : $preg_replace('/\s/', '-', $this->email) ;
 
         $this->setData();
     }

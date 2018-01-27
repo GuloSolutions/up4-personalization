@@ -588,12 +588,6 @@ var vm = new _vue2.default({
     mounted: function mounted() {
         this.$nextTick(function () {
             this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
-            // document.getElementById('survey-social-public').style.display = "none";
-
-
-            //   document.getElementById('show-survey').on('click', function () { document.getElementById('survey-social-public').style.display='none';
-            // })
-
         });
     }
 
