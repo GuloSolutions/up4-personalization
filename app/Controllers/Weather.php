@@ -11,11 +11,17 @@ class Weather
 {
     const BASE_URI = 'http://api.wunderground.com/api/c816c11b8d0fb0e6/geolookup/conditions/q/%s.json';
 
+    /*
+     * Cache life
+     * 3 hours
+     */
+    const CACHE_EXPIRE = 10800;
+
     private $response;
 
     /*
      * @var string
-     */
+     */*
     private $temperature;
 
     /*
@@ -57,15 +63,13 @@ class Weather
 
     public function __construct(Location $location)
     {
-
         $this->location = $location;
 
-        $this->apiCache = new ApiCache(10800);
+        $this->apiCache = new ApiCache(self::CACHE_EXPIRE);
 
         $this->setResponse();
 
         $this->setProperties();
-
     }
 
     public function getTemperature()
@@ -92,9 +96,7 @@ class Weather
 
     private function setResponse()
     {
-
         if (!$this->apiCache->getCachedItem($this->location->getZip())) {
-
             $base_uri = sprintf(self::BASE_URI, $this->location->getZip());
 
             $client = new Client();
@@ -104,9 +106,7 @@ class Weather
             $this->response = json_decode($response->getBody());
 
             $this->apiCache->saveItemInCache($this->response);
-
         } else {
-
             $this->response = $this->apiCache->getCachedItem($this->location->getZip());
         }
     }
@@ -120,6 +120,5 @@ class Weather
         $this->conditions =  $this->response->{'current_observation'}->{'weather'};
 
         $this->localTime =  $this->response->{'current_observation'}->{'local_tz_long'};
-
     }
 }

@@ -6,10 +6,15 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Stream\Stream;
 use Controllers\ApiCache;
 
-
 class Location
 {
     const BASE_URI = 'https://freegeoip.net/json/%s';
+
+    /*
+     * Cache life
+     * 3 days
+     */
+    const CACHE_EXPIRE = 2592000;
 
     /*
      * @var string
@@ -43,13 +48,11 @@ class Location
 
     public function __construct()
     {
-
-        $this->apiCache = new ApiCache(2592000);
+        $this->apiCache = new ApiCache(self::CACHE_EXPIRE);
 
         $this->ip = new IpAddress();
 
         $this->setResponse();
-
     }
 
     public function getIp()
@@ -73,9 +76,7 @@ class Location
 
     private function setResponse()
     {
-
-        if (!$this->apiCache->getCachedItem( $this->ip->getAddress() )) {
-
+        if (!$this->apiCache->getCachedItem($this->ip->getAddress())) {
             $base_uri = sprintf(self::BASE_URI, $this->ip->getAddress());
 
             $client = new Client();
@@ -85,10 +86,8 @@ class Location
             $this->response = json_decode($response->getBody());
 
             $this->apiCache->saveItemInCache($this->response);
-
         } else {
-
-            $this->response = $this->apiCache->getCachedItem( $this->ip->getAddress());
+            $this->response = $this->apiCache->getCachedItem($this->ip->getAddress());
         }
     }
 }

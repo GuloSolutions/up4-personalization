@@ -80,7 +80,7 @@ class Up4Sessions implements \SessionHandlerInterface
      */
     public function gc($maxlifetime)
     {
-        if($maxlifetime < time()) {
+        if ($maxlifetime < time()) {
             $deleted = Up4Session::where('created_at', '<', date('Y-m-d'))->delete();
             $this->collectGarbage = true;
         }
@@ -88,14 +88,14 @@ class Up4Sessions implements \SessionHandlerInterface
         return true;
     }
 
-     public function updateTimestamp($session_id, $data)
-     {
-            Up4Session::where('sid', session_id)
+    public function updateTimestamp($session_id, $data)
+    {
+        Up4Session::where('sid', session_id)
                 ->update([
                     'data' => $data,
                     'expiry' => $this->expiry
                 ]);
 
-            return true;
-     }
+        return true;
+    }
 }

@@ -66,7 +66,7 @@ class WordpressUsers
 
         $randomName = '';
 
-        for($j=0; $j<$username_length; $j++){
+        for ($j=0; $j<$username_length; $j++) {
             $randomName .= $characters[rand(0, strlen($characters) -1)];
         }
 
