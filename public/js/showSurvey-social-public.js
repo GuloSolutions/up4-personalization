@@ -1,7 +1,7 @@
 $(function() {
     $.ajax({
         url: ajax_receiver.ajax_url,
-        }).success(function (e) {
+    }).success(function (e) {
         $('#show-survey').on('click', function(e) {
 
         $('#survey-social-public').insertAfter($('head'));
@@ -9,6 +9,4 @@ $(function() {
         $('#survey-social-public').show();
         });
     })
-
 });
-
