@@ -143,7 +143,7 @@ class Up4Users
             if ($up4FBUser != null && $up4FBUser->facebook_id) {
                 $up4SurveyUser = clone $this->up4User;
 
-                $wp_user_to_delete = User::find($this->up4User->user_id)->delete();
+                // $wp_user_to_delete = User::find($this->up4User->user_id)->delete();
 
                 $up4FBUser->travels_often = $up4SurveyUser->travels_often;
                 $up4FBUser->exercises_often = $up4SurveyUser->exercises_often;
