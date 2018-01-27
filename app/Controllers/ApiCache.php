@@ -19,7 +19,6 @@ class ApiCache
         $this->pool = new Stash\Pool($this->driver);
         $this->expiration = !is_null($expiration) ? $expiration : self::CACHE_EXPIRE;
         $this->setCache(true);
-
     }
 
     public function getCachedItem ($cachedItem)
@@ -56,5 +55,4 @@ class ApiCache
     {
         return $this->cache;
     }
-
 }
