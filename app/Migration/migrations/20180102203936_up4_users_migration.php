@@ -51,6 +51,8 @@ class Up4UsersMigration extends Migration
                 $table->string('location')->nullable();
                 $table->string('temperature', 5)->nullable();
                 $table->string('conditions')->nullable();
+                $table->string('local_time')->nullable();
+
 
                 $table->timestamps();
 
