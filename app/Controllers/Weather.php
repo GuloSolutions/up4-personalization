@@ -21,7 +21,7 @@ class Weather
 
     /*
      * @var string
-     */*
+     */
     private $temperature;
 
     /*

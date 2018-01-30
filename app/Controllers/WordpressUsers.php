@@ -12,7 +12,9 @@ class WordpressUsers
     public function __construct($name = null, $email = null)
     {
         $this->email = !empty($email) ? $email : $this->emailGenerator();
-        $this->nice_name = !empty($name) ? $preg_replace('/\s/', '-', $name) : $preg_replace('/\s/', '-', $this->email) ;
+
+        $nice_name = !empty($name) ? $name : $this->email;
+        $this->nice_name = preg_replace('/\s/', '-', $nice_name);
 
         $this->setData();
     }
