@@ -4,6 +4,7 @@ namespace Controllers;
 use Illuminate\Database\Eloquent\Model as Model;
 use Models\Up4User;
 use Models\Up4Session;
+use Carbon\Carbon;
 
 class Up4
 {
@@ -132,5 +133,13 @@ class Up4
     public function getProfilePictureUrl()
     {
         return $this->up4User->picture;
+    }
+
+    /*
+     * @return string
+     */
+    public function getLocalTime()
+    {
+        return Carbon::now($this->up4User->local_time)->format('g:i A');
     }
 }

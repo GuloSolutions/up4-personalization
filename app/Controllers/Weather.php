@@ -5,7 +5,6 @@ use Controllers\Location;
 use Controllers\ApiCache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Stream\Stream;
-use Carbon\Carbon;
 
 class Weather
 {
@@ -38,27 +37,17 @@ class Weather
     /*
      * @var Location
      */
-    public $location;
+    private $location;
 
     /*
-     * @var Weather
+     * @var string
      */
-    public $currentTime;
-
-    /*
-     * @var Weather
-     */
-    public $localTime;
+    private $localTime;
 
     /*
      * @var ApiCache
      */
-    public $apiCache;
-
-    /*
-     * @var ApiCache
-     */
-    public $cacheKey;
+    private $apiCache;
 
 
     public function __construct(Location $location)
@@ -87,11 +76,9 @@ class Weather
         return $this->conditions;
     }
 
-    public function getCurrentTime()
+    public function getLocalTime()
     {
-        $this->currentTime = Carbon::now($this->localTime)->format('g:i A');
-
-        return $this->currentTime;
+        return $this->localTime;
     }
 
     private function setResponse()

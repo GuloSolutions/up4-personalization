@@ -215,6 +215,7 @@ class Up4Users
         $this->up4User->location = $weather->getOrigin();
         $this->up4User->temperature = $weather->getTemperature();
         $this->up4User->conditions = $weather->getConditions();
+        $this->up4User->local_time = $weather->getLocalTime();
 
         $this->up4User->save();
     }
