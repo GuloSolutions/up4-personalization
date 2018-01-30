@@ -25,7 +25,7 @@
  */
 
 // If this file is called directly, abort.
-if (! defined('WPINC') ) {
+if (! defined('WPINC')) {
     die;
 }
 
@@ -70,7 +70,11 @@ require plugin_dir_path(__FILE__) . 'public/class-facebook-social-public.php';
 /**
  * The core app autoloader
  */
-require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
+if (is_file(plugin_dir_path(__FILE__) . 'vendor/autoload.php')) {
+    require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
+} elseif (is_file(dirname(__FILE__, 4) . '/vendor/autoload.php')) {
+    require dirname(__FILE__, 4) . '/vendor/autoload.php';
+}
 
 /**
  * Begins execution of the plugin.
