@@ -357,7 +357,7 @@ EOS;
 
         $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
         $up4_user->setupFacebookResponse($response);
-        $up4_user->checkFBUser();
+        $up4_user->checkUser();
 
         wp_die();
 
@@ -383,7 +383,7 @@ EOS;
 
         $survey_up4_user->setupSurveyResponse($response);
 
-        $survey_up4_user->checkSurveyUser();
+        $survey_up4_user->checkUser();
 
         wp_die();
 
