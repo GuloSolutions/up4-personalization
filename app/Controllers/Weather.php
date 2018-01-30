@@ -96,8 +96,12 @@ class Weather
 
     private function setResponse()
     {
-        if (!$this->apiCache->getCachedItem($this->location->getZip())) {
-            $base_uri = sprintf(self::BASE_URI, $this->location->getZip());
+        $zip = $this->location->getZip();
+
+        $this->response = $this->apiCache->getCachedItem($zip);
+
+        if (!$this->response) {
+            $base_uri = sprintf(self::BASE_URI, $zip);
 
             $client = new Client();
 
@@ -106,8 +110,6 @@ class Weather
             $this->response = json_decode($response->getBody());
 
             $this->apiCache->saveItemInCache($this->response);
-        } else {
-            $this->response = $this->apiCache->getCachedItem($this->location->getZip());
         }
     }
 
