@@ -241,7 +241,6 @@ class Facebook_Social_Public
     public function process_survey($attrs, $content)
     {
 
-
         wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
 
         wp_enqueue_script('survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js', array(), $this->version, false);
@@ -291,7 +290,7 @@ EOS;
 
             if (!$this->up4->get()->gender) {
                 $questions[] = '
-            <tab-content v-if = "this.age = 60"
+            <tab-content
 
                 icon="ti-settings" :before-change="validateGenderTab">
                 <vue-form-generator :model="model"
@@ -354,12 +353,11 @@ EOS;
 
     public function fb_receiver()
     {
-
         $response = $_POST['response'];
 
         $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
         $up4_user->setupFacebookResponse($response);
-        $up4_user->checkUser();
+        $up4_user->checkFBUser();
 
         wp_die();
 
@@ -381,30 +379,11 @@ EOS;
 
         $response = $_POST['response'];
 
-        if ($this->up4->isLoggedInFacebook()) {
+        $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
 
-            $survey_user =  $this->up4->get();
+        $survey_up4_user->setupSurveyResponse($response);
 
-            $survey_user->travels_often = $response['travels_often'];
-
-            $survey_user->exercises_often = $response['exercises_often'];
-
-            $survey_user->has_children = $response['has_children'];
-
-            $survey_user->save();
-
-            $survey_user->checkUser();
-
-        }
-
-        else {
-
-            $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
-
-            $survey_up4_user->setupSurveyResponse($response);
-
-            $survey_up4_user->checkUser();
-        }
+        $survey_up4_user->checkSurveyUser();
 
         wp_die();
 

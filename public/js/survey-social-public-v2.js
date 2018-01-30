@@ -6,8 +6,8 @@ import axios from 'axios';
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
-Vue.config.devtools = false;
-Vue.config.productionTip = false;
+Vue.config.devtools = true;
+Vue.config.productionTip = true;
 Vue.prototype.$http = axios;
 
 var vm = new Vue({
@@ -204,7 +204,7 @@ axios.post(ajax_receiver.ajax_url,
    },
     incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
       this.counter = activeTabIndex + 1;
-      // this.$forceUpdate();
+      this.$forceUpdate();
       return [this.counter, this.counterMax];
    },
 
