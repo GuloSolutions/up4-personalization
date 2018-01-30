@@ -69,7 +69,7 @@ class Facebook_Social
      */
     public function __construct()
     {
-        if (defined('PLUGIN_NAME_VERSION') ) {
+        if (defined('PLUGIN_NAME_VERSION')) {
             $this->version = PLUGIN_NAME_VERSION;
         } else {
             $this->version = '1.0.0';
@@ -80,7 +80,6 @@ class Facebook_Social
         $this->set_locale();
         $this->define_admin_hooks();
         $this->define_public_hooks();
-
     }
 
     /**
@@ -126,7 +125,6 @@ class Facebook_Social
         include_once plugin_dir_path(dirname(__FILE__)) . 'public/class-facebook-social-public.php';
 
         $this->loader = new Facebook_Social_Loader();
-
     }
 
     /**
@@ -140,11 +138,9 @@ class Facebook_Social
      */
     private function set_locale()
     {
-
         $plugin_i18n = new Facebook_Social_i18n();
 
         $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
-
     }
 
     /**
@@ -156,12 +152,10 @@ class Facebook_Social
      */
     private function define_admin_hooks()
     {
-
         $plugin_admin = new Facebook_Social_Admin($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
-
     }
 
     /**
@@ -173,7 +167,6 @@ class Facebook_Social
      */
     private function define_public_hooks()
     {
-
         $plugin_public = new Facebook_Social_Public($this->get_plugin_name(), $this->get_version());
 
         $this->loader->add_action('init', $plugin_public, 'startUp4Session', 10);
@@ -195,7 +188,6 @@ class Facebook_Social
         $this->loader->add_action('wp_ajax_fb_logout', $plugin_public, 'fb_logout');
 
         // $this->loader->add_action('init', $plugin_public, 'disableAdminBarforUserRole', 80);
-
     }
 
     /**
@@ -241,5 +233,4 @@ class Facebook_Social
     {
         return $this->version;
     }
-
 }

@@ -37,6 +37,10 @@ class Up4Users
      */
     private $fb_user;
 
+
+
+    private $userid_to_delete;
+
     /*
      * @var array
      */
@@ -55,35 +59,25 @@ class Up4Users
                 ->first();
     }
 
-    public function checkUser()
+    public function checkFBUser()
     {
-        if (empty($this->up4User->facebook_id) && empty($this->up4User->session_id)) {
-            $this->up4User = Up4User::where('facebook_id', $this->facebook_id)
-                ->first();
-        }
+        $this->linkFacebookUser();
+    }
 
-        if ($this->up4User !== null) {
-            $this->user = $this->up4User->user;
-        } else {
-            $this->up4User = new Up4User();
-        }
-
-        $this->linkToUser();
+    public function checkSurveyUser()
+    {
+        $this->linkSurveyUser();
     }
 
     public function setupSurveyResponse($response)
     {
-
         if ($this->lookupFacebookUser()) {
-
             $this->data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
 
             $this->data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
 
             $this->data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
-
         } else {
-
             $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
 
             $this->data['age'] = $response['age'];
@@ -122,9 +116,42 @@ class Up4Users
         $this->data['gender'] = $response['gender'];
     }
 
-    private function linkToUser()
+    private function linkSurveyUser()
     {
-        if ($this->user !== null) {
+        if (!$this->isSurveyTaken()) {
+            $this->up4User->travels_often = $this->data['travels_often'];
+            $this->up4User->exercises_often = $this->data['exercises_often'];
+            $this->up4User->has_children = $this->data['has_children'];
+
+            if ($this->data['age'] &&  $this->up4User['gender']) {
+                $this->up4User->age = $this->data['age'];
+                $this->up4User->gender = $this->data['gender'];
+            }
+        }
+
+        if ($this->up4User->facebook_id && !$this->user) {
+            $this->user = $this->up4User->user;
+            $this->update();
+        } elseif (!$this->up4User->facebook_id && !$this->user) {
+            $this->create();
+        }
+
+        $this->up4User->save();
+    }
+
+    private function linkFacebookUser()
+    {
+        if ($this->lookupFacebookUser() && !$this->isSurveyTaken()) {
+            $to_delete_up4_user = Up4User::whereNull('facebook_id')
+                    ->where('session_id', session_id)
+                    ->first();
+
+            Up4User::find($to_delete_up4_user->id)->delete();
+        }
+
+
+
+        if ($this->user) {
             wp_set_auth_cookie($this->user->ID);
 
             $this->update();
@@ -140,49 +167,38 @@ class Up4Users
     {
         $this->up4User->session_id = $this->up4Session->id;
 
+        $this->up4User->user_id = $this->user->ID;
+
+
         foreach ($this->data as $key => $value) {
             if ($value !== null) {
                 $this->up4User->{$key} = $value;
             }
         }
+
+        $this->up4User->save();
     }
 
     private function update()
     {
-        if (!$this->up4User->facebook_id && $this->up4User->travels_often != null) {
-            $up4FBUser = $this->lookupFacebookUser();
-
-            if ($up4FBUser != null && $up4FBUser->facebook_id) {
-                $up4SurveyUser = clone $this->up4User;
-
-                // $wp_user_to_delete = User::find($this->up4User->user_id)->delete();
-
-                $up4FBUser->travels_often = $up4SurveyUser->travels_often;
-                $up4FBUser->exercises_often = $up4SurveyUser->exercises_often;
-                $up4FBUser->has_children = $up4SurveyUser->has_children;
-                $up4FBUser->session_id = $up4SurveyUser->session_id;
-
-                $up4FBUser->save();
-
-                $this->up4User->user()->delete();
-
-                $this->updateMetaAndSave();
-            }
-        } else {
-            $this->create();
+        if ($this->up4User->facebook_id != null) {
+            $this->updateMetaAndSave();
         }
     }
 
     private function create()
     {
-        $wpUser = new WordpressUsers($this->name, $this->email);
+        if (!empty($this->name) && !empty($this->email)) {
+            $wpUser = new WordpressUsers($this->name, $this->email);
+        } else {
+            $wpUser = new WordpressUsers();
+        }
+
         $this->user = $wpUser->setup();
 
         $this->setData();
 
-        $this->up4User->facebook_id = $this->facebook_id;
-
-        $this->up4User->user_id = $this->user->ID;
+        wp_set_auth_cookie($this->user->ID);
 
         $this->updateMetaAndSave();
     }
@@ -222,15 +238,19 @@ class Up4Users
      * @param null
      * @return bool
      */
-    private function isFBUserLoggedIn()
+    public function isSurveyTaken()
     {
-        $this->fb_user = Up4User::where('session_id', $this->up4Session->id)
-            ->where('facebook_id', $this->facebook_id)->first();
+        return is_null($this->up4User->travels_often) ||
+                is_null($this->up4User->exercises_often) ||
+                    is_null($this->up4User->has_children) ? false : true;
+    }
 
-        if (!$this->fb_user->id) {
-            return true;
-        }
+    public function isFBLoggedIn()
+    {
+        $is = Up4User::where('facebook_id', $this->facebook_id)
+            ->where('session_id', $this->up4Session->id)
+            ->first();
 
-        return false;
+        return $is->id;
     }
 }

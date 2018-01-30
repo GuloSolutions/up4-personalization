@@ -58,14 +58,12 @@ class Facebook_Social_Public
      * @param string $plugin_name The name of the plugin.
      * @param string $version     The version of this plugin.
      */
-    public function __construct( $plugin_name, $version )
+    public function __construct($plugin_name, $version)
     {
-
         $this->plugin_name = $plugin_name;
         $this->version = $version;
         $this->register_facebook_shortcode();
         $this->survey_loader_helper();
-
     }
 
     /**
@@ -108,68 +106,71 @@ class Facebook_Social_Public
          * between the defined hooks and the functions defined in this
          * class.
          */
-
     }
 
     public function register_scripts()
     {
-
         wp_register_script(
-            'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
-            array(), $this->version, false
+            'facebook-social-public',
+            plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
+            array(),
+            $this->version,
+            false
         );
 
         if ($this->up4 && $this->up4->isSurveyTaken()) {
-
             wp_register_script(
-                'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-                array(), $this->version, true
+                'survey-social-public',
+                plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+                array(),
+                $this->version,
+                true
             );
         } else {
-
-          wp_register_script(
-            'facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
-            array(), $this->version, false
+            wp_register_script(
+            'facebook-social-public',
+              plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
+            array(),
+              $this->version,
+              false
             );
 
-             wp_register_script(
-                'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-                array(), $this->version, true
+            wp_register_script(
+                'survey-social-public',
+                 plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+                array(),
+                 $this->version,
+                 true
             );
-
         }
-
     }
 
 
     public function register_helper_scripts()
     {
-         wp_register_script(
-             'survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js',
-             array(), $this->version, true
+        wp_register_script(
+             'survey-social-public-button',
+             plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js',
+             array(),
+             $this->version,
+             true
          );
     }
 
 
     public function register_styles()
     {
-
         if ($this->up4 && $this->up4->isSurveyTaken()) {
             wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
-
         } else {
-
             wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
             wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
         }
-
-
     }
 
     public function startUp4Session()
     {
-
-        if(!session_id()) {
+        if (!session_id()) {
             $sh = new Controllers\Up4Sessions();
 
             session_set_save_handler($sh, true);
@@ -184,7 +185,6 @@ class Facebook_Social_Public
 
             $this->up4->init();
         }
-
     }
 
     public function startUp4User()
@@ -197,61 +197,58 @@ class Facebook_Social_Public
     public function register_facebook_shortcode()
     {
         add_shortcode($this->plugin_name . '_facebook_login_button', array($this, 'process_button'));
-
     }
 
     public function register_survey_shortcode()
     {
-
         add_shortcode($this->plugin_name . '_survey_form', array($this, 'process_survey'));
-
     }
 
     public function register_survey_button()
     {
-
         add_shortcode($this->plugin_name . '_survey_button', array($this, 'process_survey_button'));
-
     }
 
     public function process_button($attrs, $content)
     {
-
         wp_enqueue_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
 
         wp_enqueue_script('facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false);
 
         wp_localize_script(
-            'facebook-social-public', 'ajax_receiver',
+            'facebook-social-public',
+            'ajax_receiver',
             [
                 'ajax_url' => admin_url('admin-ajax.php')
             ]
         );
 
-        if($this->up4->isLoggedInFacebook()) {
+        if ($this->up4->isLoggedInFacebook()) {
             $content = '<button id="fb-logout">Sign out</button>';
         } else {
             $content = '<button id="fb-login">Sign in with Facebook</button>';
         }
 
         return $content;
-
     }
 
     public function process_survey($attrs, $content)
     {
-
         wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
 
         wp_enqueue_script('survey-social-public-button', plugin_dir_url(__FILE__) . 'js/showSurvey-social-public.js', array(), $this->version, false);
 
         wp_enqueue_script(
-            'survey-social-public', plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-            array(), $this->version, true
+            'survey-social-public',
+            plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
+            array(),
+            $this->version,
+            true
         );
 
         wp_localize_script(
-            'survey-social-public', 'ajax_receiver',
+            'survey-social-public',
+            'ajax_receiver',
             [
                 'ajax_url' => admin_url('admin-ajax.php')
             ]
@@ -262,7 +259,11 @@ class Facebook_Social_Public
 
             <div id="survey-social-public">
 
+            <div class="wizard-navigation">
+
             {{ counter }} / {{ counterMax }}
+
+            </div>
 
             <form-wizard @on-complete="onComplete"
                 @on-change="incrementCounter"
@@ -339,7 +340,7 @@ EOS;
                 $content .= $question;
             }
 
-                $content .= <<<EOS
+            $content .= <<<EOS
             </form-wizard>
         </div>
 EOS;
@@ -348,7 +349,6 @@ EOS;
         }
 
         return;
-
     }
 
     public function fb_receiver()
@@ -357,15 +357,14 @@ EOS;
 
         $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
         $up4_user->setupFacebookResponse($response);
-        $up4_user->checkUser();
+        $up4_user->checkFBUser();
 
         wp_die();
-
     }
 
     public function process_survey_button($content, $attrs)
     {
-        if ($this->up4->isLoggedInFacebook() && $this->up4->isSurveyTaken() ) {
+        if ($this->up4->isLoggedInFacebook() && $this->up4->isSurveyTaken()) {
             return;
         } else {
             return $content = '<button id="show-survey">Fill out survey</button>';
@@ -374,7 +373,6 @@ EOS;
 
     public function survey_receiver()
     {
-
         global $up4_user;
 
         $response = $_POST['response'];
@@ -383,10 +381,9 @@ EOS;
 
         $survey_up4_user->setupSurveyResponse($response);
 
-        $survey_up4_user->checkUser();
+        $survey_up4_user->checkSurveyUser();
 
         wp_die();
-
     }
 
     public function fb_logout()
@@ -397,12 +394,11 @@ EOS;
 
     public function disableAdminBarforUserRole()
     {
-
         $id = get_current_user_id();
         $user = get_userdata($id);
 
-        if(empty($user->roles) || in_array('user', $user->roles)) {
-            show_admin_bar (false);
+        if (empty($user->roles) || in_array('user', $user->roles)) {
+            show_admin_bar(false);
         }
     }
 
@@ -410,15 +406,11 @@ EOS;
     public function survey_loader_helper()
     {
         if ($this->up4 && $this->up4->isSurveyTaken()) {
-
             return;
-        }
-        else {
-
+        } else {
             $this->register_survey_button();
 
             $this->register_survey_shortcode();
         }
     }
-
 }
