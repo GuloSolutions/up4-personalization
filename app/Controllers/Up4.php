@@ -107,7 +107,7 @@ class Up4
      */
     public function getWeather()
     {
-        return $this->up4User->weather;
+        return $this->up4User->temperature;
     }
 
     /*
