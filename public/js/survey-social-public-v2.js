@@ -2,13 +2,36 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
-
+import Survey from './components/Survey.vue';
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
 Vue.config.devtools = true;
 Vue.config.productionTip = true;
 Vue.prototype.$http = axios;
+
+
+// Vue.component('survey-social', function(resolve, reject){
+//     // Load the template with ajax
+//     $.get(ajax_receiver.ajax_url, {'action': 'process_survey'}, function(r){
+//         r = JSON.parse(r);
+
+//         // Save the template string
+//         if( r.success ) {
+
+//           alert('data for template')
+//             // Resolve callback for Vue
+//             resolve({
+//               template: r.data
+//             });
+//         } else {
+//           reject("Unable to define component!")
+//         }
+//     });
+// });
+
+
+
 
 var vm = new Vue({
  el: '#survey-social-public',
@@ -139,10 +162,6 @@ if (this.model.gender === "yes"){
 } else if (this.model.gender === "no") {
     this.model.gender = "male";
 }
-
-// else {
-//   this.model.gender = NULL;
-// }
 
 if (this.model.has_children === "yes"){
     this.model.has_children = 1;
