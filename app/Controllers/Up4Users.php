@@ -139,7 +139,7 @@ class Up4Users
 
         $this->to_migrate = Up4User::where('facebook_id', $this->facebook_id)->first();
 
-        if ($this->to_migrate->id && $this->to_migrate->travels_often === null) {
+        if ($this->to_migrate->id && $this->to_migrate->travels_often === null && wp_get_current_user()->ID) {
             $this->to_migrate->session_id = $this->up4Session->id;
 
             $this->to_migrate->travels_often = $to_move->travels_often;
@@ -153,13 +153,15 @@ class Up4Users
 
             $cur_session = $this->up4User->session_id;
 
-            Up4User::where('session_id', $cur_session)->delete();
+            // Up4User::where('session_id', $cur_session)->delete();
 
             $this->to_migrate->session_id = $cur_session;
 
             $this->to_migrate->save();
-        } elseif ($this->to_migrate && !$this->survey_data) {
+        } elseif ($this->to_migrate->id && !$this->survey_data ) {
             $this->setData();
+
+            error_log(print_r('here', true));
         } else {
             $this->create();
         }
@@ -226,6 +228,7 @@ class Up4Users
     private function updateMetaAndSave()
     {
         if ($this->current->id) {
+
             $location = new Location();
             $weather = new Weather($location);
 
