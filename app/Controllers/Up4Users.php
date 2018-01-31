@@ -33,23 +33,24 @@ class Up4Users
     private $facebook_id;
 
     /*
-     * @var string
-     */
-    private $fb_user;
-
-
-
-    private $userid_to_delete;
-
-    /*
      * @var array
      */
     private $survey_data;
 
-
+    /*
+     * @var array
+     */
     private $fb_data;
 
+    /*
+     * @var Up4User
+     */
     private $to_migrate;
+
+    /*
+     * @var Up4User
+     */
+    private $current;
 
 
     public function __construct(\Models\Up4User $up4User, \Models\Up4Session $up4Session)
@@ -162,8 +163,6 @@ class Up4Users
             $this->to_migrate->save();
         } elseif ($this->to_migrate->id && !$this->survey_data) {
             $this->setData();
-
-            error_log(print_r('here', true));
         } else {
             $this->create();
         }
