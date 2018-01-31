@@ -143,13 +143,14 @@ class Up4Users
     {
         if ($this->lookupFacebookUser() && !$this->isSurveyTaken()) {
             $to_delete_up4_user = Up4User::whereNull('facebook_id')
-                    ->where('session_id', session_id)
+                    ->where('session_id', $this->up4Session->id)
                     ->first();
 
-            Up4User::find($to_delete_up4_user->id)->delete();
+            if (!empty($to_delete_up4_user->id) &&
+                 ($up4User = Up4User::find($to_delete_up4_user->id))) {
+                $upUser->delete();
+            }
         }
-
-
 
         if ($this->user) {
             wp_set_auth_cookie($this->user->ID);
