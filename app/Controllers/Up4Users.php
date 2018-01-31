@@ -44,7 +44,13 @@ class Up4Users
     /*
      * @var array
      */
-    private $data;
+    private $survey_data;
+
+
+    private $fb_data;
+
+    private $to_migrate;
+
 
     public function __construct(\Models\Up4User $up4User, \Models\Up4Session $up4Session)
     {
@@ -71,23 +77,18 @@ class Up4Users
 
     public function setupSurveyResponse($response)
     {
-        if ($this->lookupFacebookUser()) {
-            $this->data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
+        if ($response['gender'] && $response['age']) {
 
-            $this->data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
+                $this->survey_data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
 
-            $this->data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
-        } else {
-            $this->data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
+                $this->survey_data['age'] = $response['age'];
+            }
 
-            $this->data['age'] = $response['age'];
+            $this->survey_data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
 
-            $this->data['travels_often'] = filter_var($response['travels_often'], FILTER_VALIDATE_BOOLEAN);
+            $this->survey_data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
 
-            $this->data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
-
-            $this->data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
-        }
+            $this->survey_data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
     }
 
     public function setupFacebookResponse($response)
@@ -101,61 +102,64 @@ class Up4Users
         $names = explode(' ', $this->name);
 
         // setup our up4 detail data
-        $this->data['facebook_id'] = $this->facebook_id;
+        $this->fb_data['facebook_id'] = $this->facebook_id;
 
-        $this->data['first_name'] = isset($response['first_name']) ? $response['first_name'] : $names[0];
+        $this->fb_data['first_name'] = isset($response['first_name']) ? $response['first_name'] : $names[0];
 
-        $this->data['last_name'] = isset($response['last_name']) ? $response['last_name'] :
+        $this->fb_data['last_name'] = isset($response['last_name']) ? $response['last_name'] :
              (!empty($names[2]) ? $names[2] : (!empty($names[1]) ? $names[1] : ''));
 
-        $this->data['picture'] = $response['picture']['data']['url'];
+        $this->fb_data['picture'] = $response['picture']['data']['url'];
 
-        $this->data['age'] = array_key_exists('birthday', $response) ?
+        $this->fb_data['age'] = array_key_exists('birthday', $response) ?
             $this->getAge($response['birthday']) :  null;
 
-        $this->data['gender'] = $response['gender'];
+        $this->fb_data['gender'] = $response['gender'];
     }
 
     private function linkSurveyUser()
     {
         if (!$this->isSurveyTaken()) {
-            $this->up4User->travels_often = $this->data['travels_often'];
-            $this->up4User->exercises_often = $this->data['exercises_often'];
-            $this->up4User->has_children = $this->data['has_children'];
+            $this->up4User->travels_often = $this->survey_data['travels_often'];
+            $this->up4User->exercises_often = $this->survey_data['exercises_often'];
+            $this->up4User->has_children = $this->survey_data['has_children'];
 
-            if ($this->data['age'] &&  $this->up4User['gender']) {
-                $this->up4User->age = $this->data['age'];
-                $this->up4User->gender = $this->data['gender'];
+            if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
+                $this->up4User->age = $this->survey_data['age'];
+                $this->up4User->gender = $this->survey_data['gender'];
             }
         }
 
-        if ($this->up4User->facebook_id && !$this->user) {
-            $this->user = $this->up4User->user;
-            $this->update();
-        } elseif (!$this->up4User->facebook_id && !$this->user) {
-            $this->create();
-        }
-
-        $this->up4User->save();
+        $this->create();
     }
 
     private function linkFacebookUser()
     {
-        if ($this->lookupFacebookUser() && !$this->isSurveyTaken()) {
-            $to_delete_up4_user = Up4User::whereNull('facebook_id')
-                    ->where('session_id', $this->up4Session->id)
-                    ->first();
+        $to_move = Up4User::where('user_id', wp_get_current_user()->ID)->first();
 
-            if (!empty($to_delete_up4_user->id) &&
-                 ($up4User = Up4User::find($to_delete_up4_user->id))) {
-                $upUser->delete();
+        $this->to_migrate = Up4User::where('facebook_id', $this->facebook_id)->first();
+
+        if ($this->to_migrate->id && $this->to_migrate->travels_often === null) {
+            $this->to_migrate->session_id = $this->up4Session->id;
+
+            $this->to_migrate->travels_often = $to_move->travels_often;
+            $this->to_migrate->exercises_often = $to_move->exercises_often;
+            $this->to_migrate->has_children = $to_move->has_children;
+
+            if ($to_move->age &&  $to_move->gender) {
+                $to_migrate->age = $to_move->age;
+                $this->to_migrate->gender = $to_move->gender;
             }
-        }
 
-        if ($this->user) {
-            wp_set_auth_cookie($this->user->ID);
+            $cur_session = $this->up4User->session_id;
 
-            $this->update();
+            Up4User::where('session_id', $cur_session)->delete();
+
+            $this->to_migrate->session_id = $cur_session;
+
+            $this->to_migrate->save();
+        } elseif ($this->to_migrate && !$this->survey_data) {
+            $this->setData();
         } else {
             $this->create();
         }
@@ -166,18 +170,33 @@ class Up4Users
      */
     private function setData()
     {
-        $this->up4User->session_id = $this->up4Session->id;
+        if ($this->fb_data) {
+            $this->current = Up4User::where('facebook_id', $this->facebook_id)->first();
 
-        $this->up4User->user_id = $this->user->ID;
+            if ($this->current->id != null) {
+                $this->current->session_id = $this->up4Session->id;
 
+                $this->current->save();
+                $this->updateMetaAndSave();
+            } else {
+                foreach ($this->fb_data as $key => $value) {
+                    if ($value !== null) {
+                        $this->up4User->{$key} = $value;
+                    }
+                }
 
-        foreach ($this->data as $key => $value) {
-            if ($value !== null) {
-                $this->up4User->{$key} = $value;
+                $this->up4User->session_id = $this->up4Session->id;
+                $this->up4User->user_id = $this->user->ID;
             }
         }
 
-        $this->up4User->save();
+        if ($this->survey_data && $this->current) {
+            foreach ($this->survey_data as $key => $value) {
+                if ($value !== null) {
+                    $this->current->{$key} = $value;
+                }
+            }
+        }
     }
 
     private function update()
@@ -206,19 +225,31 @@ class Up4Users
 
     private function updateMetaAndSave()
     {
-        if ($this->up4User === null) {
-            return;
+        if ($this->current->id) {
+            $location = new Location();
+            $weather = new Weather($location);
+
+            $this->up4User->location = $weather->getOrigin();
+            $this->up4User->temperature = $weather->getTemperature();
+            $this->up4User->conditions = $weather->getConditions();
+
+            $this->current->save();
+
+            wp_set_auth_cookie($this->current->user_id);
+
+            Up4User::whereNull('id')->delete();
+        } else {
+            $location = new Location();
+            $weather = new Weather($location);
+
+            $this->up4User->location = $weather->getOrigin();
+            $this->up4User->temperature = $weather->getTemperature();
+            $this->up4User->conditions = $weather->getConditions();
+
+            $this->up4User->user_id = $this->user->ID;
+
+            $this->up4User->save();
         }
-
-        $location = new Location();
-        $weather = new Weather($location);
-
-        $this->up4User->location = $weather->getOrigin();
-        $this->up4User->temperature = $weather->getTemperature();
-        $this->up4User->conditions = $weather->getConditions();
-        $this->up4User->local_time = $weather->getLocalTime();
-
-        $this->up4User->save();
     }
 
     /*
@@ -247,12 +278,12 @@ class Up4Users
                     is_null($this->up4User->has_children) ? false : true;
     }
 
-    public function isFBLoggedIn()
-    {
-        $is = Up4User::where('facebook_id', $this->facebook_id)
-            ->where('session_id', $this->up4Session->id)
-            ->first();
 
-        return $is->id;
+    public function checkIfExistsWordpressUser()
+    {
+        $this->user = User::where('user_email', $this->email);
+        if ($this->user->ID) {
+            wp_set_auth_cookie($this->user->ID);
+        }
     }
 }

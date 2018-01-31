@@ -184,6 +184,9 @@ class Facebook_Social
         $this->loader->add_action('wp_ajax_nopriv_survey_receiver', $plugin_public, 'survey_receiver');
         $this->loader->add_action('wp_ajax_survey_receiver', $plugin_public, 'survey_receiver');
 
+        $this->loader->add_action('wp_ajax_nopriv_survey_receiver', $plugin_public, 'survey_form_receiver');
+        $this->loader->add_action('wp_ajax_survey_receiver', $plugin_public, 'survey_form_receiver');
+
         $this->loader->add_action('wp_ajax_nopriv_fb_logout', $plugin_public, 'fb_logout');
         $this->loader->add_action('wp_ajax_fb_logout', $plugin_public, 'fb_logout');
 
