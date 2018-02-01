@@ -259,6 +259,7 @@ class Facebook_Social_Public
 
             <div id="survey-social-public">
 
+
             <div class="wizard-navigation">
 
             {{ counter }} / {{ counterMax }}
@@ -266,6 +267,7 @@ class Facebook_Social_Public
             </div>
 
             <form-wizard @on-complete="onComplete"
+
 
                 @on-change="incrementCounter"
                      color="gray"
@@ -338,12 +340,28 @@ EOS;
                 </vue-form-generator>
             </tab-content>';
 
+             $questions[] = '
+            <tab-content
+                         icon="ti-user" :before-change="validateHealthTab">
+                <vue-form-generator :model="model"
+                                   :schema="healthTabSchema"
+                                   :options="formOptions"
+                                   ref="healthTabForm"
+                                   >
+                </vue-form-generator>
+            </tab-content>';
+
             foreach ($questions as $question) {
                 $content .= $question;
             }
 
             $content .= <<<EOS
+
+                        <button ref="startover" v-on:click="restartSurvey">Start over</button>
+
             </form-wizard>
+
+
         </div>
 EOS;
 
@@ -377,6 +395,8 @@ EOS;
     {
 
         $response = $_POST['response'];
+
+        error_log(print_r($response, true));
 
         $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
 

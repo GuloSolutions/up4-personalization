@@ -376,7 +376,7 @@ var _defineProperty2 = __webpack_require__(12);
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
-var _data;
+var _checklistOptions, _data;
 
 var _vue = __webpack_require__(25);
 
@@ -394,9 +394,9 @@ var _axios = __webpack_require__(30);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _Survey = __webpack_require__(31);
+var _StartOverButton = __webpack_require__(31);
 
-var _Survey2 = _interopRequireDefault(_Survey);
+var _StartOverButton2 = _interopRequireDefault(_StartOverButton);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -406,28 +406,9 @@ _vue2.default.config.devtools = true;
 _vue2.default.config.productionTip = true;
 _vue2.default.prototype.$http = _axios2.default;
 
-// Vue.component('survey-social', function(resolve, reject){
-//     // Load the template with ajax
-//     $.get(ajax_receiver.ajax_url, {'action': 'process_survey'}, function(r){
-//         r = JSON.parse(r);
-
-//         // Save the template string
-//         if( r.success ) {
-
-//           alert('data for template')
-//             // Resolve callback for Vue
-//             resolve({
-//               template: r.data
-//             });
-//         } else {
-//           reject("Unable to define component!")
-//         }
-//     });
-// });
-
-
 var vm = new _vue2.default({
     el: '#survey-social-public',
+    components: 'StartOverButton',
     data: (_data = {
         counter: 1,
         counterMax: 0,
@@ -449,7 +430,7 @@ var vm = new _vue2.default({
                 label: "How old are you?",
                 model: "age",
                 required: true,
-                values: ["under 24", "24-39", "40+"],
+                values: ["under 24", "24-39", "40-49", "50+"],
                 validator: _vueFormGenerator2.default.validators.required,
                 styleClasses: 'col-xs-6'
             }]
@@ -471,7 +452,7 @@ var vm = new _vue2.default({
                 label: "Do you travel often?",
                 model: "travels_often",
                 required: true,
-                values: ["yes", "no"],
+                values: ["Jet Setter", "Weekend Traveler", "Neighborhood Roamer", "Homebody"],
                 validator: _vueFormGenerator2.default.validators.required,
                 styleClasses: 'col-xs-9'
             }]
@@ -482,7 +463,7 @@ var vm = new _vue2.default({
                 label: "Do you have children?",
                 model: "has_children",
                 required: true,
-                values: ["yes", "no"],
+                values: ["Yes, and they’re out of the house", "Yes, and they're growing so fast", "Yes, little rugrats", "Nope"],
                 validator: _vueFormGenerator2.default.validators.required,
                 styleClasses: 'col-xs-9'
             }]
@@ -490,14 +471,30 @@ var vm = new _vue2.default({
         exerciseTabSchema: {
             fields: [{
                 type: "radios",
-                label: "Do you exercise often?",
+                label: "How would you describe your workouts?",
                 model: "exercises_often",
                 required: true,
-                values: ["yes", "no"],
+                values: ["Everyday", "A few times a week", "Weekend Stroller", "I don’t workout"],
+                validator: _vueFormGenerator2.default.validators.required,
+                styleClasses: 'col-xs-9'
+            }]
+        },
+        healthTabSchema: {
+            fields: [{
+                type: "checklist",
+                label: "Which health needs are most important to you?",
+                model: "health_needs",
+                listBox: true,
+                required: true,
+                values: ["Digestive", "Immune", "Vaginal", "Urinary tract"],
+                checklistOptions: (_checklistOptions = {
+                    name: "Digestive"
+                }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary tract"), _checklistOptions),
                 validator: _vueFormGenerator2.default.validators.required,
                 styleClasses: 'col-xs-9'
             }]
         }
+
     }, (0, _defineProperty3.default)(_data, 'counterMax', document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length), (0, _defineProperty3.default)(_data, 'computed', {
         dynamicAge: function dynamicAge() {
             return this.model.age;
@@ -513,36 +510,52 @@ var vm = new _vue2.default({
             }
 
             if (this.model.age === "24-39") {
-                this.model.age = 32;
+                this.model.age = 30;
             }
 
-            if (this.model.age === "40+") {
-                this.model.age = 40;
+            if (this.model.age === "40-49") {
+                this.model.age = 45;
+            }
+
+            if (this.model.age === "50+") {
+                this.model.age = 50;
             }
 
             if (this.model.gender === "yes") {
                 this.model.gender = "female";
-            } else if (this.model.gender === "no") {
+            }
+
+            if (this.model.gender === "no") {
                 this.model.gender = "male";
             }
 
-            if (this.model.has_children === "yes") {
+            if (this.model.gender === "Prefer not to say") {
+                this.model.gender = "null";
+            }
+
+            if (this.model.has_children === "Yes, and they're growing so fast" || this.model.has_children === "Yes, little rugrats") {
                 this.model.has_children = 1;
-            } else {
-                this.model.has_children = 0;
-            }
+            };
 
-            if (this.model.travels_often == "yes") {
+            if (this.model.has_children === "Yes, and they’re out of the house" || this.model.has_children === "Nope") {
+                this.model.has_children = 0;
+            };
+
+            if (this.model.travels_often === "Jet Setter" || this.model.travels_often === "Weekend Traveler") {
                 this.model.travels_often = 1;
-            } else {
-                this.model.has_children = 0;
-            }
+            };
 
-            if (this.model.exercises_often === "yes") {
+            if (this.model.travels_often === "Neighborhood Roamer" || this.model.travels_often === "Homebody") {
+                this.model.travels_often = 0;
+            };
+
+            if (this.model.exercises_often === "Everyday" || this.model.exercises_often === "A few times a week") {
                 this.model.exercises_often = 1;
-            } else {
-                this.model.has_children = 0;
-            }
+            };
+
+            if (this.model.exercises_often === "Weekend Stroller" || this.model.exercises_often === "I don’t workout") {
+                this.model.exercises_often = 0;
+            };
 
             params.append('action', 'survey_receiver');
             params.append('response[age]', this.model.age);
@@ -550,6 +563,7 @@ var vm = new _vue2.default({
             params.append('response[has_children]', this.model.has_children);
             params.append('response[travels_often]', this.model.travels_often);
             params.append('response[exercises_often]', this.model.exercises_often);
+            params.append('response[health_needs]', this.model.health_needs);
 
             _axios2.default.post(ajax_receiver.ajax_url, params, {
                 headers: {
@@ -576,10 +590,22 @@ var vm = new _vue2.default({
         validateExerciseTab: function validateExerciseTab() {
             return this.$refs.exerciseTabForm.validate();
         },
+        validateHealthTab: function validateHealthTab() {
+            return this.$refs.healthTabForm.validate();
+        },
         incrementCounter: function incrementCounter(tabIndex, activeTabIndex, prevIndex, nextIndex) {
             this.counter = activeTabIndex + 1;
             this.$forceUpdate();
             return [this.counter, this.counterMax];
+        },
+        restartSurvey: function restartSurvey(event, activeTabIndex) {
+            if (event) {
+
+                alert('triggered');
+                alert(event.target.tagName);
+
+                return this.$refs.ageTabForm;
+            }
         },
 
         prettyJSON: function prettyJSON(json) {
@@ -13551,11 +13577,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0672fbd6_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_StartOverButton_vue__ = __webpack_require__(33);
 var normalizeComponent = __webpack_require__(32)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = null
+
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -13566,13 +13593,12 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __vue_script__,
-  __vue_template__,
+  __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0672fbd6_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_StartOverButton_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
 )
-
 
 /* harmony default export */ __webpack_exports__["default"] = (Component.exports);
 
@@ -13685,6 +13711,16 @@ module.exports = function normalizeComponent (
   }
 }
 
+
+/***/ }),
+/* 33 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{ref:"startover",on:{"click":_vm.restartSurvey}},[_vm._v("Start over")])}
+var staticRenderFns = []
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
 
 /***/ })
 /******/ ]);

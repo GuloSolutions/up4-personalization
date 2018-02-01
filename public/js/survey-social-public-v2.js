@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
-import Survey from './components/Survey.vue';
+import StartOverButton from './components/StartOverButton.vue';
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
@@ -10,31 +10,9 @@ Vue.config.devtools = true;
 Vue.config.productionTip = true;
 Vue.prototype.$http = axios;
 
-
-// Vue.component('survey-social', function(resolve, reject){
-//     // Load the template with ajax
-//     $.get(ajax_receiver.ajax_url, {'action': 'process_survey'}, function(r){
-//         r = JSON.parse(r);
-
-//         // Save the template string
-//         if( r.success ) {
-
-//           alert('data for template')
-//             // Resolve callback for Vue
-//             resolve({
-//               template: r.data
-//             });
-//         } else {
-//           reject("Unable to define component!")
-//         }
-//     });
-// });
-
-
-
-
 var vm = new Vue({
  el: '#survey-social-public',
+ components: 'StartOverButton',
  data:{
    counter: 1,
    counterMax: 0,
@@ -59,7 +37,8 @@ var vm = new Vue({
         values: [
           "under 24",
           "24-39",
-          "40+"
+          "40-49",
+          "50+"
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-6'
@@ -91,8 +70,10 @@ var vm = new Vue({
         model: "travels_often",
         required:true,
         values: [
-          "yes",
-          "no"
+          "Jet Setter",
+          "Weekend Traveler",
+          "Neighborhood Roamer",
+          "Homebody"
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -108,8 +89,10 @@ var vm = new Vue({
         model: "has_children",
         required:true,
         values: [
-          "yes",
-          "no"
+          "Yes, and they’re out of the house",
+          "Yes, and they're growing so fast",
+          "Yes, little rugrats",
+          "Nope"
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -120,18 +103,46 @@ var vm = new Vue({
      fields:[
      {
         type: "radios",
-        label: "Do you exercise often?",
+        label: "How would you describe your workouts?",
         model: "exercises_often",
         required:true,
         values: [
-          "yes",
-          "no"
+          "Everyday",
+          "A few times a week",
+          "Weekend Stroller",
+          "I don’t workout"
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
      },
      ]
    },
+      healthTabSchema:{
+     fields:[
+     {
+        type: "checklist",
+        label: "Which health needs are most important to you?",
+        model: "health_needs",
+        listBox: true,
+        required:true,
+        values: [
+          "Digestive",
+          "Immune",
+          "Vaginal",
+          "Urinary tract"
+        ],
+        checklistOptions: {
+          name: "Digestive",
+          name: "Immune",
+          name: "Vaginal",
+          name: "Urinary tract"
+        },
+        validator: VueFormGenerator.validators.required,
+        styleClasses:'col-xs-9'
+     },
+     ]
+   },
+
     counterMax: document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length,
     computed: {
     dynamicAge: function () {
@@ -150,37 +161,52 @@ if (this.model.age === "under 24"){
 }
 
 if (this.model.age === "24-39"){
-    this.model.age = 32;
+    this.model.age = 30;
 }
 
-if (this.model.age === "40+"){
-    this.model.age = 40;
+if (this.model.age === "40-49"){
+    this.model.age = 45;
+}
+
+if (this.model.age === "50+"){
+    this.model.age = 50;
 }
 
 if (this.model.gender === "yes"){
     this.model.gender = "female";
-} else if (this.model.gender === "no") {
+}
+
+if (this.model.gender === "no") {
     this.model.gender = "male";
 }
 
-if (this.model.has_children === "yes"){
+if (this.model.gender === "Prefer not to say") {
+    this.model.gender = "null";
+}
+
+if (this.model.has_children === "Yes, and they're growing so fast" || this.model.has_children === "Yes, little rugrats" ){
     this.model.has_children = 1;
-} else {
-    this.model.has_children = 0;
-}
+};
 
-if (this.model.travels_often == "yes"){
+if (this.model.has_children === "Yes, and they’re out of the house" || this.model.has_children === "Nope" ){
+    this.model.has_children = 0;
+};
+
+if (this.model.travels_often === "Jet Setter" || this.model.travels_often === "Weekend Traveler"){
     this.model.travels_often = 1;
-} else {
-    this.model.has_children = 0;
-}
+};
 
-if (this.model.exercises_often === "yes"){
+if (this.model.travels_often === "Neighborhood Roamer" || this.model.travels_often === "Homebody" ) {
+      this.model.travels_often = 0;
+};
+
+if (this.model.exercises_often === "Everyday" || this.model.exercises_often === "A few times a week" ){
     this.model.exercises_often = 1;
-} else {
-    this.model.has_children = 0;
-}
+};
 
+if (this.model.exercises_often === "Weekend Stroller" || this.model.exercises_often === "I don’t workout" ){
+    this.model.exercises_often = 0;
+};
 
 params.append('action', 'survey_receiver');
 params.append('response[age]', this.model.age);
@@ -188,6 +214,8 @@ params.append('response[gender]', this.model.gender);
 params.append('response[has_children]', this.model.has_children);
 params.append('response[travels_often]', this.model.travels_often);
 params.append('response[exercises_often]', this.model.exercises_often);
+params.append('response[health_needs]', this.model.health_needs);
+
 
 axios.post(ajax_receiver.ajax_url,
     params,
@@ -221,10 +249,22 @@ axios.post(ajax_receiver.ajax_url,
       validateExerciseTab: function(){
      return this.$refs.exerciseTabForm.validate();
    },
+      validateHealthTab: function(){
+     return this.$refs.healthTabForm.validate();
+   },
     incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
       this.counter = activeTabIndex + 1;
       this.$forceUpdate();
       return [this.counter, this.counterMax];
+   },
+   restartSurvey: function (event, activeTabIndex) {
+      if (event) {
+
+        alert('triggered');
+            alert(event.target.tagName);
+
+              return this.$refs.ageTabForm;
+      }
    },
 
    prettyJSON: function(json) {
