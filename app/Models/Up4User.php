@@ -11,6 +11,7 @@ class Up4User extends Model
         'age', 'first_name', 'last_name','session_id',
         'facebook_id', 'gender', 'zip',
         'has_children', 'travels_often', 'exercises_often',
+        'digestive', 'immune', 'vaginal', 'urinary',
         'weather', 'local_time', 'picture'
     ];
 
