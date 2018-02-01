@@ -80,7 +80,6 @@ class Up4Users
     {
         if ($response['gender'] && $response['age']) {
             $this->survey_data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
-
             $this->survey_data['age'] = $response['age'];
         }
 
@@ -89,6 +88,18 @@ class Up4Users
         $this->survey_data['exercises_often'] = filter_var($response['exercises_often'], FILTER_VALIDATE_BOOLEAN);
 
         $this->survey_data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
+
+        $health_needs = explode(",", $response['health_needs']);
+
+        foreach ($health_needs as $key=>$value) {
+            $value = strtolower($value);
+            if (strpos($value, " ") !== false) {
+                $first = explode(" ", $value);
+                $value = $first[0];
+            }
+
+            $this->survey_data[$value] = 1;
+        }
     }
 
     public function setupFacebookResponse($response)
@@ -124,6 +135,14 @@ class Up4Users
             $this->up4User->travels_often = $this->survey_data['travels_often'];
             $this->up4User->exercises_often = $this->survey_data['exercises_often'];
             $this->up4User->has_children = $this->survey_data['has_children'];
+            $this->up4User->digestive = $this->survey_data['digestive'] ? 1 : 0;
+            $this->up4User->immune = $this->survey_data['immune']  ? 1 : 0;
+            ;
+            $this->up4User->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
+            ;
+            $this->up4User->urinary = $this->survey_data['urinary']  ? 1 : 0;
+            ;
+
 
             if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
                 $this->up4User->age = $this->survey_data['age'];
@@ -134,6 +153,15 @@ class Up4Users
             $logged_in_fb_user->travels_often = $this->survey_data['travels_often'];
             $logged_in_fb_user->exercises_often = $this->survey_data['exercises_often'];
             $logged_in_fb_user->has_children = $this->survey_data['has_children'];
+            $logged_in_fb_user->digestive = $this->survey_data['digestive']  ? 1 : 0;
+            ;
+            $logged_in_fb_user->immune = $this->survey_data['immune']  ? 1 : 0;
+            ;
+            $logged_in_fb_user->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
+            ;
+            $logged_in_fb_user->urinary = $this->survey_data['urinary']  ? 1 : 0;
+            ;
+
             $logged_in_fb_user->save();
         }
     }
@@ -150,6 +178,11 @@ class Up4Users
             $this->to_migrate->travels_often = $to_move->travels_often;
             $this->to_migrate->exercises_often = $to_move->exercises_often;
             $this->to_migrate->has_children = $to_move->has_children;
+            $this->to_migrate->digestive = $to_move->digestive;
+            $this->to_migrate->immune = $to_move->immune;
+            $this->to_migrate->vaginal = $to_move->vaginal;
+            $this->to_migrate->urinary = $to_move->urinary;
+
 
             if ($to_move->age &&  $to_move->gender) {
                 $to_migrate->age = $to_move->age;
