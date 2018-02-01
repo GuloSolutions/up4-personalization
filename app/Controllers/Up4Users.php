@@ -137,11 +137,9 @@ class Up4Users
             $this->up4User->has_children = $this->survey_data['has_children'];
             $this->up4User->digestive = $this->survey_data['digestive'] ? 1 : 0;
             $this->up4User->immune = $this->survey_data['immune']  ? 1 : 0;
-            ;
             $this->up4User->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
-            ;
             $this->up4User->urinary = $this->survey_data['urinary']  ? 1 : 0;
-            ;
+
 
 
             if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
@@ -154,14 +152,9 @@ class Up4Users
             $logged_in_fb_user->exercises_often = $this->survey_data['exercises_often'];
             $logged_in_fb_user->has_children = $this->survey_data['has_children'];
             $logged_in_fb_user->digestive = $this->survey_data['digestive']  ? 1 : 0;
-            ;
             $logged_in_fb_user->immune = $this->survey_data['immune']  ? 1 : 0;
-            ;
             $logged_in_fb_user->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
-            ;
             $logged_in_fb_user->urinary = $this->survey_data['urinary']  ? 1 : 0;
-            ;
-
             $logged_in_fb_user->save();
         }
     }
@@ -170,7 +163,12 @@ class Up4Users
     {
         $to_move = Up4User::where('user_id', wp_get_current_user()->ID)->first();
 
-        $this->to_migrate = Up4User::where('facebook_id', $this->facebook_id)->first();
+        $this->to_migrate = Up4User::where('facebook_id', $this->facebook_id)
+            ->where('session_id', '!=', session_id())->first();
+
+        // error_log(print_r(wp_get_current_user()->ID, true));
+
+
 
         if ($this->to_migrate->id && $this->to_migrate->travels_often === null && wp_get_current_user()->ID) {
             $this->to_migrate->session_id = $this->up4Session->id;
@@ -183,7 +181,6 @@ class Up4Users
             $this->to_migrate->vaginal = $to_move->vaginal;
             $this->to_migrate->urinary = $to_move->urinary;
 
-
             if ($to_move->age &&  $to_move->gender) {
                 $to_migrate->age = $to_move->age;
                 $this->to_migrate->gender = $to_move->gender;
@@ -194,7 +191,7 @@ class Up4Users
             $this->to_migrate->session_id = $cur_session;
 
             $this->to_migrate->save();
-        } elseif ($this->to_migrate->id && !$this->survey_data) {
+        } elseif ($this->to_migrate->id) {
             $this->setData();
         } else {
             $this->create();
@@ -207,7 +204,9 @@ class Up4Users
     private function setData()
     {
         if ($this->fb_data) {
-            $this->current = Up4User::where('facebook_id', $this->facebook_id)->first();
+            $this->current = Up4User::where('facebook_id', $this->facebook_id)
+                ->where('session_id', '!=', session_id())
+                ->first();
 
             if ($this->current->id != null) {
                 $this->current->session_id = $this->up4Session->id;
@@ -265,15 +264,13 @@ class Up4Users
             $location = new Location();
             $weather = new Weather($location);
 
-            $this->up4User->location = $weather->getOrigin();
-            $this->up4User->temperature = $weather->getTemperature();
-            $this->up4User->conditions = $weather->getConditions();
+            $this->current->location = $weather->getOrigin();
+            $this->current->temperature = $weather->getTemperature();
+            $this->current->conditions = $weather->getConditions();
 
             $this->current->save();
 
             wp_set_auth_cookie($this->current->user_id);
-
-            Up4User::whereNull('id')->delete();
         } else {
             $location = new Location();
             $weather = new Weather($location);
