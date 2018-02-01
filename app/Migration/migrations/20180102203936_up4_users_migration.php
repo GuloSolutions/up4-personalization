@@ -47,6 +47,11 @@ class Up4UsersMigration extends Migration
                 $table->boolean('travels_often')->nullable();
                 $table->boolean('has_children')->nullable();
                 $table->boolean('exercises_often')->nullable();
+                $table->boolean('digestive')->nullable();
+                $table->boolean('immune')->nullable();
+                $table->boolean('vaginal')->nullable();
+                $table->boolean('urinary')->nullable();
+
 
                 $table->string('location')->nullable();
                 $table->string('temperature', 5)->nullable();
