@@ -2,12 +2,15 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
+import StartOverButton from './components/StartOverButton';
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
 Vue.config.devtools = true;
 Vue.config.productionTip = true;
 Vue.prototype.$http = axios;
+
+window.app = vm;
 
 var vm = new Vue({
  el: '#survey-social-public',
@@ -281,7 +284,10 @@ axios.post(ajax_receiver.ajax_url,
       this.$nextTick(function () {
       this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length
 
-    })
+    }),
+        document.getElementById('start-over').onclick = function() {
+          vm.$refs.wizard.reset();
+      };
   }
 
 })

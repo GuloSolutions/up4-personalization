@@ -360,8 +360,10 @@ EOS;
             $content .= <<<EOS
 
             </form-wizard>
-                    <button id="start-over" ref="startover" v-on:click="restartSurvey">Start over</button>
         </div>
+
+                            <button id="start-over" ref="startover" v-on:click="restartSurvey">Start over</button>
+
 EOS;
 
             return $content;
