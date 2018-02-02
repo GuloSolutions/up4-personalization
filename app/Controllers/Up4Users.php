@@ -132,7 +132,7 @@ class Up4Users
     {
         $logged_in_fb_user = Up4User::where('user_id', wp_get_current_user()->ID)->first();
 
-        if (!$this->isSurveyTaken() && ! $logged_in_fb_user->id) {
+        if (!$this->isSurveyTaken() && !$logged_in_fb_user->id) {
             $this->up4User->travels_often = $this->survey_data['travels_often'];
             $this->up4User->exercises_often = $this->survey_data['exercises_often'];
             $this->up4User->has_children = $this->survey_data['has_children'];
@@ -275,6 +275,7 @@ class Up4Users
             $this->up4User->conditions = $weather->getConditions();
 
             $this->up4User->user_id = $this->user->ID;
+            $this->up4User->session_id = $this->up4Session->id;
 
             $this->up4User->save();
         }
