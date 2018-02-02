@@ -394,8 +394,6 @@ EOS;
     {
         $response = $_POST['response'];
 
-        error_log(print_r($response, true));
-
         $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
 
         $survey_up4_user->setupSurveyResponse($response);

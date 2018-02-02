@@ -79,7 +79,7 @@ class Up4Users
     public function setupSurveyResponse($response)
     {
         if ($response['gender'] && $response['age']) {
-            $this->survey_data['gender'] = $response['gender'] == 'yes' ? 'female' : 'male';
+            $this->survey_data['gender'] = $response['gender'];
             $this->survey_data['age'] = $response['age'];
         }
 
@@ -131,6 +131,7 @@ class Up4Users
     private function linkSurveyUser()
     {
         $logged_in_fb_user = Up4User::where('user_id', wp_get_current_user()->ID)->first();
+
         if (!$this->isSurveyTaken() && ! $logged_in_fb_user->id) {
             $this->up4User->travels_often = $this->survey_data['travels_often'];
             $this->up4User->exercises_often = $this->survey_data['exercises_often'];
@@ -139,8 +140,6 @@ class Up4Users
             $this->up4User->immune = $this->survey_data['immune']  ? 1 : 0;
             $this->up4User->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
             $this->up4User->urinary = $this->survey_data['urinary']  ? 1 : 0;
-
-
 
             if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
                 $this->up4User->age = $this->survey_data['age'];
@@ -165,10 +164,6 @@ class Up4Users
 
         $this->to_migrate = Up4User::where('facebook_id', $this->facebook_id)
             ->where('session_id', '!=', session_id())->first();
-
-        // error_log(print_r(wp_get_current_user()->ID, true));
-
-
 
         if ($this->to_migrate->id && $this->to_migrate->travels_often === null && wp_get_current_user()->ID) {
             $this->to_migrate->session_id = $this->up4Session->id;

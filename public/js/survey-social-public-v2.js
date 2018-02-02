@@ -48,12 +48,12 @@ var vm = new Vue({
      fields:[
      {
         type: "radios",
-        label: "Are you a woman?",
+        label: "What is your sex?",
         model: "gender",
         required:true,
         values: [
-          "yes",
-          "no",
+          "female",
+          "male",
           "Prefer not to say"
         ],
         validator: VueFormGenerator.validators.required,
@@ -65,7 +65,7 @@ var vm = new Vue({
      fields:[
      {
         type: "radios",
-        label: "Do you travel often?",
+        label: "You are...(check all that apply)?",
         model: "travels_often",
         required:true,
         values: [
@@ -156,7 +156,7 @@ var vm = new Vue({
 var params = new URLSearchParams();
 
 if (this.model.age === "under 24"){
-    this.model.age = 20;
+    this.model.age = 24;
 }
 
 if (this.model.age === "24-39"){
@@ -169,14 +169,6 @@ if (this.model.age === "40-49"){
 
 if (this.model.age === "50+"){
     this.model.age = 50;
-}
-
-if (this.model.gender === "yes"){
-    this.model.gender = "female";
-}
-
-if (this.model.gender === "no") {
-    this.model.gender = "male";
 }
 
 if (this.model.gender === "Prefer not to say") {

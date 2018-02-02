@@ -434,10 +434,10 @@ var vm = new _vue2.default({
     genderTabSchema: {
       fields: [{
         type: "radios",
-        label: "Are you a woman?",
+        label: "What is your sex?",
         model: "gender",
         required: true,
-        values: ["yes", "no", "Prefer not to say"],
+        values: ["female", "male", "Prefer not to say"],
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -445,7 +445,7 @@ var vm = new _vue2.default({
     travelTabSchema: {
       fields: [{
         type: "radios",
-        label: "Do you travel often?",
+        label: "You are...(check all that apply)?",
         model: "travels_often",
         required: true,
         values: ["Jet Setter", "Weekend Traveler", "Neighborhood Roamer", "Homebody"],
@@ -502,7 +502,7 @@ var vm = new _vue2.default({
       var params = new URLSearchParams();
 
       if (this.model.age === "under 24") {
-        this.model.age = 20;
+        this.model.age = 24;
       }
 
       if (this.model.age === "24-39") {
@@ -515,14 +515,6 @@ var vm = new _vue2.default({
 
       if (this.model.age === "50+") {
         this.model.age = 50;
-      }
-
-      if (this.model.gender === "yes") {
-        this.model.gender = "female";
-      }
-
-      if (this.model.gender === "no") {
-        this.model.gender = "male";
       }
 
       if (this.model.gender === "Prefer not to say") {
