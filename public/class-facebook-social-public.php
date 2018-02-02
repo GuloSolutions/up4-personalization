@@ -274,6 +274,7 @@ class Facebook_Social_Public
                      error-color="#a94442"
                      title=""
                      subtitle=""
+                     ref="wizard"
                     >
 EOS;
 
@@ -340,7 +341,7 @@ EOS;
                 </vue-form-generator>
             </tab-content>';
 
-             $questions[] = '
+            $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateHealthTab">
                 <vue-form-generator :model="model"
@@ -349,6 +350,7 @@ EOS;
                                    ref="healthTabForm"
                                    >
                 </vue-form-generator>
+
             </tab-content>';
 
             foreach ($questions as $question) {
@@ -357,11 +359,8 @@ EOS;
 
             $content .= <<<EOS
 
-                        <button ref="startover" v-on:click="restartSurvey">Start over</button>
-
             </form-wizard>
-
-
+                    <button id="start-over" ref="startover" v-on:click="restartSurvey">Start over</button>
         </div>
 EOS;
 
@@ -393,7 +392,6 @@ EOS;
 
     public function survey_receiver()
     {
-
         $response = $_POST['response'];
 
         error_log(print_r($response, true));
@@ -439,7 +437,6 @@ EOS;
 
     public function survey_form_receiver()
     {
-
         return '
 
         <template>

@@ -394,10 +394,6 @@ var _axios = __webpack_require__(30);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _StartOverButton = __webpack_require__(31);
-
-var _StartOverButton2 = _interopRequireDefault(_StartOverButton);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_vueFormWizard2.default);
@@ -407,235 +403,231 @@ _vue2.default.config.productionTip = true;
 _vue2.default.prototype.$http = _axios2.default;
 
 var vm = new _vue2.default({
-    el: '#survey-social-public',
-    components: 'StartOverButton',
-    data: (_data = {
-        counter: 1,
-        counterMax: 0,
-        model: {
-            age: null,
-            gender: null,
-            travels_often: null,
-            has_children: null,
-            exercises_often: null
-        },
-        formOptions: {
-            validationErrorClass: "has-error",
-            validationSuccessClass: "has-success",
-            validateAfterChanged: true
-        },
-        ageTabSchema: {
-            fields: [{
-                type: "radios",
-                label: "How old are you?",
-                model: "age",
-                required: true,
-                values: ["under 24", "24-39", "40-49", "50+"],
-                validator: _vueFormGenerator2.default.validators.required,
-                styleClasses: 'col-xs-6'
-            }]
-        },
-        genderTabSchema: {
-            fields: [{
-                type: "radios",
-                label: "Are you a woman?",
-                model: "gender",
-                required: true,
-                values: ["yes", "no", "Prefer not to say"],
-                validator: _vueFormGenerator2.default.validators.required,
-                styleClasses: 'col-xs-9'
-            }]
-        },
-        travelTabSchema: {
-            fields: [{
-                type: "radios",
-                label: "Do you travel often?",
-                model: "travels_often",
-                required: true,
-                values: ["Jet Setter", "Weekend Traveler", "Neighborhood Roamer", "Homebody"],
-                validator: _vueFormGenerator2.default.validators.required,
-                styleClasses: 'col-xs-9'
-            }]
-        },
-        childrenTabSchema: {
-            fields: [{
-                type: "radios",
-                label: "Do you have children?",
-                model: "has_children",
-                required: true,
-                values: ["Yes, and they’re out of the house", "Yes, and they're growing so fast", "Yes, little rugrats", "Nope"],
-                validator: _vueFormGenerator2.default.validators.required,
-                styleClasses: 'col-xs-9'
-            }]
-        },
-        exerciseTabSchema: {
-            fields: [{
-                type: "radios",
-                label: "How would you describe your workouts?",
-                model: "exercises_often",
-                required: true,
-                values: ["Everyday", "A few times a week", "Weekend Stroller", "I don’t workout"],
-                validator: _vueFormGenerator2.default.validators.required,
-                styleClasses: 'col-xs-9'
-            }]
-        },
-        healthTabSchema: {
-            fields: [{
-                type: "checklist",
-                label: "Which health needs are most important to you?",
-                model: "health_needs",
-                listBox: true,
-                required: true,
-                values: ["Digestive", "Immune", "Vaginal", "Urinary tract"],
-                checklistOptions: (_checklistOptions = {
-                    name: "Digestive"
-                }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary tract"), _checklistOptions),
-                validator: _vueFormGenerator2.default.validators.required,
-                styleClasses: 'col-xs-9'
-            }]
+  el: '#survey-social-public',
+  ref: 'wizard',
+  data: (_data = {
+    counter: 1,
+    counterMax: 0,
+    model: {
+      age: null,
+      gender: null,
+      travels_often: null,
+      has_children: null,
+      exercises_often: null
+    },
+    formOptions: {
+      validationErrorClass: "has-error",
+      validationSuccessClass: "has-success",
+      validateAfterChanged: true
+    },
+    ageTabSchema: {
+      fields: [{
+        type: "radios",
+        label: "How old are you?",
+        model: "age",
+        required: true,
+        values: ["under 24", "24-39", "40-49", "50+"],
+        validator: _vueFormGenerator2.default.validators.required,
+        styleClasses: 'col-xs-6'
+      }]
+    },
+    genderTabSchema: {
+      fields: [{
+        type: "radios",
+        label: "Are you a woman?",
+        model: "gender",
+        required: true,
+        values: ["yes", "no", "Prefer not to say"],
+        validator: _vueFormGenerator2.default.validators.required,
+        styleClasses: 'col-xs-9'
+      }]
+    },
+    travelTabSchema: {
+      fields: [{
+        type: "radios",
+        label: "Do you travel often?",
+        model: "travels_often",
+        required: true,
+        values: ["Jet Setter", "Weekend Traveler", "Neighborhood Roamer", "Homebody"],
+        validator: _vueFormGenerator2.default.validators.required,
+        styleClasses: 'col-xs-9'
+      }]
+    },
+    childrenTabSchema: {
+      fields: [{
+        type: "radios",
+        label: "Do you have children?",
+        model: "has_children",
+        required: true,
+        values: ["Yes, and they’re out of the house", "Yes, and they're growing so fast", "Yes, little rugrats", "Nope"],
+        validator: _vueFormGenerator2.default.validators.required,
+        styleClasses: 'col-xs-9'
+      }]
+    },
+    exerciseTabSchema: {
+      fields: [{
+        type: "radios",
+        label: "How would you describe your workouts?",
+        model: "exercises_often",
+        required: true,
+        values: ["Everyday", "A few times a week", "Weekend Stroller", "I don’t workout"],
+        validator: _vueFormGenerator2.default.validators.required,
+        styleClasses: 'col-xs-9'
+      }]
+    },
+    healthTabSchema: {
+      fields: [{
+        type: "checklist",
+        label: "Which health needs are most important to you?",
+        model: "health_needs",
+        listBox: true,
+        required: true,
+        values: ["Digestive", "Immune", "Vaginal", "Urinary tract"],
+        checklistOptions: (_checklistOptions = {
+          name: "Digestive"
+        }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary tract"), _checklistOptions),
+        validator: _vueFormGenerator2.default.validators.required,
+        styleClasses: 'col-xs-9'
+      }]
+    }
+
+  }, (0, _defineProperty3.default)(_data, 'counterMax', document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length), (0, _defineProperty3.default)(_data, 'computed', {
+    dynamicAge: function dynamicAge() {
+      return this.model.age;
+    }
+  }), _data),
+  methods: {
+    onComplete: function onComplete() {
+
+      var params = new URLSearchParams();
+
+      if (this.model.age === "under 24") {
+        this.model.age = 20;
+      }
+
+      if (this.model.age === "24-39") {
+        this.model.age = 30;
+      }
+
+      if (this.model.age === "40-49") {
+        this.model.age = 45;
+      }
+
+      if (this.model.age === "50+") {
+        this.model.age = 50;
+      }
+
+      if (this.model.gender === "yes") {
+        this.model.gender = "female";
+      }
+
+      if (this.model.gender === "no") {
+        this.model.gender = "male";
+      }
+
+      if (this.model.gender === "Prefer not to say") {
+        this.model.gender = "null";
+      }
+
+      if (this.model.has_children === "Yes, and they're growing so fast" || this.model.has_children === "Yes, little rugrats") {
+        this.model.has_children = 1;
+      };
+
+      if (this.model.has_children === "Yes, and they’re out of the house" || this.model.has_children === "Nope") {
+        this.model.has_children = 0;
+      };
+
+      if (this.model.travels_often === "Jet Setter" || this.model.travels_often === "Weekend Traveler") {
+        this.model.travels_often = 1;
+      };
+
+      if (this.model.travels_often === "Neighborhood Roamer" || this.model.travels_often === "Homebody") {
+        this.model.travels_often = 0;
+      };
+
+      if (this.model.exercises_often === "Everyday" || this.model.exercises_often === "A few times a week") {
+        this.model.exercises_often = 1;
+      };
+
+      if (this.model.exercises_often === "Weekend Stroller" || this.model.exercises_often === "I don’t workout") {
+        this.model.exercises_often = 0;
+      };
+
+      params.append('action', 'survey_receiver');
+      params.append('response[age]', this.model.age);
+      params.append('response[gender]', this.model.gender);
+      params.append('response[has_children]', this.model.has_children);
+      params.append('response[travels_often]', this.model.travels_often);
+      params.append('response[exercises_often]', this.model.exercises_often);
+      params.append('response[health_needs]', this.model.health_needs);
+
+      _axios2.default.post(ajax_receiver.ajax_url, params, {
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }
-
-    }, (0, _defineProperty3.default)(_data, 'counterMax', document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length), (0, _defineProperty3.default)(_data, 'computed', {
-        dynamicAge: function dynamicAge() {
-            return this.model.age;
-        }
-    }), _data),
-    methods: {
-        onComplete: function onComplete() {
-
-            var params = new URLSearchParams();
-
-            if (this.model.age === "under 24") {
-                this.model.age = 20;
-            }
-
-            if (this.model.age === "24-39") {
-                this.model.age = 30;
-            }
-
-            if (this.model.age === "40-49") {
-                this.model.age = 45;
-            }
-
-            if (this.model.age === "50+") {
-                this.model.age = 50;
-            }
-
-            if (this.model.gender === "yes") {
-                this.model.gender = "female";
-            }
-
-            if (this.model.gender === "no") {
-                this.model.gender = "male";
-            }
-
-            if (this.model.gender === "Prefer not to say") {
-                this.model.gender = "null";
-            }
-
-            if (this.model.has_children === "Yes, and they're growing so fast" || this.model.has_children === "Yes, little rugrats") {
-                this.model.has_children = 1;
-            };
-
-            if (this.model.has_children === "Yes, and they’re out of the house" || this.model.has_children === "Nope") {
-                this.model.has_children = 0;
-            };
-
-            if (this.model.travels_often === "Jet Setter" || this.model.travels_often === "Weekend Traveler") {
-                this.model.travels_often = 1;
-            };
-
-            if (this.model.travels_often === "Neighborhood Roamer" || this.model.travels_often === "Homebody") {
-                this.model.travels_often = 0;
-            };
-
-            if (this.model.exercises_often === "Everyday" || this.model.exercises_often === "A few times a week") {
-                this.model.exercises_often = 1;
-            };
-
-            if (this.model.exercises_often === "Weekend Stroller" || this.model.exercises_often === "I don’t workout") {
-                this.model.exercises_often = 0;
-            };
-
-            params.append('action', 'survey_receiver');
-            params.append('response[age]', this.model.age);
-            params.append('response[gender]', this.model.gender);
-            params.append('response[has_children]', this.model.has_children);
-            params.append('response[travels_often]', this.model.travels_often);
-            params.append('response[exercises_often]', this.model.exercises_often);
-            params.append('response[health_needs]', this.model.health_needs);
-
-            _axios2.default.post(ajax_receiver.ajax_url, params, {
-                headers: {
-                    'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                }
-            }).then(function (response) {
-                window.location = window.location.href;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        },
-        validateAgeTab: function validateAgeTab() {
-            return this.$refs.ageTabForm.validate();
-        },
-        validateGenderTab: function validateGenderTab() {
-            return this.$refs.genderTabForm.validate();
-        },
-        validateTravelTab: function validateTravelTab() {
-            return this.$refs.travelTabForm.validate();
-        },
-        validateChildrenTab: function validateChildrenTab() {
-            return this.$refs.childrenTabForm.validate();
-        },
-        validateExerciseTab: function validateExerciseTab() {
-            return this.$refs.exerciseTabForm.validate();
-        },
-        validateHealthTab: function validateHealthTab() {
-            return this.$refs.healthTabForm.validate();
-        },
-        incrementCounter: function incrementCounter(tabIndex, activeTabIndex, prevIndex, nextIndex) {
-            this.counter = activeTabIndex + 1;
-            this.$forceUpdate();
-            return [this.counter, this.counterMax];
-        },
-        restartSurvey: function restartSurvey(event, activeTabIndex) {
-            if (event) {
-
-                alert('triggered');
-                alert(event.target.tagName);
-
-                return this.$refs.ageTabForm;
-            }
-        },
-
-        prettyJSON: function prettyJSON(json) {
-            if (json) {
-                json = (0, _stringify2.default)(json, undefined, 4);
-                json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
-                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                    var cls = 'number';
-                    if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                            cls = 'key';
-                        } else {
-                            cls = 'string';
-                        }
-                    } else if (/true|false/.test(match)) {
-                        cls = 'boolean';
-                    } else if (/null/.test(match)) {
-                        cls = 'null';
-                    }
-                    return '<span class="' + cls + '">' + match + '</span>';
-                });
-            }
-        }
+      }).then(function (response) {
+        window.location = window.location.href;
+      }).catch(function (error) {
+        console.log(error);
+      });
+    },
+    validateAgeTab: function validateAgeTab() {
+      return this.$refs.ageTabForm.validate();
+    },
+    validateGenderTab: function validateGenderTab() {
+      return this.$refs.genderTabForm.validate();
+    },
+    validateTravelTab: function validateTravelTab() {
+      return this.$refs.travelTabForm.validate();
+    },
+    validateChildrenTab: function validateChildrenTab() {
+      return this.$refs.childrenTabForm.validate();
+    },
+    validateExerciseTab: function validateExerciseTab() {
+      return this.$refs.exerciseTabForm.validate();
+    },
+    validateHealthTab: function validateHealthTab() {
+      return this.$refs.healthTabForm.validate();
+    },
+    incrementCounter: function incrementCounter(tabIndex, activeTabIndex, prevIndex, nextIndex) {
+      this.counter = activeTabIndex + 1;
+      this.$forceUpdate();
+      return [this.counter, this.counterMax];
+    },
+    restartSurvey: function restartSurvey(event, tabIndex, activeTabIndex, prevIndex, nextIndex) {
+      if (event) {
+        this.$refs.wizard.navigateToTab(0);
+      }
     },
 
-    mounted: function mounted() {
-        this.$nextTick(function () {
-            this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
+    prettyJSON: function prettyJSON(json) {
+      if (json) {
+        json = (0, _stringify2.default)(json, undefined, 4);
+        json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+          var cls = 'number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'key';
+            } else {
+              cls = 'string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+          } else if (/null/.test(match)) {
+            cls = 'null';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
         });
+      }
     }
+  },
+
+  mounted: function mounted() {
+    this.$nextTick(function () {
+      this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
+    });
+  }
 
 });
 
@@ -13570,157 +13562,6 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 //# sourceMappingURL=axios.map
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
-
-/***/ }),
-/* 31 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0672fbd6_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_StartOverButton_vue__ = __webpack_require__(33);
-var normalizeComponent = __webpack_require__(32)
-/* script */
-var __vue_script__ = null
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0672fbd6_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_StartOverButton_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-
-/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{ref:"startover",on:{"click":_vm.restartSurvey}},[_vm._v("Start over")])}
-var staticRenderFns = []
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
 
 /***/ })
 /******/ ]);
