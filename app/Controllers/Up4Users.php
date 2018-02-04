@@ -50,7 +50,12 @@ class Up4Users
     /*
      * @var Up4User
      */
-    private $current;
+    private $to_move_from_survey;
+
+    /*
+     * @var Up4User
+     */
+    private $to_move;
 
 
     public function __construct(\Models\Up4User $up4User, \Models\Up4Session $up4Session)
@@ -130,7 +135,9 @@ class Up4Users
 
     private function linkSurveyUser()
     {
-        $logged_in_fb_user = Up4User::where('user_id', wp_get_current_user()->ID)->first();
+        //see if we have a facebook from either drection--cming from the survey or from facebook
+        $logged_in_fb_user = Up4User::where('user_id', wp_get_current_user()->ID)
+            ->orWhere('facebook_id', $this->facebook_id)->first();
 
         if (!$this->isSurveyTaken() && !$logged_in_fb_user->id) {
             $this->up4User->travels_often = $this->survey_data['travels_often'];
@@ -160,36 +167,56 @@ class Up4Users
 
     private function linkFacebookUser()
     {
-        $to_move = Up4User::where('user_id', wp_get_current_user()->ID)->first();
+        //generic logged in fb_user with session
+        $this->fb_user = Up4User::where('facebook_id', $this->facebook_id)->first();
 
-        $this->to_migrate = Up4User::where('facebook_id', $this->facebook_id)
-            ->where('session_id', '!=', session_id())->first();
+        //if previously logged in
+        if ($this->fb_user->session_id != session_id() && $this->fb_user->travels_often == null && $this->fb_user->user_id != wp_get_current_user()->ID) {
+            $this->to_move = Up4User::where('session_id', session_id())->where('user_id', wp_get_current_user()->ID)->first();
+        }
+        if ($this->fb_user->session_id != session_id() && $this->fb_user->travels_often == null && $this->fb_user->user_id == wp_get_current_user()->ID) {
+            $this->to_move_from_survey = Up4User::where('session_id', session_id())->whereNull('facebook_id')->first();
+        }
+        //default method for checking against existing WP users
+        $this->create();
 
-        if ($this->to_migrate->id && $this->to_migrate->travels_often === null && wp_get_current_user()->ID) {
-            $this->to_migrate->session_id = $this->up4Session->id;
+        if ($this->to_move_from_survey->id) {
+            if ($this->fb_user->id && $this->fb_user->travels_often === null) {
+                $this->fb_user->travels_often = $this->to_move_from_survey->travels_often;
+                $this->fb_user->exercises_often = $this->to_move_from_survey->exercises_often;
+                $this->fb_user->has_children = $this->to_move_from_survey->has_children;
+                $this->fb_user->digestive = $this->to_move_from_survey->digestive;
+                $this->fb_user->immune = $this->to_move_from_survey->immune;
+                $this->fb_user->vaginal = $this->to_move_from_survey->vaginal;
+                $this->fb_user->urinary = $this->to_move_from_survey->urinary;
 
-            $this->to_migrate->travels_often = $to_move->travels_often;
-            $this->to_migrate->exercises_often = $to_move->exercises_often;
-            $this->to_migrate->has_children = $to_move->has_children;
-            $this->to_migrate->digestive = $to_move->digestive;
-            $this->to_migrate->immune = $to_move->immune;
-            $this->to_migrate->vaginal = $to_move->vaginal;
-            $this->to_migrate->urinary = $to_move->urinary;
+                if ($this->to_move_from_survey->age &&  $this->to_move_from_survey->gender) {
+                    $this->fb_user->age = $this->to_move_from_survey->age;
+                    $this->fb_user->gender = $this->to_move_from_survey->gender;
 
-            if ($to_move->age &&  $to_move->gender) {
-                $to_migrate->age = $to_move->age;
-                $this->to_migrate->gender = $to_move->gender;
+                    $this->fb_user->save();
+                    $this->create();
+                    //delete temp survey user
+                    $this->removeTempSurveyUser($this->to_move_from_survey);
+                }
             }
+            if ($this->fb_user->id && $this->fb_user->travels_often === null) {
+                $this->fb_user->travels_often = $this->to_move->travels_often;
+                $this->fb_user->exercises_often = $this->to_move->exercises_often;
+                $this->fb_user->has_children = $this->to_move->has_children;
+                $this->fb_user->digestive = $this->to_move->digestive;
+                $this->fb_user->immune = $this->to_move->immune;
+                $this->fb_user->vaginal = $this->to_move->vaginal;
+                $this->fb_user->urinary = $this->to_move->urinary;
 
-            $cur_session = $this->up4User->session_id;
+                if ($this->to_move->age &&  $this->to_move->gender) {
+                    $this->fb_user->age = $this->to_move->age;
+                    $this->fb_user->gender = $this->to_move->gender;
 
-            $this->to_migrate->session_id = $cur_session;
-
-            $this->to_migrate->save();
-        } elseif ($this->to_migrate->id) {
-            $this->setData();
-        } else {
-            $this->create();
+                    $this->fb_user->save();
+                    $this->create();
+                }
+            }
         }
     }
 
@@ -199,15 +226,14 @@ class Up4Users
     private function setData()
     {
         if ($this->fb_data) {
-            $this->current = Up4User::where('facebook_id', $this->facebook_id)
-                ->where('session_id', '!=', session_id())
-                ->first();
+            if ($this->fb_user->id !== null) {
+                $this->fb_user->session_id = $this->up4Session->id;
 
-            if ($this->current->id != null) {
-                $this->current->session_id = $this->up4Session->id;
+                //delete temp user if survey data entered again
+                Up4User::where('session_id', $this->fb_user->session_id)
+                    ->whereNull('facebook_id')->delete();
 
-                $this->current->save();
-                $this->updateMetaAndSave();
+                $this->fb_user->save();
             } else {
                 foreach ($this->fb_data as $key => $value) {
                     if ($value !== null) {
@@ -219,22 +245,8 @@ class Up4Users
                 $this->up4User->user_id = $this->user->ID;
             }
         }
-
-        if ($this->survey_data && $this->current) {
-            foreach ($this->survey_data as $key => $value) {
-                if ($value !== null) {
-                    $this->current->{$key} = $value;
-                }
-            }
-        }
     }
 
-    private function update()
-    {
-        if ($this->up4User->facebook_id != null) {
-            $this->updateMetaAndSave();
-        }
-    }
 
     private function create()
     {
@@ -255,18 +267,15 @@ class Up4Users
 
     private function updateMetaAndSave()
     {
-        if ($this->current->id) {
+        if ($this->fb_user->id && (is_null($this->to_move->id && $this->to_move_from_survey->id))) {
             $location = new Location();
             $weather = new Weather($location);
 
-            $this->current->location = $weather->getOrigin();
-            $this->current->temperature = $weather->getTemperature();
-            $this->current->conditions = $weather->getConditions();
-
-            $this->current->save();
-
-            wp_set_auth_cookie($this->current->user_id);
-        } else {
+            $this->fb_user->location = $weather->getOrigin();
+            $this->fb_user->temperature = $weather->getTemperature();
+            $this->fb_user->conditions = $weather->getConditions();
+            $this->fb_user->save();
+        } elseif (!$this->fb_user->id) {
             $location = new Location();
             $weather = new Weather($location);
 
@@ -276,7 +285,6 @@ class Up4Users
 
             $this->up4User->user_id = $this->user->ID;
             $this->up4User->session_id = $this->up4Session->id;
-
             $this->up4User->save();
         }
     }
@@ -305,5 +313,11 @@ class Up4Users
         return is_null($this->up4User->travels_often) ||
                 is_null($this->up4User->exercises_often) ||
                     is_null($this->up4User->has_children) ? false : true;
+    }
+    public function removeTempSurveyUser($user)
+    {
+        if (!is_null($user->id)) {
+            User::find($user->user_id)->delete();
+        }
     }
 }
