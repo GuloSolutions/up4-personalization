@@ -15,46 +15,57 @@ class ProductAdult extends AbstractProduct
 
     public function getGender()
     {
+        return 'both';
     }
 
     public function getAge()
     {
+        return "24-29";
     }
 
     public function getSku()
     {
+        return self::ADULTSKU;
     }
 
     public function travelsOften()
     {
+        return false;
     }
 
     public function exercisesOften()
     {
+        return false;
     }
 
     public function hasChildren()
     {
+        return false;
     }
 
     public function urinary()
     {
+        return false;
     }
 
     public function vaginal()
     {
+        return false;
     }
 
     public function digestive()
     {
+        return true;
     }
 
     public function immune()
     {
+        return true;
     }
 
     public function health_needs()
     {
+        return false;
     }
 
     public function isPrimary()
