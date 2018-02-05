@@ -30,34 +30,33 @@ class Recommendation
     {
         return $this->productAdult;
     }
-
     public function getProductWomens()
     {
-        return $this->productKidsCubes;
+        return $this->productWomens;
     }
     public function getProductUltra()
     {
-        return $this->productSecondarys;
+        return $this->productUltra;
     }
     public function getProductKidsCubes()
     {
-        return $this->productHeartHealth;
+        return $this->productKidsCubes;
     }
     public function getProductSecondarys()
     {
-        return $this->productWomensAdvancedCare;
+        return $this->productSecondarys;
     }
     public function getProductHeartHealth()
     {
-        return $this->productAdult50Plus;
+        return $this->productHeartHealth;
     }
     public function getProductSport()
     {
-        return $this->productAdult50Plus;
+        return $this->productSport;
     }
     public function ProductWomenAdvancedCare()
     {
-        return $this->productAdult50Plus;
+        return $this->productWomensAdvancedCare;
     }
     public function getProductAdult50Plus()
     {
