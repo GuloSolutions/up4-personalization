@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
-import StartOverButton from './components/StartOverButton';
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
@@ -24,6 +23,7 @@ var vm = new Vue({
     travels_often: null,
     has_children: null,
     exercises_often: null,
+    health_needs: null,
    },
    formOptions: {
     validationErrorClass: "has-error",
@@ -68,7 +68,7 @@ var vm = new Vue({
      fields:[
      {
         type: "radios",
-        label: "You are...(check all that apply)?",
+        label: "You are...?",
         model: "travels_often",
         required:true,
         values: [
@@ -109,7 +109,7 @@ var vm = new Vue({
         model: "exercises_often",
         required:true,
         values: [
-          "Everyday",
+          "Every day",
           "A few times a week",
           "Weekend Stroller",
           "I don’t workout"
@@ -243,7 +243,7 @@ axios.post(ajax_receiver.ajax_url,
       validateExerciseTab: function(){
      return this.$refs.exerciseTabForm.validate();
    },
-      validateHealthTab: function(){
+    validateHealthTab: function(){
      return this.$refs.healthTabForm.validate();
    },
     incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
@@ -280,14 +280,19 @@ axios.post(ajax_receiver.ajax_url,
         }
   },
 
-  mounted: function() {
+  mounted: function(tabIndex, activeTabIndex, prevIndex, nextIndex) {
       this.$nextTick(function () {
-      this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length
+      this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
+      var test = $("#survey-social-public input:radio").click(function() {
+
+      vm.$refs.wizard.nextTab();
+  });
 
     }),
         document.getElementById('start-over').onclick = function() {
           vm.$refs.wizard.reset();
+
       };
-  }
+  },
 
 })

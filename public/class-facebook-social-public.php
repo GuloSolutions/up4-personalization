@@ -270,6 +270,7 @@ class Facebook_Social_Public
 
 
                 @on-change="incrementCounter"
+
                      color="gray"
                      error-color="#a94442"
                      title=""
@@ -286,7 +287,7 @@ EOS;
                                    :schema="ageTabSchema"
                                    :options="formOptions"
                                    ref="ageTabForm"
-                                   >
+                                        >
                </vue-form-generator>
 
             </tab-content>';
@@ -396,6 +397,8 @@ EOS;
     {
         $response = $_POST['response'];
 
+        error_log(print_r($response,true));
+
         $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
 
         $survey_up4_user->setupSurveyResponse($response);
@@ -432,8 +435,6 @@ EOS;
             $this->register_survey_shortcode();
         }
     }
-
-
 
     public function survey_form_receiver()
     {

@@ -394,10 +394,6 @@ var _axios = __webpack_require__(30);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _StartOverButton = __webpack_require__(31);
-
-var _StartOverButton2 = _interopRequireDefault(_StartOverButton);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_vueFormWizard2.default);
@@ -419,7 +415,8 @@ var vm = new _vue2.default({
       gender: null,
       travels_often: null,
       has_children: null,
-      exercises_often: null
+      exercises_often: null,
+      health_needs: null
     },
     formOptions: {
       validationErrorClass: "has-error",
@@ -451,7 +448,7 @@ var vm = new _vue2.default({
     travelTabSchema: {
       fields: [{
         type: "radios",
-        label: "You are...(check all that apply)?",
+        label: "You are...?",
         model: "travels_often",
         required: true,
         values: ["Jet Setter", "Weekend Traveler", "Neighborhood Roamer", "Homebody"],
@@ -476,7 +473,7 @@ var vm = new _vue2.default({
         label: "How would you describe your workouts?",
         model: "exercises_often",
         required: true,
-        values: ["Everyday", "A few times a week", "Weekend Stroller", "I don’t workout"],
+        values: ["Every day", "A few times a week", "Weekend Stroller", "I don’t workout"],
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -621,9 +618,13 @@ var vm = new _vue2.default({
     }
   },
 
-  mounted: function mounted() {
+  mounted: function mounted(tabIndex, activeTabIndex, prevIndex, nextIndex) {
     this.$nextTick(function () {
       this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
+      var test = $("#survey-social-public input:radio").click(function () {
+
+        vm.$refs.wizard.nextTab();
+      });
     }), document.getElementById('start-over').onclick = function () {
       vm.$refs.wizard.reset();
     };
@@ -13562,157 +13563,6 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 //# sourceMappingURL=axios.map
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
-
-/***/ }),
-/* 31 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0672fbd6_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_StartOverButton_vue__ = __webpack_require__(33);
-var normalizeComponent = __webpack_require__(32)
-/* script */
-var __vue_script__ = null
-/* template */
-
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __WEBPACK_IMPORTED_MODULE_0__node_modules_vue_loader_lib_template_compiler_index_id_data_v_0672fbd6_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_StartOverButton_vue__["a" /* default */],
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-
-/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{ref:"startover",on:{"click":_vm.restartSurvey}},[_vm._v("Start over")])}
-var staticRenderFns = []
-var esExports = { render: render, staticRenderFns: staticRenderFns }
-/* harmony default export */ __webpack_exports__["a"] = (esExports);
 
 /***/ })
 /******/ ]);
