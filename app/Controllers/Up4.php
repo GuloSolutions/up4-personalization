@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model as Model;
 use Models\Up4User;
 use Models\Up4Session;
 use Carbon\Carbon;
+use Controllers\Recommendation;
 
 class Up4
 {
@@ -13,6 +14,8 @@ class Up4
     public $up4User;
 
     public $up4Session;
+
+    public $product;
 
     public function __construct($session_id)
     {
@@ -141,5 +144,11 @@ class Up4
     public function getLocalTime()
     {
         return Carbon::now($this->up4User->local_time)->format('g:i A');
+    }
+
+    public function getPrimaryRecommendation()
+    {
+        $this->product = new Recommendation();
+        return $this->product->GetProductAdult();
     }
 }
