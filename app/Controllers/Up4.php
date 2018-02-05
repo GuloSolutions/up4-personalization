@@ -149,6 +149,6 @@ class Up4
     public function getPrimaryRecommendation()
     {
         $this->product = new Recommendation();
-        return $this->product->GetProductAdult();
+        return $this->product->getProductAdult();
     }
 }
