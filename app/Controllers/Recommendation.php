@@ -7,7 +7,6 @@ class Recommendation
     public $productWomens;
     public $productUltra;
     public $productKidsCubes;
-    public $productSecondarys;
     public $productHeartHealth;
     public $productSport;
     public $productWomensAdvancedCare;
@@ -19,7 +18,6 @@ class Recommendation
         $this->productWomens = new ProductWomens();
         $this->productUltra = new ProductUltra();
         $this->productKidsCubes = new ProductKidsCubes();
-        $this->productSecondarys = new ProductSecondarys();
         $this->productHeartHealth = new ProductHeartHealth();
         $this->productSport = new ProductSport();
         $this->productWomensAdvancedCare = new ProductWomenAdvancedCare();
@@ -41,10 +39,6 @@ class Recommendation
     public function getProductKidsCubes()
     {
         return $this->productKidsCubes;
-    }
-    public function getProductSecondarys()
-    {
-        return $this->productSecondarys;
     }
     public function getProductHeartHealth()
     {
