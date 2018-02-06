@@ -9,29 +9,24 @@ abstract class AbstractProduct
 
     abstract protected function getSku();
 
-    abstract protected function travelsOften();
+    abstract protected function isTravelsOften();
 
-    abstract protected function exercisesOften();
+    abstract protected function isExercisesOften();
 
     abstract protected function hasChildren();
 
-    abstract protected function urinary();
+    abstract protected function isUrinary();
 
-    abstract protected function vaginal();
+    abstract protected function isVaginal();
 
-    abstract protected function digestive();
+    abstract protected function isDigestive();
 
-    abstract protected function immune();
+    abstract protected function isImmune();
 
-    abstract protected function health_needs();
+    abstract protected function isHealthNeeds();
 
     protected function isPrimary()
     {
         return $is_primary ? true : false;
-    }
-
-    public function getWpPost()
-    {
-        return get_post_type_object('products');
     }
 }

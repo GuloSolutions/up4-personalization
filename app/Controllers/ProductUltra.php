@@ -4,13 +4,13 @@ namespace Controllers;
 class ProductUltra extends AbstractProduct
 {
 
-    public CONST SKU = 40000601436;
+    public CONST SKU = 40000602266;
 
     public $is_primary;
 
     public function __construct()
     {
-        $this->setPrimary(false);
+        $this->setPrimary(true);
     }
 
     public function getGender()
@@ -25,15 +25,15 @@ class ProductUltra extends AbstractProduct
 
     public function getSku()
     {
-        return self::ADULTSKU;
+        return self::SKU;
     }
 
-    public function travelsOften()
+    public function isTravelsOften()
     {
         return false;
     }
 
-    public function exercisesOften()
+    public function isExercisesOften()
     {
         return false;
     }
@@ -43,27 +43,27 @@ class ProductUltra extends AbstractProduct
         return false;
     }
 
-    public function urinary()
+    public function isUrinary()
     {
         return false;
     }
 
-    public function vaginal()
+    public function isVaginal()
     {
         return false;
     }
 
-    public function digestive()
+    public function isDigestive()
     {
         return true;
     }
 
-    public function immune()
+    public function isImmune()
     {
         return true;
     }
 
-    public function health_needs()
+    public function isHealthNeeds()
     {
         return false;
     }
@@ -73,13 +73,14 @@ class ProductUltra extends AbstractProduct
         return $is_primary ? true : false;
     }
 
-    public function getWpPost()
-    {
-        return get_post_type_object('products');
-    }
-
     public function setPrimary(bool $value)
     {
         $this->is_primary = $value;
+    }
+
+    public function getPost(AbstractProduct $product)
+    {
+        $post = new WpPost();
+        return $post->getWpPost($product);
     }
 }

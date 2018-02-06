@@ -18,11 +18,10 @@ class Recommendation
         $this->productWomens = new ProductWomens();
         $this->productUltra = new ProductUltra();
         $this->productKidsCubes = new ProductKidsCubes();
-        // $this->productHeartHealth = new ProductHeartHealth();
-        // $this->productSport = new ProductSport();
-        // $this->productWomensAdvancedCare = new ProductWomenAdvancedCare();
-        // $this->productAdult50Plus = new ProductAdult50Plus();
-        // $this->checkIfPrimaryProduct();
+        $this->productHeartHealth = new ProductHeartHealth();
+        $this->productSport = new ProductSport();
+        $this->productWomensAdvancedCare = new ProductWomensAdvancedCare();
+        $this->productAdult50Plus = new ProductAdult50Plus();
     }
 
     public function getProductAdult()
