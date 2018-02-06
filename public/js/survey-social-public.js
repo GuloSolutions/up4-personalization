@@ -485,7 +485,7 @@ var vm = new _vue2.default({
         model: "health_needs",
         listBox: true,
         required: true,
-        values: ["Digestive", "Immune", "Vaginal", "Urinary tract", "Heart Health"],
+        values: ["Digestive", "Immune", "Vaginal", "Urinary Tract", "Heart Health"],
         checklistOptions: (_checklistOptions = {
           name: "Digestive"
         }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary Tract"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Heart Health"), _checklistOptions),
@@ -505,7 +505,7 @@ var vm = new _vue2.default({
       var params = new URLSearchParams();
 
       if (this.model.age === "under 24") {
-        this.model.age = 24;
+        this.model.age = 20;
       }
 
       if (this.model.age === "24-39") {
@@ -620,8 +620,8 @@ var vm = new _vue2.default({
 
   mounted: function mounted(tabIndex, activeTabIndex, prevIndex, nextIndex) {
     this.$nextTick(function () {
-      this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
-      var test = $("#survey-social-public input:radio").click(function () {
+      this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;
+      $("#survey-social-public input:radio").click(function () {
 
         vm.$refs.wizard.nextTab();
       });

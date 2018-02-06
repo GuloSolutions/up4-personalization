@@ -131,13 +131,16 @@ var vm = new Vue({
           "Digestive",
           "Immune",
           "Vaginal",
-          "Urinary tract"
+          "Urinary Tract",
+          "Heart Health"
         ],
         checklistOptions: {
           name: "Digestive",
           name: "Immune",
           name: "Vaginal",
-          name: "Urinary tract"
+          name: "Urinary Tract",
+          name: "Heart Health"
+
         },
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -159,7 +162,7 @@ var vm = new Vue({
 var params = new URLSearchParams();
 
 if (this.model.age === "under 24"){
-    this.model.age = 24;
+    this.model.age = 20;
 }
 
 if (this.model.age === "24-39"){
@@ -282,8 +285,8 @@ axios.post(ajax_receiver.ajax_url,
 
   mounted: function(tabIndex, activeTabIndex, prevIndex, nextIndex) {
       this.$nextTick(function () {
-      this.counterMax = document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length;
-      var test = $("#survey-social-public input:radio").click(function() {
+      this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;
+      $("#survey-social-public input:radio").click(function() {
 
       vm.$refs.wizard.nextTab();
   });
