@@ -485,10 +485,10 @@ var vm = new _vue2.default({
         model: "health_needs",
         listBox: true,
         required: true,
-        values: ["Digestive", "Immune", "Vaginal", "Urinary tract"],
+        values: ["Digestive", "Immune", "Vaginal", "Urinary tract", "Heart Health"],
         checklistOptions: (_checklistOptions = {
           name: "Digestive"
-        }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary tract"), _checklistOptions),
+        }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary Tract"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Heart Health"), _checklistOptions),
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]

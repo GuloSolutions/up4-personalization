@@ -51,7 +51,7 @@ class Up4UsersMigration extends Migration
                 $table->boolean('immune')->nullable();
                 $table->boolean('vaginal')->nullable();
                 $table->boolean('urinary')->nullable();
-
+                $table->boolean('heart')->nullable();
 
                 $table->string('location')->nullable();
                 $table->string('temperature', 5)->nullable();
