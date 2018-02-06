@@ -11,7 +11,6 @@ class Recommendation
     public $productSport;
     public $productWomensAdvancedCare;
     public $productAdult50Plus;
-    public $instance;
 
     public function __construct()
     {
@@ -57,25 +56,5 @@ class Recommendation
     public function getProductAdult50Plus()
     {
         return $this->productAdult50Plus;
-    }
-    // public function checkIfPrimaryProduct()
-    // {
-    //     // $recommendation_args = [$value1, $value2, $value3, $value4];
-    //     $ref_class = new \ReflectionClass();
-    //     $this->instance = $ref_class->newInstanceArgs();
-    //     // foreach ($this->instance as $instance) {
-    //     //     if ($instance->is_primary === true){
-
-    //     //         return $instance;
-
-    //     //     }
-    //     // }
-
-    //     return $this->instance;
-    // }
-
-    public function getPrimary()
-    {
-        return $this->instance;
     }
 }
