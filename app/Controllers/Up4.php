@@ -152,11 +152,13 @@ class Up4
 
         $ref_class = new \ReflectionClass($this->product);
 
-        $recommendations = $ref_class->newInstanceArgs();
+        $products = $ref_class->newInstanceArgs();
 
-        foreach ($recommendations as $recommendation) {
-            if ($recommendation->is_primary == true) {
-                return $recommendation::SKU;
+        foreach ($products as $product) {
+            if ($product->is_primary == true) {
+                $sku = $product::SKU;
+                $primary_product = $product->getPost($sku);
+                return $primary_product;
             }
         }
     }
