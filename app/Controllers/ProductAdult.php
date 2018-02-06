@@ -2,13 +2,18 @@
 namespace Controllers;
 
 use Controllers\WpPost;
+use Controllers\Gender;
+
 
 class ProductAdult extends AbstractProduct
 {
 
     public CONST SKU = 40000601436;
+    public CONST GENDER = 'MF';
 
     public $is_primary;
+
+    public $gender;
 
     public function __construct()
     {
@@ -17,12 +22,14 @@ class ProductAdult extends AbstractProduct
 
     public function getGender()
     {
-        return 'both';
+        $gender_helper = new Gender(self::GENDER);
+
+        return $gender_helper->getGender();
     }
 
     public function getAge()
     {
-        return "24-29";
+        return 20;
     }
 
     public function getSku()
@@ -80,7 +87,7 @@ class ProductAdult extends AbstractProduct
         $this->is_primary = $value;
     }
 
-    public function getPost(AbstractProduct $product)
+    public function getPost($product)
     {
         $post = new WpPost();
         return $post->getWpPost($product);
