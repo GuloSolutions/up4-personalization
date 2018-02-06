@@ -259,6 +259,11 @@ class Facebook_Social_Public
 
             <div id="survey-social-public">
 
+            <div class="container">
+                <button id="start-over" v-on:click="restartSurvey">Start over</button>
+            </div>
+
+
 
             <div class="wizard-navigation">
 
@@ -363,8 +368,6 @@ EOS;
             </form-wizard>
         </div>
 
-                            <button id="start-over" ref="startover" v-on:click="restartSurvey">Start over</button>
-
 EOS;
 
             return $content;
@@ -396,6 +399,8 @@ EOS;
     public function survey_receiver()
     {
         $response = $_POST['response'];
+
+
 
         error_log(print_r($this->up4->getPrimaryRecommendation(), true));
 
