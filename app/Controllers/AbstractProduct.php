@@ -3,8 +3,6 @@ namespace Controllers;
 
 abstract class AbstractProduct
 {
-    private $is_primary;
-
     abstract protected function getGender();
 
     abstract protected function getAge();

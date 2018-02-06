@@ -149,6 +149,15 @@ class Up4
     public function getPrimaryRecommendation()
     {
         $this->product = new Recommendation();
-        return $this->product->getProductAdult();
+
+        $ref_class = new \ReflectionClass($this->product);
+
+        $recommendations = $ref_class->newInstanceArgs();
+
+        foreach ($recommendations as $recommendation) {
+            if ($recommendation->is_primary == true) {
+                return $recommendation::SKU;
+            }
+        }
     }
 }

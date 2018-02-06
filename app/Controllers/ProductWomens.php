@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 
-class ProductAdult extends AbstractProduct
+class ProductWomens extends AbstractProduct
 {
 
     public CONST SKU = 40000601436;
@@ -10,7 +10,7 @@ class ProductAdult extends AbstractProduct
 
     public function __construct()
     {
-        $this->setPrimary(true);
+        $this->setPrimary(false);
     }
 
     public function getGender()
