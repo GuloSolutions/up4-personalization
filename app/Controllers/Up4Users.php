@@ -147,6 +147,8 @@ class Up4Users
             $this->up4User->immune = $this->survey_data['immune']  ? 1 : 0;
             $this->up4User->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
             $this->up4User->urinary = $this->survey_data['urinary']  ? 1 : 0;
+            $this->up4User->heart = $this->survey_data['heart']  ? 1 : 0;
+
 
             if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
                 $this->up4User->age = $this->survey_data['age'];
@@ -161,6 +163,8 @@ class Up4Users
             $logged_in_fb_user->immune = $this->survey_data['immune']  ? 1 : 0;
             $logged_in_fb_user->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
             $logged_in_fb_user->urinary = $this->survey_data['urinary']  ? 1 : 0;
+            $logged_in_fb_user->heart = $this->survey_data['heart']  ? 1 : 0;
+
             $logged_in_fb_user->save();
         }
     }
@@ -189,6 +193,8 @@ class Up4Users
                 $this->fb_user->immune = $this->to_move_from_survey->immune;
                 $this->fb_user->vaginal = $this->to_move_from_survey->vaginal;
                 $this->fb_user->urinary = $this->to_move_from_survey->urinary;
+                $this->fb_user->heart = $this->to_move_from_survey->heart;
+
 
                 if ($this->to_move_from_survey->age &&  $this->to_move_from_survey->gender) {
                     $this->fb_user->age = $this->to_move_from_survey->age;
@@ -208,6 +214,8 @@ class Up4Users
                 $this->fb_user->immune = $this->to_move->immune;
                 $this->fb_user->vaginal = $this->to_move->vaginal;
                 $this->fb_user->urinary = $this->to_move->urinary;
+                $this->fb_user->heart = $this->to_move->heart;
+
 
                 if ($this->to_move->age &&  $this->to_move->gender) {
                     $this->fb_user->age = $this->to_move->age;
@@ -314,7 +322,7 @@ class Up4Users
                 is_null($this->up4User->exercises_often) ||
                     is_null($this->up4User->has_children) ? false : true;
     }
-    public function removeTempSurveyUser($user)
+    public function removeTempSurveyUser(Up4Users $user)
     {
         if (!is_null($user->id)) {
             User::find($user->user_id)->delete();
