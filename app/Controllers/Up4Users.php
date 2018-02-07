@@ -166,13 +166,15 @@ class Up4Users
 
         if ($this->to_move_from_survey->id) {
             if ($this->fb_user->id && $this->fb_user->travels_often === null) {
-                $this->saveSurveyUserData();
+                $this->saveSurveyUserData($this->to_move_from_survey);
                 //delete temp survey user
                 $this->removeTempSurveyUser($this->to_move_from_survey);
             }
         }
-        if ($this->fb_user->id && $this->fb_user->travels_often === null) {
-            $this->saveSurveyUserData();
+        if ($this->to_move->id) {
+            if ($this->fb_user->id && $this->fb_user->travels_often === null) {
+                $this->saveSurveyUserData($this->to_move);
+            }
         }
     }
 
@@ -265,7 +267,7 @@ class Up4Users
         }
     }
 
-    private function saveSurveyUserData()
+    private function saveSurveyUserData(Up4User $user)
     {
         $this->fb_user->travels_often = $this->to_move_from_survey->travels_often;
         $this->fb_user->exercises_often = $this->to_move_from_survey->exercises_often;
@@ -302,13 +304,13 @@ class Up4Users
         }
     }
 
-    private function saveMetaData($current_fb_user, Weather $local_weather)
+    private function saveMetaData($current_user, Weather $local_weather)
     {
-        $current_fb_user->location = $local_weather->getOrigin();
-        $current_fb_user->temperature = $local_weather->getTemperature();
-        $current_fb_user->conditions = $local_weather->getConditions();
-        $current_fb_user->local_time = $local_weather->getLocalTime();
+        $current_user->location = $local_weather->getOrigin();
+        $current_user->temperature = $local_weather->getTemperature();
+        $current_user->conditions = $local_weather->getConditions();
+        $current_user->local_time = $local_weather->getLocalTime();
 
-        $current_fb_user->save();
+        $current_user->save();
     }
 }
