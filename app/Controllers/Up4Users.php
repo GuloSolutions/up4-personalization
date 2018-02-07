@@ -296,7 +296,7 @@ class Up4Users
         $current_up4_user->urinary = $data['urinary']  ? 1 : 0;
         $current_up4_user->heart = $data['heart']  ? 1 : 0;
 
-        if ($this->survey_data['age'] &&  $data['gender']) {
+        if ($data['age'] &&  $data['gender']) {
             $current_up4_user->age = $data['age'];
             $current_up4_user->gender = $data['gender'];
         }
