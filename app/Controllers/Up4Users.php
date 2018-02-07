@@ -141,10 +141,10 @@ class Up4Users
 
         if (!$this->isSurveyTaken() && !$logged_in_fb_user->id) {
             $this->up4User->session_id = $this->up4Session->id;
-            $this->saveSurveyUser($this->up4User, $this->survey_data);
+            $this->saveSurveyUser($this->up4User);
             $this->create();
         } else {
-            $this->saveSurveyUser($logged_in_fb_user, $this->survey_data);
+            $this->saveSurveyUser($logged_in_fb_user);
             $logged_in_fb_user->save();
         }
     }
@@ -285,20 +285,20 @@ class Up4Users
         $this->create();
     }
 
-    private function saveSurveyUser($current_up4_user, $data)
+    private function saveSurveyUser($current_up4_user)
     {
-        $current_up4_user->travels_often = $data['travels_often'];
-        $current_up4_user->exercises_often = $data['exercises_often'];
-        $current_up4_user->has_children = $data['has_children'];
+        $current_up4_user->travels_often = $this->survey_data['travels_often'];
+        $current_up4_user->exercises_often = $this->survey_data['exercises_often'];
+        $current_up4_user->has_children = $this->survey_data['has_children'];
         $current_up4_user->digestive = $data['digestive'] ? 1 : 0;
-        $current_up4_user->immune = $data['immune']  ? 1 : 0;
-        $current_up4_user->vaginal = $data['vaginal']  ? 1 : 0;
-        $current_up4_user->urinary = $data['urinary']  ? 1 : 0;
-        $current_up4_user->heart = $data['heart']  ? 1 : 0;
+        $current_up4_user->immune = $this->survey_data['immune']  ? 1 : 0;
+        $current_up4_user->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
+        $current_up4_user->urinary = $this->survey_data['urinary']  ? 1 : 0;
+        $current_up4_user->heart = $this->survey_data['heart']  ? 1 : 0;
 
-        if ($data['age'] &&  $data['gender']) {
-            $current_up4_user->age = $data['age'];
-            $current_up4_user->gender = $data['gender'];
+        if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
+            $current_up4_user->age = $this->survey_data['age'];
+            $current_up4_user->gender = $this->survey_data['gender'];
         }
     }
 
