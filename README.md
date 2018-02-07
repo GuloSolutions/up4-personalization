@@ -55,28 +55,14 @@ the following commands.
 ```
     echo do_shortcode('[facebook-social_survey_form]');
 ```
+- To compile the Vue files use: 
 
-- For the logged in WordPress user (if one exists, i.e. we have Facebook email)
-  - var_dump(wp_get_current_user());
+```
+npm run build
+```
+
   
   
-  
-- How to use the survey form from inside theme: 
-```
-   global $up4_user;
 
-   if ($up4_user->isLoggedInFacebook()) {
 
-       echo do_shortcode(' [facebook-social_survey_form_no_gender ] ');
-
-   } else {
-
-       echo do_shortcode(' [facebook-social_survey_form ] ');
-   }
-
-```
-- Test button to display survey from inside theme: 
-```
-    <button id="showSurvey" onclick="showSurveyFromButton()">Fill out survey</button>
-```
 
