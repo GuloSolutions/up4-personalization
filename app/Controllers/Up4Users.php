@@ -245,14 +245,8 @@ class Up4Users
     private function updateMetaAndSave()
     {
         if ($this->fb_user->id && (is_null($this->to_move->id) && is_null($this->to_move_from_survey->id))) {
-            $location = new Location();
-            $weather = new Weather($location);
-
             $this->saveMetadata($this->fb_user, $weather);
         } elseif (!$this->fb_user->id) {
-            $location = new Location();
-            $weather = new Weather($location);
-
             $this->saveMetadata($this->up4User, $weather);
         }
     }
@@ -312,6 +306,8 @@ class Up4Users
 
     private function saveMetaData(Up4Users $current_fb_user, Weather $local_weather)
     {
+        $location = new Location();
+        $weather = new Weather($location);
         $current_fb_user->location = $local_weather->getOrigin();
         $current_fb_user->temperature = $local_weather->getTemperature();
         $current_fb_user->conditions = $local_weather->getConditions();
