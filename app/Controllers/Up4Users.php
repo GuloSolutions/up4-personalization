@@ -269,18 +269,18 @@ class Up4Users
 
     private function saveSurveyUserData(Up4User $user)
     {
-        $this->fb_user->travels_often = $this->to_move_from_survey->travels_often;
-        $this->fb_user->exercises_often = $this->to_move_from_survey->exercises_often;
-        $this->fb_user->has_children = $this->to_move_from_survey->has_children;
-        $this->fb_user->digestive = $this->to_move_from_survey->digestive;
-        $this->fb_user->immune = $this->to_move_from_survey->immune;
-        $this->fb_user->vaginal = $this->to_move_from_survey->vaginal;
-        $this->fb_user->urinary = $this->to_move_from_survey->urinary;
-        $this->fb_user->heart = $this->to_move_from_survey->heart;
+        $this->fb_user->travels_often = $user->travels_often;
+        $this->fb_user->exercises_often = $user->exercises_often;
+        $this->fb_user->has_children = $user->has_children;
+        $this->fb_user->digestive = $user->digestive;
+        $this->fb_user->immune = $user->immune;
+        $this->fb_user->vaginal = $user->vaginal;
+        $this->fb_user->urinary = $user->urinary;
+        $this->fb_user->heart = $user->heart;
 
-        if ($this->to_move_from_survey->age &&  $this->to_move_from_survey->gender) {
-            $this->fb_user->age = $this->to_move_from_survey->age;
-            $this->fb_user->gender = $this->to_move_from_survey->gender;
+        if ($user->age &&  $user->gender) {
+            $this->fb_user->age = $user->age;
+            $this->fb_user->gender = $user->gender;
         }
 
         $this->fb_user->save();
