@@ -290,7 +290,7 @@ class Up4Users
         $current_up4_user->travels_often = $this->survey_data['travels_often'];
         $current_up4_user->exercises_often = $this->survey_data['exercises_often'];
         $current_up4_user->has_children = $this->survey_data['has_children'];
-        $current_up4_user->digestive = $data['digestive'] ? 1 : 0;
+        $current_up4_user->digestive = $this->survey_data['digestive'] ? 1 : 0;
         $current_up4_user->immune = $this->survey_data['immune']  ? 1 : 0;
         $current_up4_user->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
         $current_up4_user->urinary = $this->survey_data['urinary']  ? 1 : 0;
