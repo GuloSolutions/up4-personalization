@@ -261,7 +261,6 @@ class Facebook_Social_Public
 
             <div class="container">
                 <button id="start-over" v-on:click="restartSurvey">Start over</button>
-            </div>
 
 
 
@@ -366,6 +365,8 @@ EOS;
             $content .= <<<EOS
 
             </form-wizard>
+            </div>
+
         </div>
 
 EOS;
