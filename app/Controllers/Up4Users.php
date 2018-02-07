@@ -135,18 +135,8 @@ class Up4Users
 
     private function linkSurveyUser()
     {
-        //see if we have a facebook from either drection--cming from the survey or from facebook
-        $logged_in_fb_user = Up4User::where('user_id', wp_get_current_user()->ID)
-            ->orWhere('facebook_id', $this->facebook_id)->first();
-
-        if (!$this->isSurveyTaken() && !$logged_in_fb_user->id) {
-            $this->up4User->session_id = $this->up4Session->id;
-            $this->saveSurveyUser($this->up4User);
-            $this->create();
-        } else {
-            $this->saveSurveyUser($logged_in_fb_user);
-            $logged_in_fb_user->save();
-        }
+        $this->saveSurveyUser();
+        $this->create();
     }
 
     private function linkFacebookUser()
@@ -164,20 +154,19 @@ class Up4Users
         //default method for checking against existing WP users
         $this->create();
 
-        if ($this->to_move_from_survey->id) {
+        if (isset($this->to_move_from_survey->id)) {
             if ($this->fb_user->id && $this->fb_user->travels_often === null) {
                 $this->saveSurveyUserData($this->to_move_from_survey);
                 //delete temp survey user
                 $this->removeTempSurveyUser($this->to_move_from_survey);
             }
         }
-        if ($this->to_move->id) {
+        if (isset($this->to_move->id)) {
             if ($this->fb_user->id && $this->fb_user->travels_often === null) {
                 $this->saveSurveyUserData($this->to_move);
             }
         }
     }
-
 
     /*
      * Sets up4User properties
@@ -203,6 +192,9 @@ class Up4Users
                 $this->up4User->session_id = $this->up4Session->id;
                 $this->up4User->user_id = $this->user->ID;
             }
+        } else {
+            $this->up4User->session_id = $this->up4Session->id;
+            $this->up4User->user_id = $this->user->ID;
         }
     }
 
@@ -229,9 +221,9 @@ class Up4Users
         $location = new Location();
         $weather = new Weather($location);
         if ($this->fb_user->id && (is_null($this->to_move->id) && is_null($this->to_move_from_survey->id))) {
-            $this->saveMetadata($this->fb_user, $weather);
+            $this->saveMetaData($this->fb_user, $weather);
         } elseif (!$this->fb_user->id) {
-            $this->saveMetadata($this->up4User, $weather);
+            $this->saveMetaData($this->up4User, $weather);
         }
     }
 
@@ -260,6 +252,7 @@ class Up4Users
                 is_null($this->up4User->exercises_often) ||
                     is_null($this->up4User->has_children) ? false : true;
     }
+
     public function removeTempSurveyUser(Up4Users $user)
     {
         if (!is_null($user->id)) {
@@ -278,30 +271,50 @@ class Up4Users
         $this->fb_user->urinary = $user->urinary;
         $this->fb_user->heart = $user->heart;
 
-        if ($user->age &&  $user->gender) {
+        if (!is_null($user->age) &&  !is_null($user->gender)) {
             $this->fb_user->age = $user->age;
             $this->fb_user->gender = $user->gender;
         }
-
         $this->fb_user->save();
         $this->create();
     }
 
-    private function saveSurveyUser($current_up4_user)
+    private function saveSurveyUser()
     {
-        $current_up4_user->travels_often = $this->survey_data['travels_often'];
-        $current_up4_user->exercises_often = $this->survey_data['exercises_often'];
-        $current_up4_user->has_children = $this->survey_data['has_children'];
-        $current_up4_user->digestive = $this->survey_data['digestive'] ? 1 : 0;
-        $current_up4_user->immune = $this->survey_data['immune']  ? 1 : 0;
-        $current_up4_user->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
-        $current_up4_user->urinary = $this->survey_data['urinary']  ? 1 : 0;
-        $current_up4_user->heart = $this->survey_data['heart']  ? 1 : 0;
+        $this->up4User->travels_often = $this->survey_data['travels_often'];
+        $this->up4User->exercises_often = $this->survey_data['exercises_often'];
+        $this->up4User->has_children = $this->survey_data['has_children'];
+        $this->up4User->digestive = $this->survey_data['digestive'] ? 1 : 0;
+        $this->up4User->immune = $this->survey_data['immune']  ? 1 : 0;
+        $this->up4User->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
+        $this->up4User->urinary = $this->survey_data['urinary']  ? 1 : 0;
+        $this->up4User->heart = $this->survey_data['heart']  ? 1 : 0;
 
         if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
-            $current_up4_user->age = $this->survey_data['age'];
-            $current_up4_user->gender = $this->survey_data['gender'];
+            $this->up4User->age = $this->survey_data['age'];
+            $this->up4User->gender = $this->survey_data['gender'];
         }
+
+        $this->up4User->save();
+    }
+
+    public function saveFacebookSurveyUser(Up4User $user)
+    {
+        $user->travels_often = $this->survey_data['travels_often'];
+        $user->exercises_often = $this->survey_data['exercises_often'];
+        $user->has_children = $this->survey_data['has_children'];
+        $user->digestive = $this->survey_data['digestive'] ? 1 : 0;
+        $user->immune = $this->survey_data['immune']  ? 1 : 0;
+        $user->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
+        $user->urinary = $this->survey_data['urinary']  ? 1 : 0;
+        $user->heart = $this->survey_data['heart']  ? 1 : 0;
+
+        if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
+            $user->age = $this->survey_data['age'];
+            $user->gender = $this->survey_data['gender'];
+        }
+
+        $user->save();
     }
 
     private function saveMetaData($current_user, Weather $local_weather)
