@@ -186,47 +186,16 @@ class Up4Users
 
         if ($this->to_move_from_survey->id) {
             if ($this->fb_user->id && $this->fb_user->travels_often === null) {
-                $this->fb_user->travels_often = $this->to_move_from_survey->travels_often;
-                $this->fb_user->exercises_often = $this->to_move_from_survey->exercises_often;
-                $this->fb_user->has_children = $this->to_move_from_survey->has_children;
-                $this->fb_user->digestive = $this->to_move_from_survey->digestive;
-                $this->fb_user->immune = $this->to_move_from_survey->immune;
-                $this->fb_user->vaginal = $this->to_move_from_survey->vaginal;
-                $this->fb_user->urinary = $this->to_move_from_survey->urinary;
-                $this->fb_user->heart = $this->to_move_from_survey->heart;
-
-
-                if ($this->to_move_from_survey->age &&  $this->to_move_from_survey->gender) {
-                    $this->fb_user->age = $this->to_move_from_survey->age;
-                    $this->fb_user->gender = $this->to_move_from_survey->gender;
-
-                    $this->fb_user->save();
-                    $this->create();
-                    //delete temp survey user
-                    $this->removeTempSurveyUser($this->to_move_from_survey);
-                }
-            }
-            if ($this->fb_user->id && $this->fb_user->travels_often === null) {
-                $this->fb_user->travels_often = $this->to_move->travels_often;
-                $this->fb_user->exercises_often = $this->to_move->exercises_often;
-                $this->fb_user->has_children = $this->to_move->has_children;
-                $this->fb_user->digestive = $this->to_move->digestive;
-                $this->fb_user->immune = $this->to_move->immune;
-                $this->fb_user->vaginal = $this->to_move->vaginal;
-                $this->fb_user->urinary = $this->to_move->urinary;
-                $this->fb_user->heart = $this->to_move->heart;
-
-
-                if ($this->to_move->age &&  $this->to_move->gender) {
-                    $this->fb_user->age = $this->to_move->age;
-                    $this->fb_user->gender = $this->to_move->gender;
-
-                    $this->fb_user->save();
-                    $this->create();
-                }
+                $this->saveSurveyUserData();
+                //delete temp survey user
+                $this->removeTempSurveyUser($this->to_move_from_survey);
             }
         }
+        if ($this->fb_user->id && $this->fb_user->travels_often === null) {
+            $this->saveSurveyUserData();
+        }
     }
+
 
     /*
      * Sets up4User properties
@@ -279,25 +248,12 @@ class Up4Users
             $location = new Location();
             $weather = new Weather($location);
 
-            $this->fb_user->location = $weather->getOrigin();
-            $this->fb_user->temperature = $weather->getTemperature();
-            $this->fb_user->conditions = $weather->getConditions();
-            $this->fb_user->local_time = $weather->getLocalTime();
-
-            $this->fb_user->save();
+            $this->saveMetadata($this->fb_user, $weather);
         } elseif (!$this->fb_user->id) {
             $location = new Location();
             $weather = new Weather($location);
 
-            $this->up4User->location = $weather->getOrigin();
-            $this->up4User->temperature = $weather->getTemperature();
-            $this->up4User->conditions = $weather->getConditions();
-            $this->up4User->local_time = $weather->getLocalTime();
-
-
-            $this->up4User->user_id = $this->user->ID;
-            $this->up4User->session_id = $this->up4Session->id;
-            $this->up4User->save();
+            $this->saveMetadata($this->up4User, $weather);
         }
     }
 
@@ -331,5 +287,36 @@ class Up4Users
         if (!is_null($user->id)) {
             User::find($user->user_id)->delete();
         }
+    }
+
+    private function saveSurveyUserData()
+    {
+        $this->fb_user->travels_often = $this->to_move_from_survey->travels_often;
+        $this->fb_user->exercises_often = $this->to_move_from_survey->exercises_often;
+        $this->fb_user->has_children = $this->to_move_from_survey->has_children;
+        $this->fb_user->digestive = $this->to_move_from_survey->digestive;
+        $this->fb_user->immune = $this->to_move_from_survey->immune;
+        $this->fb_user->vaginal = $this->to_move_from_survey->vaginal;
+        $this->fb_user->urinary = $this->to_move_from_survey->urinary;
+        $this->fb_user->heart = $this->to_move_from_survey->heart;
+
+
+        if ($this->to_move_from_survey->age &&  $this->to_move_from_survey->gender) {
+            $this->fb_user->age = $this->to_move_from_survey->age;
+            $this->fb_user->gender = $this->to_move_from_survey->gender;
+        }
+
+        $this->fb_user->save();
+        $this->create();
+    }
+
+    private function saveMetaData(Up4Users $current_fb_user, Weather $local_weather)
+    {
+        $current_fb_user->location = $local_weather->getOrigin();
+        $current_fb_user->temperature = $local_weather->getTemperature();
+        $current_fb_user->conditions = $local_weather->getConditions();
+        $current_fb_user->local_time = $welocal_weatherather->getLocalTime();
+
+        $current_fb_user->save();
     }
 }
