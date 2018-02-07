@@ -140,31 +140,11 @@ class Up4Users
             ->orWhere('facebook_id', $this->facebook_id)->first();
 
         if (!$this->isSurveyTaken() && !$logged_in_fb_user->id) {
-            $this->up4User->travels_often = $this->survey_data['travels_often'];
-            $this->up4User->exercises_often = $this->survey_data['exercises_often'];
-            $this->up4User->has_children = $this->survey_data['has_children'];
-            $this->up4User->digestive = $this->survey_data['digestive'] ? 1 : 0;
-            $this->up4User->immune = $this->survey_data['immune']  ? 1 : 0;
-            $this->up4User->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
-            $this->up4User->urinary = $this->survey_data['urinary']  ? 1 : 0;
-            $this->up4User->heart = $this->survey_data['heart']  ? 1 : 0;
-
-
-            if ($this->survey_data['age'] &&  $this->survey_data['gender']) {
-                $this->up4User->age = $this->survey_data['age'];
-                $this->up4User->gender = $this->survey_data['gender'];
-            }
+            $this->up4User->session_id = $this->up4Session->id;
+            $this->saveSurveyUser($this->up4User, $this->survey_data);
             $this->create();
         } else {
-            $logged_in_fb_user->travels_often = $this->survey_data['travels_often'];
-            $logged_in_fb_user->exercises_often = $this->survey_data['exercises_often'];
-            $logged_in_fb_user->has_children = $this->survey_data['has_children'];
-            $logged_in_fb_user->digestive = $this->survey_data['digestive']  ? 1 : 0;
-            $logged_in_fb_user->immune = $this->survey_data['immune']  ? 1 : 0;
-            $logged_in_fb_user->vaginal = $this->survey_data['vaginal']  ? 1 : 0;
-            $logged_in_fb_user->urinary = $this->survey_data['urinary']  ? 1 : 0;
-            $logged_in_fb_user->heart = $this->survey_data['heart']  ? 1 : 0;
-
+            $this->saveSurveyUser($logged_in_fb_user, $this->survey_data);
             $logged_in_fb_user->save();
         }
     }
@@ -244,6 +224,8 @@ class Up4Users
 
     private function updateMetaAndSave()
     {
+        $location = new Location();
+        $weather = new Weather($location);
         if ($this->fb_user->id && (is_null($this->to_move->id) && is_null($this->to_move_from_survey->id))) {
             $this->saveMetadata($this->fb_user, $weather);
         } elseif (!$this->fb_user->id) {
@@ -294,7 +276,6 @@ class Up4Users
         $this->fb_user->urinary = $this->to_move_from_survey->urinary;
         $this->fb_user->heart = $this->to_move_from_survey->heart;
 
-
         if ($this->to_move_from_survey->age &&  $this->to_move_from_survey->gender) {
             $this->fb_user->age = $this->to_move_from_survey->age;
             $this->fb_user->gender = $this->to_move_from_survey->gender;
@@ -304,14 +285,29 @@ class Up4Users
         $this->create();
     }
 
-    private function saveMetaData(Up4Users $current_fb_user, Weather $local_weather)
+    private function saveSurveyUser($current_up4_user, $data)
     {
-        $location = new Location();
-        $weather = new Weather($location);
+        $current_up4_user->travels_often = $data['travels_often'];
+        $current_up4_user->exercises_often = $data['exercises_often'];
+        $current_up4_user->has_children = $data['has_children'];
+        $current_up4_user->digestive = $data['digestive'] ? 1 : 0;
+        $current_up4_user->immune = $data['immune']  ? 1 : 0;
+        $current_up4_user->vaginal = $data['vaginal']  ? 1 : 0;
+        $current_up4_user->urinary = $data['urinary']  ? 1 : 0;
+        $current_up4_user->heart = $data['heart']  ? 1 : 0;
+
+        if ($this->survey_data['age'] &&  $data['gender']) {
+            $current_up4_user->age = $data['age'];
+            $current_up4_user->gender = $data['gender'];
+        }
+    }
+
+    private function saveMetaData($current_fb_user, Weather $local_weather)
+    {
         $current_fb_user->location = $local_weather->getOrigin();
         $current_fb_user->temperature = $local_weather->getTemperature();
         $current_fb_user->conditions = $local_weather->getConditions();
-        $current_fb_user->local_time = $welocal_weatherather->getLocalTime();
+        $current_fb_user->local_time = $local_weather->getLocalTime();
 
         $current_fb_user->save();
     }
