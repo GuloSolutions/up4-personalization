@@ -38,8 +38,8 @@ class ApiCache
     public function saveItemInCache($data)
     {
         if ($this->getCache() === true) {
-            $this->pool->save($this->item->set($data));
             $this->setExpiration();
+            $this->pool->save($this->item->set($data));
         }
     }
 
