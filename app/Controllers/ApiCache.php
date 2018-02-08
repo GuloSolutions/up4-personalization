@@ -39,7 +39,7 @@ class ApiCache
     {
         if ($this->getCache() === true) {
             $this->pool->save($this->item->set($data));
-            $this->item->expiresAfter($this->expiration);
+            $this->setExpiration();
         }
     }
 
@@ -58,8 +58,14 @@ class ApiCache
         return $this->cache;
     }
 
-    public function setExpiration($expiration)
+    public function setExpiration()
     {
-        $this->expiration = $expiration;
+        $this->item->expiresAfter($this->expiration);
+    }
+
+    //delete entire cache
+    public function deleteAllCache()
+    {
+        $this->pool->clear();
     }
 }
