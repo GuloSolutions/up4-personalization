@@ -68,7 +68,7 @@ class Up4Users
     private function lookupFacebookUser()
     {
         return Up4User::where('facebook_id', $this->facebook_id)
-                ->first();
+            ->first();
     }
 
     public function checkFBUser()
@@ -189,15 +189,12 @@ class Up4Users
                     }
                 }
 
-                $this->up4User->session_id = $this->up4Session->id;
-                $this->up4User->user_id = $this->user->ID;
+                $this->establishSession();
             }
         } else {
-            $this->up4User->session_id = $this->up4Session->id;
-            $this->up4User->user_id = $this->user->ID;
+            $this->establishSession();
         }
     }
-
 
     private function create()
     {
@@ -220,10 +217,11 @@ class Up4Users
     {
         $location = new Location();
         $weather = new Weather($location);
+
         if ($this->fb_user->id && (is_null($this->to_move->id) && is_null($this->to_move_from_survey->id))) {
-            $this->saveMetaData($this->fb_user, $weather);
-        } elseif (!$this->fb_user->id) {
-            $this->saveMetaData($this->up4User, $weather);
+            $this->saveMetaData($weather);
+        } elseif (!isset($this->fb_user->id)) {
+            $this->saveMetaData($weather);
         }
     }
 
@@ -317,13 +315,27 @@ class Up4Users
         $user->save();
     }
 
-    private function saveMetaData($current_user, Weather $local_weather)
+    private function saveMetaData(Weather $local_weather)
     {
-        $current_user->location = $local_weather->getOrigin();
-        $current_user->temperature = $local_weather->getTemperature();
-        $current_user->conditions = $local_weather->getConditions();
-        $current_user->local_time = $local_weather->getLocalTime();
+        if (isset($this->fb_user->id)) {
+            $this->fb_user->location = $local_weather->getOrigin();
+            $this->fb_user->temperature = $local_weather->getTemperature();
 
-        $current_user->save();
+            $this->fb_user->conditions = $local_weather->getConditions();
+            $this->fb_user->local_time = $local_weather->getLocalTime();
+            $this->fb_user->save();
+        } else {
+            $this->up4User->location = $local_weather->getOrigin();
+            $this->up4User->temperature = $local_weather->getTemperature();
+            $this->up4User->conditions = $local_weather->getConditions();
+            $this->up4User->local_time = $local_weather->getLocalTime();
+            $this->up4User->save();
+        }
+    }
+
+    public function establishSession()
+    {
+        $this->up4User->session_id = $this->up4Session->id;
+        $this->up4User->user_id = $this->user->ID;
     }
 }
