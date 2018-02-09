@@ -271,10 +271,7 @@ class Facebook_Social_Public
             </div>
 
             <form-wizard @on-complete="onComplete"
-
-
-                @on-change="incrementCounter"
-
+                    @on-change="incrementCounter"
                      color="gray"
                      error-color="#a94442"
                      title=""
@@ -287,6 +284,7 @@ EOS;
                 $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateAgeTab">
+               <label for="radio"  class="control control--checkbox">How old are you?</label>
                <vue-form-generator :model="model"
                                    :schema="ageTabSchema"
                                    :options="formOptions"
@@ -303,19 +301,24 @@ EOS;
                 $questions[] = '
             <tab-content
 
-                icon="ti-settings" :before-change="validateGenderTab">
+                icon="ti-user" :before-change="validateGenderTab">
+                <label for="radio"  class="control control--checkbox">What is your sex?</label>
+
                 <vue-form-generator :model="model"
                                    :schema="genderTabSchema"
                                    :options="formOptions"
                                    ref="genderTabForm"
                                    >
                 </vue-form-generator>
+
             </tab-content>';
             }
 
             $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateTravelTab">
+                <label for="radio"  class="control control--checkbox">You are a ...?</label>
+
                 <vue-form-generator :model="model"
                                    :schema="travelTabSchema"
                                    :options="formOptions"
@@ -327,6 +330,7 @@ EOS;
             $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateChildrenTab">
+                        <label for="radio">Do you have children?</label>
                 <vue-form-generator :model="model"
                                    :schema="childrenTabSchema"
                                    :options="formOptions"
@@ -338,6 +342,7 @@ EOS;
             $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateExerciseTab">
+                         <label for="radio">How would you describe your workouts?</label>
                 <vue-form-generator :model="model"
                                    :schema="exerciseTabSchema"
                                    :options="formOptions"
@@ -349,6 +354,7 @@ EOS;
             $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateHealthTab">
+                         <label for="checkbox" >Which health needs are most important to you?
                 <vue-form-generator :model="model"
                                    :schema="healthTabSchema"
                                    :options="formOptions"
@@ -401,9 +407,12 @@ EOS;
     {
         $response = $_POST['response'];
 
+        error_log(print_r($response, true));
 
 
-        error_log(print_r($this->up4->getPrimaryRecommendation(), true));
+
+
+        // error_log(print_r($this->up4->getPrimaryRecommendation(), true));
 
         $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
 
@@ -489,6 +498,7 @@ EOS;
                                    ref="genderTabForm"
                                    >
                 </vue-form-generator>
+
             </tab-content>;
 
 
