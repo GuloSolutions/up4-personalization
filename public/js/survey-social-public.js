@@ -426,7 +426,6 @@ var vm = new _vue2.default({
     ageTabSchema: {
       fields: [{
         type: "radios",
-        label: "How old are you?",
         model: "age",
         required: true,
         values: ["under 24", "24-39", "40-49", "50+"],
@@ -437,7 +436,6 @@ var vm = new _vue2.default({
     genderTabSchema: {
       fields: [{
         type: "radios",
-        label: "What is your sex?",
         model: "gender",
         required: true,
         values: ["female", "male", "Prefer not to say"],
@@ -448,7 +446,6 @@ var vm = new _vue2.default({
     travelTabSchema: {
       fields: [{
         type: "radios",
-        label: "You are...?",
         model: "travels_often",
         required: true,
         values: ["Jet Setter", "Weekend Traveler", "Neighborhood Roamer", "Homebody"],
@@ -459,7 +456,6 @@ var vm = new _vue2.default({
     childrenTabSchema: {
       fields: [{
         type: "radios",
-        label: "Do you have children?",
         model: "has_children",
         required: true,
         values: ["Yes, and they’re out of the house", "Yes, and they're growing so fast", "Yes, little rugrats", "Nope"],
@@ -470,7 +466,6 @@ var vm = new _vue2.default({
     exerciseTabSchema: {
       fields: [{
         type: "radios",
-        label: "How would you describe your workouts?",
         model: "exercises_often",
         required: true,
         values: ["Every day", "A few times a week", "Weekend Stroller", "I don’t workout"],
@@ -481,7 +476,6 @@ var vm = new _vue2.default({
     healthTabSchema: {
       fields: [{
         type: "checklist",
-        label: "Which health needs are most important to you?",
         model: "health_needs",
         listBox: true,
         required: true,
@@ -618,18 +612,26 @@ var vm = new _vue2.default({
     }
   },
 
-  mounted: function mounted(tabIndex, activeTabIndex, prevIndex, nextIndex) {
-    this.$nextTick(function () {
+  mounted: function mounted(event, tabIndex, activeTabIndex, prevIndex, nextIndex) {
+    this.$nextTick(function (event) {
       this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;
-      $("#survey-social-public input:radio").click(function () {
 
-        vm.$refs.wizard.nextTab();
-      });
-    }), document.getElementById('start-over').onclick = function () {
+      //     this.$on('clicked', function () {
+      //   // vm.$refs.wizard.nextTab();
+      //   alert('now ');
+
+      // })
+    }), $('#start-over').onclick = function () {
       vm.$refs.wizard.reset();
     };
-  }
 
+    $("#survey-social-public input:radio").click(function (event) {
+
+      // alert('before switch');
+      vm.$refs.wizard.nextTab();
+      // event.preventDefault();
+    });
+  }
 });
 
 /***/ }),

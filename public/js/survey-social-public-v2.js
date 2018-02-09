@@ -33,7 +33,6 @@ var vm = new Vue({
    ageTabSchema:{
      fields:[{
         type: "radios",
-        label: "How old are you?",
         model: "age",
         required:true,
         values: [
@@ -51,7 +50,6 @@ var vm = new Vue({
      fields:[
      {
         type: "radios",
-        label: "What is your sex?",
         model: "gender",
         required:true,
         values: [
@@ -68,7 +66,6 @@ var vm = new Vue({
      fields:[
      {
         type: "radios",
-        label: "You are...?",
         model: "travels_often",
         required:true,
         values: [
@@ -87,7 +84,6 @@ var vm = new Vue({
      fields:[
      {
         type: "radios",
-        label: "Do you have children?",
         model: "has_children",
         required:true,
         values: [
@@ -105,7 +101,6 @@ var vm = new Vue({
      fields:[
      {
         type: "radios",
-        label: "How would you describe your workouts?",
         model: "exercises_often",
         required:true,
         values: [
@@ -123,7 +118,6 @@ var vm = new Vue({
      fields:[
      {
         type: "checklist",
-        label: "Which health needs are most important to you?",
         model: "health_needs",
         listBox: true,
         required:true,
@@ -283,19 +277,28 @@ axios.post(ajax_receiver.ajax_url,
         }
   },
 
-  mounted: function(tabIndex, activeTabIndex, prevIndex, nextIndex) {
-      this.$nextTick(function () {
+  mounted: function(event, tabIndex, activeTabIndex, prevIndex, nextIndex) {
+      this.$nextTick(function (event) {
       this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;
-      $("#survey-social-public input:radio").click(function() {
 
-      vm.$refs.wizard.nextTab();
-  });
+      //     this.$on('clicked', function () {
+      //   // vm.$refs.wizard.nextTab();
+      //   alert('now ');
+
+      // })
 
     }),
-        document.getElementById('start-over').onclick = function() {
+        $('#start-over').onclick = function() {
           vm.$refs.wizard.reset();
-
       };
-  },
 
+    $("#survey-social-public input:radio").click(function(event) {
+
+    // alert('before switch');
+        vm.$refs.wizard.nextTab();
+        // event.preventDefault();
+  });
+
+  },
 })
+
