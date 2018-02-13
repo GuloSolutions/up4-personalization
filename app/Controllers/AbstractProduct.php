@@ -1,9 +1,12 @@
 <?php
 namespace Controllers;
 
+use Controllers\Gender;
+use Controllers\WpPost;
+
 abstract class AbstractProduct
 {
-    abstract protected function getGender();
+    protected $is_primary;
 
     abstract protected function getAge();
 
@@ -27,6 +30,27 @@ abstract class AbstractProduct
 
     protected function isPrimary()
     {
-        return $is_primary ? true : false;
+        return $this->is_primary ? true : false;
+    }
+
+    protected function setPrimary(bool $value)
+    {
+        $this->is_primary = $value;
+    }
+
+    /*
+     * @return Gender
+     */
+    public function getGender()
+    {
+        return $this->gender();
+    }
+
+    /*
+     * @return WpQuery
+     */
+    public function getPost()
+    {
+        return WpPost::get($this->getSku());
     }
 }

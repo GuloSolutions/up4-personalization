@@ -4,27 +4,17 @@ namespace Controllers;
 use Controllers\WpPost;
 use Controllers\Gender;
 
-
 class ProductAdult extends AbstractProduct
 {
-
-    public CONST SKU = 40000601436;
-    public CONST GENDER = 'MF';
-
-    public $is_primary;
+    private const SKU = 40000601436;
 
     public $gender;
 
     public function __construct()
     {
         $this->setPrimary(true);
-    }
 
-    public function getGender()
-    {
-        $gender_helper = new Gender(self::GENDER);
-
-        return $gender_helper->getGender();
+        $this->gender = new Gender(Gender::BOTH);
     }
 
     public function getAge()
@@ -77,19 +67,8 @@ class ProductAdult extends AbstractProduct
         return false;
     }
 
-    public function isPrimary()
-    {
-        return $is_primary ? true : false;
-    }
-
     public function setPrimary(bool $value)
     {
         $this->is_primary = $value;
-    }
-
-    public function getPost($product)
-    {
-        $post = new WpPost();
-        return $post->getWpPost($product);
     }
 }

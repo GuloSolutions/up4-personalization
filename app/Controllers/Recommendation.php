@@ -1,156 +1,105 @@
 <?php
 namespace Controllers;
 
+use Controllers\Gender;
+
 class Recommendation
 {
-    public $productAdult;
+    /*
+     * @param Up4
+     */
+    public $up4;
 
-    public $productWomens;
+    /*
+     * @param Array of Abstract Products
+     */
+    private $products;
 
-    public $productUltra;
-
-    public $productKidsCubes;
-
-    public $productHeartHealth;
-
-    public $productWomensAdvancedCare;
-
-    public $productAdult50Plus;
-
-    public $user;
-
-
-    public function __construct(\Models\Up4User $up4User)
+    public function __construct(\Controllers\Up4 $up4)
     {
+        $cwd = dirname(__FILE__);
 
-        //THIS CLASS INSTANTIATION DOES NOT WORK
+        $files = glob($cwd . '/[Product]*.php');
 
-        // $cwd = dirname(__FILE__);
-        // $files = glob($cwd . '/[Product]*.php');
+        foreach ($files as $className) {
+            $subfolders = explode('/', $className);
+            $classFilename = end($subfolders);
+            $a = '\namespacename\classname';
 
-        // foreach ($files as $className) {
-        //     $className = explode('/', $className, 7);
+            $className = substr($classFilename, 0, -4);
+            $camelCaseClassName = lcfirst($className);
 
-        //     $classNameClean = substr($className[6], 0, -4);
+            $classNameNamespace = sprintf('\Controllers\%s', $className);
 
-        //     $camelCaseClassName = lcfirst((string) $classNameClean);
+            $this->products[$camelCaseClassName] = new $classNameNamespace;
+        }
 
-        //     $this->{$camelCaseClassName} = new Controllers\{$classNameClean};
-        // }
+        $this->up4 = $up4;
 
-        $this->user = $up4User;
-
-        $this->productWomens = new ProductWomens();
-
-        $this->productAdult = new ProductAdult();
-
-        $this->productUltra = new ProductUltra();
-
-        $this->productKidsCubes = new ProductKidsCubes();
-
-        $this->productHeartHealth = new ProductHeartHealth();
-
-        $this->productWomensAdvancedCare = new ProductWomensAdvancedCare();
-
-        $this->productAdult50Plus = new ProductAdult50Plus();
-
-        $this->productSport = new ProductSport();
-
+        $this->user = $this->up4->up4User;
     }
 
-    public function getProductAdult()
+    public function __get($name)
     {
-        $sku = $this->productAdult->getSku();
-        return $this->productAdult->getPost($sku);
-    }
-    public function getProductWomens()
-    {
-        $sku = $this->productWomens->getSku();
-        return $this->productWomens;
-    }
-    public function getProductUltra()
-    {
-        $sku = $this->productUltra->getSku();
-        return $this->productUltra->getPost($sku);
-    }
-    public function getProductKidsCubes()
-    {
-        $sku = $this->productKidsCubes->getSku();
-        return $this->productKidsCubes->getPost($sku);
-    }
-    public function getProductHeartHealth()
-    {
-        $sku = $this->productHeartHealth->getSku();
-        return $this->productHeartHealth->getPost($sku);
-    }
-    public function getProductSport()
-    {
-        $sku = $this->productSport->getSku();
-        return $this->productSport->getPost($sku);
-    }
-    public function getProductWomenAdvancedCare()
-    {
-        $sku = $this->productWomensAdvancedCare->getSku();
-        return $this->productWomensAdvancedCare->getPost($sku);
-    }
-    public function getProductAdult50Plus()
-    {
-        $sku = $this->productAdult50Plus->getSku();
-        return $this->productAdult50Plus->getPost($sku);
+        if (is_object($this->products[$name]) && method_exists($this->products[$name], 'getPost')) {
+            return $this->products[$name]->getPost();
+        }
     }
 
     public function getUserRecommendation()
     {
-        if ($this->user->facebook_id !== null) {
-            return $this->getFacebookProductMatch();
-        } else {
+        if ($this->up4->isSurveyTaken()) {
             return $this->getSurveyProductMatch();
+        } else {
+            return $this->getFacebookProductMatch();
         }
     }
 
-    public function getSurveyProductMatch()
+    private function getSurveyProductMatch()
     {
         if ($this->user->age == 50 && $this->user->digestive == true) {
-            return $this->getProductAdult50Plus();
-        } elseif ($this->user->gender == 'female' && $this->user->vaginal == true) {
-            return $this->getProductWomenAdvancedCare();
-        } elseif ($this->user->age == 30 && $this->user->gender == 'female') {
-            return $this->getProductWomens();
+            return $this->productAdult50Plus;
+        } elseif ($this->user->gender === Gender::FEMALE && $this->user->vaginal == true) {
+            return $this->productWomenAdvancedCare;
+        } elseif ($this->user->age == 30 && $this->user->gender === Gender::FEMALE) {
+            return $this->productWomens;
         } elseif ($this->user->age == 45 || $this->user->age == 50 && $this->user->heart == true) {
-            return $this->getProductHeartHealth();
-        } elseif ($this->user->hasChildren == true) {
+            return $this->productHeartHealth;
+        } elseif ($this->user->has_children == true) {
             return $this->processFurtherOptions();
-        } elseif ($this->user->exercisesOften == true && $this->user->age  == 20 || $this->user->age == 30 || $this->user->age = 40 || $this->user->age == 50  ) {
-            return $this->getProductSport();
-        }
-        else {
+        } elseif ($this->user->exercises_often == true && $this->user->age  == 20 || $this->user->age == 30 || $this->user->age = 40 || $this->user->age == 50) {
+            return $this->productSport;
+        } else {
             return $this->processFurtherOptions();
         }
     }
 
-    public function getFacebookProductMatch()
+    private function getFacebookProductMatch()
     {
-        //needs to be adjusted
+        // needs to be adjusted
         if ($this->user->age == 50) {
-            return $this->getProductAdult50Plus();
-        } elseif ($this->user->gender == 'female' && $this->user->vaginal == true) {
-            return $this->getProductWomenAdvancedCare();
-        } elseif ($this->user->age == 30 && $this->user->gender == 'female') {
-            return $this->getProductWomens();
+            return $this->productAdult50Plus;
+        } elseif ($this->user->gender === Gender::FEMALE && $this->user->vaginal == true) {
+            return $this->productWomenAdvancedCare;
+        } elseif ($this->user->age == 30 && $this->user->gender === Gender::FEMALE) {
+            return $this->productWomens;
         } elseif ($this->user->age == 45 || $this->user->age == 50 && $this->user->heart == true) {
-            return $this->getProductHeartHealth();
+            return $this->productHeartHealth;
         } elseif ($this->user->hasChildren == true) {
             return $this->processFurtherOptions();
         } elseif ($this->user->exercisesOften == true) {
-            return $this->getProductSport();
+            return $this->productSport;
         }
     }
-    //assign rank to cases that do not fall in those  above
-    //to be adjusted
-    public function processFurtherOptions()
+
+    // assign rank to cases that do not fall in those  above
+    // to be adjusted
+    private function processFurtherOptions()
     {
-        if ($this->user->age == 30){
-            return $this->getProductAdult();
+        if ($this->user->age == 30) {
+            return $this->productAdult;
+        } else {
+            return $this->productAdult;
         }
     }
 }

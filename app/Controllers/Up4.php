@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Controllers\Recommendation;
 use Controllers\RecommendationHelper;
 
-
 class Up4
 {
     public $session_id;
@@ -48,9 +47,9 @@ class Up4
      */
     public function isSurveyTaken()
     {
-        return is_null($this->up4User->travels_often) ||
+        return (is_null($this->up4User->travels_often) ||
                 is_null($this->up4User->exercises_often) ||
-                    is_null($this->up4User->has_children) ? false : true;
+                    is_null($this->up4User->has_children)) ? false : true;
     }
 
     /*
@@ -151,8 +150,8 @@ class Up4
 
     public function getPrimaryRecommendation()
     {
-        $this->product = new Recommendation($this->up4User);
+        $this->recommendation = new Recommendation($this);
 
-        return $this->product->getUserRecommendation();
+        return $this->recommendation->getUserRecommendation();
     }
 }

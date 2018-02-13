@@ -9,11 +9,20 @@ class Gender
 
     const BOTH = 'both';
 
-    public $gender;
+    private $gender;
 
     public function __construct($value)
     {
-        $this->gender = $value;
+        switch($value) {
+            case self::MALE:
+            case self::FEMALE:
+            case self::BOTH:
+                $this->gender = $value;
+            break;
+            default:
+                throw new Exception('No gender defined');
+            break;
+        }
     }
 
     public function getGender()
@@ -23,21 +32,17 @@ class Gender
 
     public function isMale()
     {
-        return $this->gender == 'MALE' ? true : false;
+        return $this->gender === self::MALE ? true : false;
     }
 
     public function isFemale()
     {
-        return $this->gender == 'FEMALE' ? true : false;
+        return $this->gender === self::FEMALE ? true : false;
     }
 
-    static public function isBoth($gender)
+    public function isBoth($gender)
     {
-        if ($gender == self::BOTH) {
-            return true;
-        }
-
-        return false;
+        return $this->gender === self::BOTH ? true : false;
     }
 
     static public function getBoth()

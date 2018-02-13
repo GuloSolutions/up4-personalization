@@ -1,19 +1,21 @@
 <?php
 namespace Controllers;
 
-use Controllers\AbstractProduct;
-
 class WpPost
 {
-    public function getWpPost($sku)
+    /*
+     * @return WP_Post
+     */
+    public static function get($sku)
     {
         global $wp_query;
 
         $post_type = [
-             'products',
-            ];
+            'products'
+        ];
 
         $args = [
+                'posts_per_page' => 1,
                 'post_type' => $post_type,
                 'meta_key' => 'sku',
                 'meta_value' => $sku
@@ -21,6 +23,10 @@ class WpPost
 
         $wp_query = new \WP_Query($args);
 
-        return $wp_query;
+        if ($wp_query->have_posts()) {
+            return current($wp_query->posts);
+        }
+
+        return false;
     }
 }

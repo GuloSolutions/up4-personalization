@@ -3,19 +3,13 @@ namespace Controllers;
 
 class ProductUltra extends AbstractProduct
 {
-
-    public CONST SKU = 40000602266;
-
-    public $is_primary;
+    private const SKU = 40000602266;
 
     public function __construct()
     {
         $this->setPrimary(true);
-    }
 
-    public function getGender()
-    {
-        return 'both';
+        $this->gender = new Gender(Gender::BOTH);
     }
 
     public function getAge()
@@ -66,21 +60,5 @@ class ProductUltra extends AbstractProduct
     public function isHealthNeeds()
     {
         return false;
-    }
-
-    public function isPrimary()
-    {
-        return $is_primary ? true : false;
-    }
-
-    public function setPrimary(bool $value)
-    {
-        $this->is_primary = $value;
-    }
-
-    public function getPost($product)
-    {
-        $post = new WpPost();
-        return $post->getWpPost($product);
     }
 }
