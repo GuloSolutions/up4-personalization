@@ -30,7 +30,8 @@ class Up4UsersMigration extends Migration
     public function up()
     {
         $this->schema->create(
-            'up4_users', function (Blueprint $table) {
+            'up4_users',
+            function (Blueprint $table) {
                 $table->increments('id');
 
                 $table->integer('session_id')->unsigned()->nullable();
@@ -43,6 +44,8 @@ class Up4UsersMigration extends Migration
 
                 $table->string('gender', 10)->nullable();
                 $table->int('age', 2)->nullable();
+                $table->string('birthday', 10)->nullable();
+
 
                 $table->boolean('travels_often')->nullable();
                 $table->boolean('has_children')->nullable();

@@ -148,6 +148,14 @@ class Up4
         return Carbon::now($this->up4User->local_time)->format('g:i A');
     }
 
+    /*
+     * @return string
+     */
+    public function getBirthday()
+    {
+        return $this->up4User->birthday;
+    }
+
     public function getPrimaryRecommendation()
     {
         $this->recommendation = new Recommendation($this);

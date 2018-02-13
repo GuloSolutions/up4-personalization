@@ -127,6 +127,9 @@ class Up4Users
 
         $this->fb_data['picture'] = $response['picture']['data']['url'];
 
+        $this->fb_data['birthday'] = array_key_exists('birthday', $response) ?
+            $response['birthday'] :  null;
+
         $this->fb_data['age'] = array_key_exists('birthday', $response) ?
             $this->getAge($response['birthday']) :  null;
 
@@ -269,9 +272,11 @@ class Up4Users
         $this->fb_user->urinary = $user->urinary;
         $this->fb_user->heart = $user->heart;
 
-        if (!is_null($user->age) &&  !is_null($user->gender)) {
+
+        if (!is_null($user->age) &&  !is_null($user->gender && !is_null($user->birthday))) {
             $this->fb_user->age = $user->age;
             $this->fb_user->gender = $user->gender;
+            $this->fb_user->birthday = $user->birthday;
         }
         $this->fb_user->save();
         $this->create();
