@@ -29,7 +29,7 @@ class ProductAdult extends AbstractProduct
 
     public function getAge()
     {
-        return 20;
+        return 30;
     }
 
     public function getSku()

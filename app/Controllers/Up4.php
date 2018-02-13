@@ -6,6 +6,8 @@ use Models\Up4User;
 use Models\Up4Session;
 use Carbon\Carbon;
 use Controllers\Recommendation;
+use Controllers\RecommendationHelper;
+
 
 class Up4
 {
@@ -16,6 +18,7 @@ class Up4
     public $up4Session;
 
     public $product;
+
 
     public function __construct($session_id)
     {
@@ -148,18 +151,8 @@ class Up4
 
     public function getPrimaryRecommendation()
     {
-        $this->product = new Recommendation();
+        $this->product = new Recommendation($this->up4User);
 
-        $ref_class = new \ReflectionClass($this->product);
-
-        $products = $ref_class->newInstanceArgs();
-
-        foreach ($products as $product) {
-            if ($product->is_primary == true) {
-                $sku = $product::SKU;
-                $primary_product = $product->getPost($sku);
-                return $primary_product;
-            }
-        }
+        return $this->product->getUserRecommendation();
     }
 }

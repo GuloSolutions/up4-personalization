@@ -78,7 +78,7 @@ class ProductHeartHealth extends AbstractProduct
         $this->is_primary = $value;
     }
 
-    public function getPost(AbstractProduct $product)
+    public function getPost ($product)
     {
         $post = new WpPost();
         return $post->getWpPost($product);

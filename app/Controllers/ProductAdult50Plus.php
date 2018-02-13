@@ -10,7 +10,7 @@ class ProductAdult50Plus extends AbstractProduct
 
     public function __construct()
     {
-        $this->setPrimary(true);
+        $this->setPrimary(false);
     }
 
     public function getGender()
@@ -20,7 +20,7 @@ class ProductAdult50Plus extends AbstractProduct
 
     public function getAge()
     {
-        return "24-29";
+        return 50;
     }
 
     public function getSku()
@@ -78,7 +78,7 @@ class ProductAdult50Plus extends AbstractProduct
         $this->is_primary = $value;
     }
 
-    public function getPost(AbstractProduct $product)
+    public function getPost($product)
     {
         $post = new WpPost();
         return $post->getWpPost($product);

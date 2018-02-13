@@ -3,6 +3,12 @@ namespace Controllers;
 
 class Gender
 {
+    const MALE = 'male';
+
+    const FEMALE = 'female';
+
+    const BOTH = 'both';
+
     public $gender;
 
     public function __construct($value)
@@ -23,5 +29,19 @@ class Gender
     public function isFemale()
     {
         return $this->gender == 'FEMALE' ? true : false;
+    }
+
+    static public function isBoth($gender)
+    {
+        if ($gender == self::BOTH) {
+            return true;
+        }
+
+        return false;
+    }
+
+    static public function getBoth()
+    {
+        return self::BOTH;
     }
 }
