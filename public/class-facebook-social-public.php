@@ -170,7 +170,9 @@ class Facebook_Social_Public
 
     public function startUp4Session()
     {
-        if (!session_id()) {
+        $session_id = session_id();
+
+        if (!$session_id) {
             $sh = new Controllers\Up4Sessions();
 
             session_set_save_handler($sh, true);
@@ -180,7 +182,9 @@ class Facebook_Social_Public
             session_start();
 
             $session_id = session_id();
+        }
 
+        if ($session_id) {
             $this->up4 = new Controllers\Up4($session_id);
 
             $this->up4->init();
