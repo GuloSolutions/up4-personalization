@@ -39,10 +39,10 @@ abstract class AbstractProduct
     /*
      * @return Gender
      */
-    // public function getAge()
-    // {
-    //     return $this->age();
-    // }
+    public function getAge()
+    {
+        return $this->age();
+    }
 
     /*
      * @return WpQuery
