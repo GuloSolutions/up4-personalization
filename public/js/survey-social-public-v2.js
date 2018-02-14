@@ -253,6 +253,12 @@ axios.post(ajax_receiver.ajax_url,
         this.$refs.wizard.navigateToTab(0);
       }
    },
+   hideSurveyDiv: function (event){
+    if (event){
+      $('#survey-social-public').hide();
+    }
+
+   },
 
    prettyJSON: function(json) {
             if (json) {
@@ -281,12 +287,6 @@ axios.post(ajax_receiver.ajax_url,
       this.$nextTick(function (event) {
       this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;
 
-      //     this.$on('clicked', function () {
-      //   // vm.$refs.wizard.nextTab();
-      //   alert('now ');
-
-      // })
-
     }),
         $('#start-over').onclick = function() {
           vm.$refs.wizard.reset();
@@ -294,9 +294,7 @@ axios.post(ajax_receiver.ajax_url,
 
     $("#survey-social-public input:radio").click(function(event) {
 
-    // alert('before switch');
         vm.$refs.wizard.nextTab();
-        // event.preventDefault();
   });
 
   },

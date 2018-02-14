@@ -1,20 +1,26 @@
 <?php
 namespace Controllers;
 
+use Controllers\Gender;
+use Controllers\Age;
+
 class ProductWomensAdvancedCare extends AbstractProduct
 {
     private const SKU = 40000600282;
 
+    public $gender;
+    public $age;
+
     public function __construct()
     {
-        $this->setPrimary(true);
 
+        $this->age = new AGE(AGE::ISALL);
         $this->gender = new Gender(Gender::FEMALE);
     }
 
     public function getAge()
     {
-        return "24-29";
+        return $this->age;
     }
 
     public function getSku()
@@ -57,7 +63,7 @@ class ProductWomensAdvancedCare extends AbstractProduct
         return true;
     }
 
-    public function isHealthNeeds()
+    public function isHeart()
     {
         return false;
     }

@@ -9,6 +9,8 @@ class Age
 
     const IS50PLUS = 50;
 
+    const ISALL = array(0, 100);
+
 
     private $age;
 
@@ -18,6 +20,7 @@ class Age
             case self::IS2439:
             case self::IS4060:
             case self::IS50PLUS:
+            case self::ISALL:
                 $this->age = $value;
             break;
             default:
@@ -31,22 +34,22 @@ class Age
         return $this->age;
     }
 
-    static public function isLessThan24($value)
+    public static function isLessThan24($value)
     {
         return ($value < self::IS2439[0]) ? true : false;
     }
 
-    static public function isBetween24And39($value)
+    public static function isBetween24And39($value)
     {
         return ($value >= self::IS2439[0] && $value <= self::IS2439[0]) ? true : false;
     }
 
-    static public function isBetween40And60($value)
+    public static function isBetween40And60($value)
     {
         return ($value >= self::IS4060[0] && $value <= self::IS4060[1]) ? true : false;
     }
 
-    static public function is50plus($value)
+    public static function is50plus($value)
     {
         return $value >= self::IS50PLUS ? true: false;
     }

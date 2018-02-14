@@ -589,6 +589,12 @@ var vm = new _vue2.default({
       }
     },
 
+    hideSurveyDiv: function hideSurveyDiv(event) {
+      if (event) {
+        $('#survey-social-public').hide();
+      }
+    },
+
     prettyJSON: function prettyJSON(json) {
       if (json) {
         json = (0, _stringify2.default)(json, undefined, 4);
@@ -615,21 +621,13 @@ var vm = new _vue2.default({
   mounted: function mounted(event, tabIndex, activeTabIndex, prevIndex, nextIndex) {
     this.$nextTick(function (event) {
       this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;
-
-      //     this.$on('clicked', function () {
-      //   // vm.$refs.wizard.nextTab();
-      //   alert('now ');
-
-      // })
     }), $('#start-over').onclick = function () {
       vm.$refs.wizard.reset();
     };
 
     $("#survey-social-public input:radio").click(function (event) {
 
-      // alert('before switch');
       vm.$refs.wizard.nextTab();
-      // event.preventDefault();
     });
   }
 });

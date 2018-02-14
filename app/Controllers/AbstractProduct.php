@@ -26,17 +26,7 @@ abstract class AbstractProduct
 
     abstract protected function isImmune();
 
-    abstract protected function isHealthNeeds();
-
-    protected function isPrimary()
-    {
-        return $this->is_primary ? true : false;
-    }
-
-    protected function setPrimary(bool $value)
-    {
-        $this->is_primary = $value;
-    }
+    abstract protected function isHeart();
 
     /*
      * @return Gender

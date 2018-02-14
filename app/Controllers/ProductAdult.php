@@ -1,25 +1,31 @@
 <?php
 namespace Controllers;
 
-use Controllers\WpPost;
 use Controllers\Gender;
+use Controllers\Age;
+
 
 class ProductAdult extends AbstractProduct
 {
     private const SKU = 40000601436;
 
     public $gender;
+    public $age;
 
     public function __construct()
     {
-        $this->setPrimary(true);
-
         $this->gender = new Gender(Gender::BOTH);
+        $this->age = new Age(Age::IS2439);
+    }
+
+    public function getGender()
+    {
+        return $this->gender;
     }
 
     public function getAge()
     {
-        return 30;
+        return $this->age;
     }
 
     public function getSku()
@@ -62,13 +68,9 @@ class ProductAdult extends AbstractProduct
         return true;
     }
 
-    public function isHealthNeeds()
+    public function isHeart()
     {
-        return false;
+        return true;
     }
 
-    public function setPrimary(bool $value)
-    {
-        $this->is_primary = $value;
-    }
 }

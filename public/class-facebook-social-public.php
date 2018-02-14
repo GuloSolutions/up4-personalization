@@ -213,6 +213,11 @@ class Facebook_Social_Public
         add_shortcode($this->plugin_name . '_survey_button', array($this, 'process_survey_button'));
     }
 
+    public function register_survey_hide_button()
+    {
+        add_shortcode($this->plugin_name . '_survey_hide_button', array($this, 'process_survey_hide_button'));
+    }
+
     public function process_button($attrs, $content)
     {
         wp_enqueue_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
@@ -265,6 +270,9 @@ class Facebook_Social_Public
 
             <div class="container">
                 <button id="start-over" v-on:click="restartSurvey">Start over</button>
+
+                <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
+
 
 
 
@@ -410,13 +418,6 @@ EOS;
     public function survey_receiver()
     {
         $response = $_POST['response'];
-
-        error_log(print_r($response, true));
-
-
-
-
-        // error_log(print_r($this->up4->getPrimaryRecommendation(), true));
 
         $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
 

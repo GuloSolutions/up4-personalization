@@ -1,20 +1,25 @@
 <?php
 namespace Controllers;
 
+use Controllers\Gender;
+use Controllers\Age;
+
 class ProductSport extends AbstractProduct
 {
     private const SKU = 40000600541;
 
+    public $gender;
+    public $age;
+
     public function __construct()
     {
-        $this->setPrimary(true);
-
+        $this->age = new Age(Age::ISALL);
         $this->gender = new Gender(Gender::BOTH);
     }
 
     public function getAge()
     {
-        return "24-29";
+        return $this->age;
     }
 
     public function getSku()
@@ -29,7 +34,7 @@ class ProductSport extends AbstractProduct
 
     public function isExercisesOften()
     {
-        return false;
+        return $this->exercisesOften;
     }
 
     public function hasChildren()
@@ -57,7 +62,7 @@ class ProductSport extends AbstractProduct
         return true;
     }
 
-    public function isHealthNeeds()
+    public function isHeart()
     {
         return false;
     }

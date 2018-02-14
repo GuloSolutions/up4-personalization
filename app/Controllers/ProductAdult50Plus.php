@@ -7,14 +7,14 @@ class ProductAdult50Plus extends AbstractProduct
 
     public function __construct()
     {
-        $this->setPrimary(false);
-
         $this->gender = new Gender(Gender::BOTH);
+        $this->age = new Age(Age::IS50PLUS);
+
     }
 
     public function getAge()
     {
-        return 50;
+        return $this->age;
     }
 
     public function getSku()
@@ -54,7 +54,7 @@ class ProductAdult50Plus extends AbstractProduct
 
     public function isImmune()
     {
-        return true;
+        return false;
     }
 
     public function isHealthNeeds()
