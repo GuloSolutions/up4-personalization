@@ -7,7 +7,7 @@ class Age
 
     const IS4060 = array(40, 60);
 
-    const IS50PLUS = 50;
+    const IS50PLUS = array(50, 55);
 
     const ISALL = array(0, 100);
 
@@ -51,6 +51,6 @@ class Age
 
     public static function is50plus($value)
     {
-        return $value >= self::IS50PLUS ? true: false;
+        return $value >= self::IS50PLUS[0] && $value <= self::IS50PLUS[0] ? true: false;
     }
 }

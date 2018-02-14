@@ -9,6 +9,7 @@ class Recommendation
      * @param Up4
      */
     public $up4;
+    public $user;
 
     /*
      * @param Array of Abstract Products
@@ -48,7 +49,8 @@ class Recommendation
 
     public function getUserRecommendation()
     {
-        if ($this->up4->isSurveyTaken()) {
+        //user is a Models user not an up4User hence no access to isSurveyTaken()
+        if (!isset($this->user->travelsOften)) {
             return $this->getSurveyProductMatch();
         } else {
             return $this->getFacebookProductMatch();
@@ -80,15 +82,12 @@ class Recommendation
                         return $this->productAdult50Plus;
                     }
                 }
-            } elseif (Age::isBetween24And39($this->user->age) || Age::isBetween40And60($this->user->age) || Age::isLessThan24($this->user->age)) {
+            } else {
                 foreach ($this->products as $p) {
                     if ($p->isExercisesOften() == $this->user->exercisesOften) {
-                        error_log(print_r($this->user->exercisesOften, true));
                         return $this->productSport;
                     }
                 }
-            } else {
-                return $this->productAdult;
             }
         } elseif (!is_null($this->user->age) && $this->user->gender == Gender::FEMALE) {
             if (Age::isBetween24And39($this->user->age)) {
@@ -105,9 +104,9 @@ class Recommendation
                     return $this->productWomenAdvancedCare;
                 }
             }
-        } else {
-            return $this->productAdult;
         }
+
+        return $this->productAdult;
     }
 
     private function getFacebookProductMatch()
@@ -122,25 +121,27 @@ class Recommendation
             } else {
                 $this->processFurtherOptions();
             }
-        } elseif (!is_null($this->user->age) && ($this->user->gender == Gender::FEMALE)) {
+        } elseif (!is_null($this->user->age) && $this->user->gender == Gender::FEMALE) {
             if (Age::isBetween24And39($this->user->age)) {
                 return $this->productWomens;
             }
         } elseif (is_null($this->user->age) && $this->user->gender == Gender::FEMALE) {
             return $this->productWomenAdvancedCare;
-        } else {
-            $this->processFurtherOptions();
         }
+        return $this->processFurtherOptions();
     }
     // randomize Facebook results
     private function processFurtherOptions()
     {
-        $a = mt_rand(10, 100);
-        $b = mt_rand(10, 100);
+        $a = rand(10, 100);
+        $b = rand(10, 100);
 
         if ($a < $b) {
             return $this->productUltra;
+        } elseif ($a = $b) {
+            return $this->productAdult;
+        } else {
+            return $this->productSport;
         }
-        return $this->productAdult;
     }
 }

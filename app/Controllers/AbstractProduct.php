@@ -2,13 +2,13 @@
 namespace Controllers;
 
 use Controllers\Gender;
+use Controllers\Age;
+
 use Controllers\WpPost;
 
 abstract class AbstractProduct
 {
     protected $is_primary;
-
-    abstract protected function getAge();
 
     abstract protected function getSku();
 
@@ -35,6 +35,14 @@ abstract class AbstractProduct
     {
         return $this->gender();
     }
+
+    /*
+     * @return Gender
+     */
+    // public function getAge()
+    // {
+    //     return $this->age();
+    // }
 
     /*
      * @return WpQuery
