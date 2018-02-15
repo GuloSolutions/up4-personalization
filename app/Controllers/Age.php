@@ -11,7 +11,6 @@ class Age
 
     const ISALL = array(0, 100);
 
-
     private $age;
 
     public function __construct($value)

@@ -13,7 +13,7 @@ class Gender
 
     public function __construct($value)
     {
-        switch($value) {
+        switch ($value) {
             case self::MALE:
             case self::FEMALE:
             case self::BOTH:
@@ -45,7 +45,7 @@ class Gender
         return $this->gender === self::BOTH ? true : false;
     }
 
-    static public function getBoth()
+    public static function getBoth()
     {
         return self::BOTH;
     }

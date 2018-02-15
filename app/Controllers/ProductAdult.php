@@ -4,7 +4,6 @@ namespace Controllers;
 use Controllers\Gender;
 use Controllers\Age;
 
-
 class ProductAdult extends AbstractProduct
 {
     private const SKU = 40000601436;
@@ -72,5 +71,4 @@ class ProductAdult extends AbstractProduct
     {
         return true;
     }
-
 }
