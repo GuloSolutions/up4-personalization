@@ -273,7 +273,7 @@ class Up4Users
         $this->fb_user->heart = $user->heart;
 
 
-        if (!is_null($user->age) &&  !is_null($user->gender && !is_null($user->birthday))) {
+        if (!is_null($user->age) &&  !is_null($user->gender) && !is_null($user->birthday)) {
             $this->fb_user->age = $user->age;
             $this->fb_user->gender = $user->gender;
             $this->fb_user->birthday = $user->birthday;
