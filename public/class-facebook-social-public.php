@@ -273,10 +273,7 @@ class Facebook_Social_Public
 
                 <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
 
-
-
-
-            <div class="wizard-navigation">
+            <div class="wizard-numbers">
 
             {{ counter }} / {{ counterMax }}
 
