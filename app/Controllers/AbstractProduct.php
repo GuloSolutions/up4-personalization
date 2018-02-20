@@ -8,8 +8,6 @@ use Controllers\WpPost;
 
 abstract class AbstractProduct
 {
-    protected $is_primary;
-
     abstract protected function getSku();
 
     abstract protected function isTravelsOften();

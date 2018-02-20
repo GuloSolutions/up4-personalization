@@ -11,6 +11,11 @@ class ProductSport extends AbstractProduct
     public $gender;
     public $age;
 
+    public function __construct(){
+        $this->age = new Age(Age::ISALL);
+        $this->gender = new Gender(Gender::BOTH);
+    }
+
     public function getGender()
     {
         return $this->gender;

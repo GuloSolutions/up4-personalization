@@ -10,13 +10,11 @@ class ProductAdult extends AbstractProduct
 
     public $gender;
     public $age;
-    public $digestive;
-
 
     public function __construct()
     {
-        $this->gender = 'male';
-        $this->age = new Age(Age::IS2439);
+        $this->gender = new Gender(Gender::BOTH);
+        $this->age = new Age(Age::ISALL);
     }
 
     public function getGender()
