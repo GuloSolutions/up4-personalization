@@ -59,75 +59,79 @@ class Recommendation
 
     private function getSurveyProductMatch()
     {
-        if (!is_null($this->user->age) && ($this->user->gender == Gender::FEMALE || $this->user->gender == Gender::MALE)) {
-            if (Age::isBetween24And39($this->user->age)) {
-                foreach ($this->products as $p) {
-                    if ($p->isDigestive() == $this->user->digestive && $p->isImmune() == $this->user->immune) {
-                        return $this->productAdult;
-                    } elseif ($p->isTravelsOften() == $this->user->travelsOften && $p->isDigestive() == $this->user->digestive  && $p->isImmune() == $this->user->immune) {
-                        return $this->productUltra;
-                    } elseif ($this->user->hasChildren == true) {
-                        return $this->productKidsCubes;
-                    }
+        foreach ($this->products as $p) {
+            //female
+            if (GENDER::isFemale($this->user->gender) && Age::isALL($p->getAge())) {
+                if ($p->isVaginal() == $this->user->vaginal  &&  $p->isDigestive() != $this->user->digestive) {
+                    return $this->productWomensAdvancedCare;
+                } elseif ($this->user->urinary == $p->isUrinary() && $this->user->digestive == $p->isDigestive() && $this->user->vaginal == $p->isVaginal() && $this->user->immune == $p->isImmune()) {
+                    return $this->productWomens;
+                } elseif ($this->user->exercises_often == $p->isExercisesOften() && $p->hasChildren() != $this->user->has_children) {
+                    return $this->productSport;
+                } elseif ($p->hasChildren() == $this->user->has_children) {
+                    return $this->productKidsCubes;
+                } else {
+                    return $this->productAdult;
                 }
-            } elseif (Age::isBetween40And60($this->user->age)) {
-                foreach ($this->products as $p) {
-                    if ($p->isHeart() == $this->user->heart) {
-                        return $this->productHeartHealth;
-                    }
+            } elseif (GENDER::isFemale($this->user->gender) && Age::isBetween24And39($this->user->age)) {
+                if ($p->isTravelsOften() == $this->user->travelsOften && $p->isDigestive() == $this->user->digestive  && $p->isImmune() == $this->user->immune) {
+                    return $this->productUltra;
                 }
-            } elseif (Age::is50Plus($this->user->age)) {
-                foreach ($this->products as $p) {
-                    if ($p->isDigestive() == $this->user->digestive) {
-                        return $this->productAdult50Plus;
-                    }
+            } elseif (GENDER::isFemale($this->user->gender) && Age::isBetween40And60($this->user->age)) {
+                if ($p->isHeart() == $this->user->heart) {
+                    return $this->productHeartHealth;
                 }
-            } else {
-                foreach ($this->products as $p) {
-                    if ($p->isExercisesOften() == $this->user->exercisesOften) {
-                        return $this->productSport;
-                    }
+            } elseif (GENDER::isFemale($this->user->gender) &&  Age::is50Plus($this->user->age)) {
+                if ($p->isDigestive() == $this->user->digestive) {
+                    return $this->productAdult50Plus;
                 }
-            }
-        } elseif (!is_null($this->user->age) && $this->user->gender == Gender::FEMALE) {
-            if (Age::isBetween24And39($this->user->age)) {
-                foreach ($this->products as $p) {
-                    if ($this->user->exercisesOften == $p->isExercisesOften() && $this->user->urinary == $p->isUrinary()
-                        && $this->user->vaginal == $p->isVaginal() && $this->user->immune == $p->isImmune()) {
-                        return $this->productWomens;
-                    }
+            //male
+            } elseif (GENDER::isMale($this->user->gender) && Age::isALL($p->getAge())) {
+                if ($this->user->digestive == $p->isDigestive() && $p->isImmune() == $this->user->immune && $this->user->travels_often != $p->isTravelsOften() && $this->user->exercises_often != 1 ) {
+                    return $this->productAdult;
+                } if ( $this->user->exercises_often == $p->isExercisesOften()) {
+                    return $this->productSport;
+                } else {
+                    return $this->productAdult;
                 }
-            }
-        } elseif (Age::isBetween24And39($this->user->age) || Age::isBetween40And60($this->user->age) || Age::isLessThan24($this->user->age)) {
-            foreach ($this->products as $p) {
-                if ($p->isVaginal() == $this->user->vaginal) {
-                    return $this->productWomenAdvancedCare;
+            } elseif (GENDER::isMale($this->user->gender) && Age::isBetween24And39($this->user->age)) {
+                if ($this->user->digestive == $p->isDigestive() && $this->user->travels_often == $p->isTravelsOften() && $this->user->immune == $p->isImmune()) {
+                    return $this->productUltra;
+                }
+            } elseif(GENDER::isMale($this->user->gender) && Age::is50Plus($this->user->age)){
+                 if ($this->user->digestive == $p->isDigestive()) {
+                    return $this->productAdult50Plus;
+                }
+            } elseif (GENDER::isMale($this->user->gender) && Age::isBetween40And60($this->user->age)){
+                 if ($this->user->heart == $p->isHeart()) {
+                    return $this->productHeartHealth;
+                }
+
+            } elseif(GENDER::isMale($this->user->gender) && Age::isBetween50Plus($this->user->age)){
+                 if ($this->user->digestive == $p->isDigestive()) {
+                    return $this->productAdult50Plus;
                 }
             }
         }
-
         return $this->productAdult;
     }
 
     private function getFacebookProductMatch()
     {
-        if (!is_null($this->user->age) && ($this->user->gender == Gender::BOTH)) {
-            if (Age::isBetween24And39($this->user->age) || Age::isLessThan24($this->user->age)) {
-                return $this->productAdult;
-            } elseif (Age::isBetween40And60($this->user->age)) {
-                return $this->productHeartHealth;
-            } elseif (Age::is50Plus($this->user->age)) {
-                return $this->productAdult50Plus;
-            } else {
-                $this->processFurtherOptions();
+        foreach ($this->products  as $p) {
+            if ((GENDER::isFemale($this->user->gender) || GENDER::isMale($this->user->gender)) && Age::isALL($p->getAge())) {
+                if (Age::isBetween24And39($this->user->age) || Age::isLessThan24($this->user->age)) {
+                    return $this->productAdult;
+                } elseif (Age::isBetween40And60($this->user->age)) {
+                    return $this->productHeartHealth;
+                } elseif (Age::is50Plus($this->user->age)) {
+                    return $this->productAdult50Plus;
+                } else {
+                    $this->processFurtherOptions();
+                }
             }
-        } elseif (!is_null($this->user->age) && $this->user->gender == Gender::FEMALE) {
-            if (Age::isBetween24And39($this->user->age)) {
-                return $this->productWomens;
-            }
-        } elseif (is_null($this->user->age) && $this->user->gender == Gender::FEMALE) {
-            return $this->productWomenAdvancedCare;
         }
+
         return $this->processFurtherOptions();
     }
     // randomize Facebook results

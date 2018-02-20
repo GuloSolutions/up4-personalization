@@ -18,6 +18,11 @@ class ProductHeartHealth extends AbstractProduct
         $this->age = new Age(Age::IS50PLUS);
     }
 
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
     public function getAge()
     {
         return $this->age;
@@ -30,41 +35,41 @@ class ProductHeartHealth extends AbstractProduct
 
     public function isTravelsOften()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isExercisesOften()
     {
-        return false;
+        return (int) 0;
     }
 
     public function hasChildren()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isUrinary()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isVaginal()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isDigestive()
     {
-        return true;
+        return  (int) 0;
     }
 
     public function isImmune()
     {
-        return true;
+        return (int) 0;
     }
 
     public function isHeart()
     {
-        return true;
+        return (int) 1;
     }
 }

@@ -18,9 +18,14 @@ class ProductUltra extends AbstractProduct
         $this->gender = new Gender(Gender::BOTH);
     }
 
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
     public function getAge()
     {
-        return$this->age;
+        return $this->age;
     }
 
     public function getSku()
@@ -30,41 +35,41 @@ class ProductUltra extends AbstractProduct
 
     public function isTravelsOften()
     {
-        return true;
+        return (int) 1;
     }
 
     public function isExercisesOften()
     {
-        return false;
+        return (int) 0;
     }
 
     public function hasChildren()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isUrinary()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isVaginal()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isDigestive()
     {
-        return true;
+        return  (int) 1;
     }
 
     public function isImmune()
     {
-        return true;
+        return (int) 1;
     }
 
     public function isHeart()
     {
-        return false;
+        return (int) 0;
     }
 }

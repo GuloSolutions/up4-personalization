@@ -33,7 +33,7 @@ abstract class AbstractProduct
      */
     public function getGender()
     {
-        return $this->gender();
+        return $this->gender;
     }
 
     /*
@@ -41,7 +41,7 @@ abstract class AbstractProduct
      */
     public function getAge()
     {
-        return $this->age();
+        return $this->age;
     }
 
     /*

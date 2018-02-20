@@ -10,10 +10,12 @@ class ProductAdult extends AbstractProduct
 
     public $gender;
     public $age;
+    public $digestive;
+
 
     public function __construct()
     {
-        $this->gender = new Gender(Gender::BOTH);
+        $this->gender = 'male';
         $this->age = new Age(Age::IS2439);
     }
 
@@ -34,41 +36,41 @@ class ProductAdult extends AbstractProduct
 
     public function isTravelsOften()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isExercisesOften()
     {
-        return false;
+        return (int) 0;
     }
 
     public function hasChildren()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isUrinary()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isVaginal()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isDigestive()
     {
-        return true;
+        return  (int) 1;
     }
 
     public function isImmune()
     {
-        return true;
+        return (int) 1;
     }
 
     public function isHeart()
     {
-        return true;
+        return (int) 0;
     }
 }

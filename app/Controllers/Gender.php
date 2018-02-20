@@ -30,19 +30,24 @@ class Gender
         return $this->gender;
     }
 
-    public function isMale()
+    public static function isMale($gender)
     {
-        return $this->gender === self::MALE ? true : false;
+        return $gender == self::MALE ? true : false;
     }
 
-    public function isFemale()
+    public static function isFemale($gender)
     {
-        return $this->gender === self::FEMALE ? true : false;
+        return $gender == self::FEMALE ? true : false;
     }
 
-    public function isBoth($gender)
+    public static function isEitherUser($gender)
     {
-        return $this->gender === self::BOTH ? true : false;
+        return $gender == self::MALE  || $gender == self::FEMALE  ? true : false;
+    }
+
+    public static function isEither($gender)
+    {
+        return $gender == self::BOTH ? true : false;
     }
 
     public static function getBoth()

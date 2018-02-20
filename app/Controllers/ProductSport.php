@@ -11,10 +11,9 @@ class ProductSport extends AbstractProduct
     public $gender;
     public $age;
 
-    public function __construct()
+    public function getGender()
     {
-        $this->age = new Age(Age::ISALL);
-        $this->gender = new Gender(Gender::BOTH);
+        return $this->gender;
     }
 
     public function getAge()
@@ -29,41 +28,41 @@ class ProductSport extends AbstractProduct
 
     public function isTravelsOften()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isExercisesOften()
     {
-        return $this->exercisesOften;
+        return (int) 1;
     }
 
     public function hasChildren()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isUrinary()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isVaginal()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isDigestive()
     {
-        return true;
+        return  (int) 0;
     }
 
     public function isImmune()
     {
-        return true;
+        return (int) 0;
     }
 
     public function isHeart()
     {
-        return false;
+        return (int) 0;
     }
 }

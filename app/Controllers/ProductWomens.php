@@ -13,8 +13,13 @@ class ProductWomens extends AbstractProduct
 
     public function __construct()
     {
-        $this->age = new Age(Age::IS2439);
+        $this->age = new Age(Age::ISALL);
         $this->gender = new Gender(Gender::FEMALE);
+    }
+
+    public function getGender()
+    {
+        return $this->gender;
     }
 
     public function getAge()
@@ -29,41 +34,41 @@ class ProductWomens extends AbstractProduct
 
     public function isTravelsOften()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isExercisesOften()
     {
-        return false;
+        return (int) 0;
     }
 
     public function hasChildren()
     {
-        return false;
+        return (int) 0;
     }
 
     public function isUrinary()
     {
-        return false;
+        return (int) 1;
     }
 
     public function isVaginal()
     {
-        return false;
+        return (int) 1;
     }
 
     public function isDigestive()
     {
-        return true;
+        return  (int) 1;
     }
 
     public function isImmune()
     {
-        return true;
+        return (int) 1;
     }
 
     public function isHeart()
     {
-        return false;
+        return (int) 0;
     }
 }
