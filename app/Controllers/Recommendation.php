@@ -50,7 +50,7 @@ class Recommendation
     public function getUserRecommendation()
     {
         //user is a Models user not an up4User hence no access to isSurveyTaken()
-        if (!isset($this->user->travelsOften)) {
+        if (!isset($this->user->travels_often)) {
             return $this->getSurveyProductMatch();
         } else {
             return $this->getFacebookProductMatch();
@@ -74,7 +74,7 @@ class Recommendation
                     return $this->productAdult;
                 }
             } elseif (GENDER::isFemale($this->user->gender) && Age::isBetween24And39($this->user->age)) {
-                if ($p->isTravelsOften() == $this->user->travelsOften && $p->isDigestive() == $this->user->digestive  && $p->isImmune() == $this->user->immune) {
+                if ($p->isTravelsOften() == $this->user->travels_often && $p->isDigestive() == $this->user->digestive  && $p->isImmune() == $this->user->immune) {
                     return $this->productUltra;
                 }
             } elseif (GENDER::isFemale($this->user->gender) && Age::isBetween40And60($this->user->age)) {
@@ -85,11 +85,12 @@ class Recommendation
                 if ($p->isDigestive() == $this->user->digestive) {
                     return $this->productAdult50Plus;
                 }
-            //male
+                //male
             } elseif (GENDER::isMale($this->user->gender) && Age::isALL($p->getAge())) {
-                if ($this->user->digestive == $p->isDigestive() && $p->isImmune() == $this->user->immune && $this->user->travels_often != $p->isTravelsOften() && $this->user->exercises_often != 1 ) {
+                if ($this->user->digestive == $p->isDigestive() && $p->isImmune() == $this->user->immune && $this->user->travels_often != $p->isTravelsOften() && $this->user->exercises_often != 1) {
                     return $this->productAdult;
-                } if ( $this->user->exercises_often == $p->isExercisesOften()) {
+                }
+                if ($this->user->exercises_often == $p->isExercisesOften()) {
                     return $this->productSport;
                 } else {
                     return $this->productAdult;
@@ -98,17 +99,16 @@ class Recommendation
                 if ($this->user->digestive == $p->isDigestive() && $this->user->travels_often == $p->isTravelsOften() && $this->user->immune == $p->isImmune()) {
                     return $this->productUltra;
                 }
-            } elseif(GENDER::isMale($this->user->gender) && Age::is50Plus($this->user->age)){
-                 if ($this->user->digestive == $p->isDigestive()) {
+            } elseif (GENDER::isMale($this->user->gender) && Age::is50Plus($this->user->age)) {
+                if ($this->user->digestive == $p->isDigestive()) {
                     return $this->productAdult50Plus;
                 }
-            } elseif (GENDER::isMale($this->user->gender) && Age::isBetween40And60($this->user->age)){
-                 if ($this->user->heart == $p->isHeart()) {
+            } elseif (GENDER::isMale($this->user->gender) && Age::isBetween40And60($this->user->age)) {
+                if ($this->user->heart == $p->isHeart()) {
                     return $this->productHeartHealth;
                 }
-
-            } elseif(GENDER::isMale($this->user->gender) && Age::isBetween50Plus($this->user->age)){
-                 if ($this->user->digestive == $p->isDigestive()) {
+            } elseif (GENDER::isMale($this->user->gender) && Age::isBetween50Plus($this->user->age)) {
+                if ($this->user->digestive == $p->isDigestive()) {
                     return $this->productAdult50Plus;
                 }
             }
