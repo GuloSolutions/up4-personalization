@@ -51,6 +51,9 @@ class Facebook_Social_Public
     private $fbUser;
 
 
+    private $utm_user;
+
+
     /**
      * Initialize the class and set its properties.
      *
@@ -196,6 +199,15 @@ class Facebook_Social_Public
         global $up4_user;
 
         $up4_user = $this->up4;
+    }
+
+    public function startSegmentationUser()
+    {
+        global $segmented_user;
+
+        $this->utm_user = new Controllers\Segmentation;
+
+        $segmented_user = $this->utm_user;
     }
 
     public function register_facebook_shortcode()
@@ -532,6 +544,16 @@ EOS;
                                    :schema="exerciseTabSchema"
                                    :options="formOptions"
                                    ref="exerciseTabForm"
+                                   >
+                </vue-form-generator>
+            </tab-content>;
+
+             <tab-content
+                         icon="ti-user" :before-change="validateExerciseTab">
+                <vue-form-generator :model="model"
+                                   :schema="healthTabSchema"
+                                   :options="formOptions"
+                                   ref="healthTabForm"
                                    >
                 </vue-form-generator>
             </tab-content>;

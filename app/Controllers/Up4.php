@@ -6,7 +6,6 @@ use Models\Up4User;
 use Models\Up4Session;
 use Carbon\Carbon;
 use Controllers\Recommendation;
-use Controllers\RecommendationHelper;
 
 class Up4
 {
