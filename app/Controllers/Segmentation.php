@@ -52,6 +52,8 @@ class Segmentation
      */
     public function segmentedUserTemplate()
     {
+        global $up4_user;
+
         if (!$up4_user->isLoggedIn() && $this->isCookieSet()) {
             return $this->user_segment;
         }
