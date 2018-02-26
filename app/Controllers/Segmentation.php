@@ -4,88 +4,165 @@ namespace Controllers;
 class Segmentation
 {
     /*
-     * @var string
+     * Segmentation key
      */
-    private $user_cookie;
+    const SEGMENT_KEY = 'utm_content';
 
     /*
-     * @var Object
+     * 1 week cookie expiry
+     */
+    const COOKIE_EXPIRE = 604800;
+
+    /*
+     * 1 week cookie expiry
+     */
+    const COOKIE_KEY = 'up4_segmentation';
+
+    /*
+     * The segment passed to our app
+     * i.e. Adult, Kids, Ultra, etc
+     * @var String
      */
     private $user_segment;
-
 
     public function __construct()
     {
         $this->init();
     }
 
+    /*
+     * Gets our user segment and sets the cookie
+     * @return Void
+     */
     public function init()
     {
-        if (!isset($_COOKIE['segmentation'])) {
-            $value = $this->generateCookieValue();
-            setcookie("segmentation", $value, time() + (3 * 86400), COOKIEPATH, COOKIE_DOMAIN);
-            $this->user_cookie = $value;
-        } else {
-            $this->user_cookie = $_COOKIE['segmentation'];
+        $this->user_segment = $this->getPassed();
+
+        // if a segment is ever passed, we want to reset our cookie
+        if ($this->user_segment) {
+            $this->setSessionCookie();
+        } elseif ($this->isCookieSet()) {
+            $this->user_segment = $this->decode();
         }
     }
 
     /*
-     * @return boolean
+     * Gets our user segment
+     * @return String
      */
-    public function isCookieSet()
+    public function getSegment()
     {
-        return isset($this->user_cookie) ? true : false;
-    }
-
-    /*
-     * @return string
-     */
-    private function generateCookieValue()
-    {
-        $cookie_string = substr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", mt_rand(0, 51), 1) . substr(md5(time()), 1);
-        return base64_encode($cookie_string);
-    }
-
-    /*
-     * @return Object
-     */
-    public function segmentedUserTemplate()
-    {
-        global $up4_user;
-
-        if (!$up4_user->isLoggedIn() && $this->isCookieSet()) {
+        if ($this->isCookieSet()) {
             return $this->user_segment;
         }
     }
 
     /*
-     * @return Object
+     * Checks to see if cookie is set
+     * @return boolean
      */
-    public function isSegment()
+    private function isCookieSet()
+    {
+        return isset($_COOKIE[self::COOKIE_KEY]) ? true : false;
+    }
+
+    /*
+     * Set cookie and session global
+     * so we don't have the read delay
+     * @return void
+     */
+    private function setSessionCookie()
+    {
+        $_COOKIE[self::COOKIE_KEY] = $this->encode();
+
+        setcookie(self::COOKIE_KEY, $_COOKIE[self::COOKIE_KEY], time() + self::COOKIE_EXPIRE, COOKIEPATH, COOKIE_DOMAIN);
+    }
+
+    /*
+     * Gets our stored cookie
+     * @return String
+     */
+    private function getCookie()
+    {
+        if ($this->isCookieSet()) {
+            return $_COOKIE[self::COOKIE_KEY];
+        }
+
+        return;
+    }
+
+    /*
+     * @return string
+     */
+    private function encode()
+    {
+        if ($this->user_segment) {
+            return base64_encode($this->user_segment);
+        }
+
+        return null;
+    }
+
+    /*
+     * @return string
+     */
+    private function decode()
+    {
+        if ($cookie_string = $this->getCookie()) {
+            return base64_decode($cookie_string, true);
+        }
+
+        return null;
+    }
+
+    /*
+     * Outputs the Single Segment Template
+     * @return Void
+     */
+    public function getSegementTemplate()
+    {
+        global $up4_user;
+
+        if (!$up4_user->isLoggedIn() && $this->isCookieSet()) {
+            get_template_part('single-segments');
+        }
+    }
+
+    /*
+     * Checks to see if the user segment post type exists
+     * @return Boolean
+     */
+    public function exists()
     {
         global $up4_user;
         global $wp_query;
 
-        if (!$up4_user->isLoggedIn() && array_key_exists('utm_content', $_GET)) {
-            $segments = explode('_', $_GET['utm_content']);
-
-            $segment = strtolower($segments[0]);
-
+        if (!$up4_user->isLoggedIn() && $this->user_segment) {
             // get our custom segment
-            $wp_query_clone = clone $wp_query;
-            $wp_query = new \WP_Query(['title' => $segment, 'post_type' => 'segments']);
+            $wp_query = new \WP_Query(['title' => $this->user_segment, 'post_type' => 'segments']);
 
-            if ($wp_query->have_posts() && $this->isCookieSet()) {
+            if ($wp_query->have_posts()) {
                 setup_postdata($wp_query->the_post());
 
-                if (!empty(get_template_part('single-segments'))) {
-                    $this->user_segment = get_template_part('single-segments');
-                    return true;
-                } else {
-                    return false;
-                }
+                return true;
             }
         }
+
+        return false;
+    }
+
+    /*
+     * Checks query params and gets our segment
+     * @return String
+     */
+    private function getPassed()
+    {
+        if (array_key_exists(self::SEGMENT_KEY, $_GET)) {
+            $segments = explode('_', $_GET[self::SEGMENT_KEY]);
+
+            return strtolower($segments[0]);
+        }
+
+        return null;
     }
 }
