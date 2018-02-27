@@ -119,7 +119,7 @@ class Segmentation
      * Outputs the Single Segment Template
      * @return Void
      */
-    public function getSegementTemplate()
+    public function getSegmentTemplate()
     {
         global $up4_user;
 
