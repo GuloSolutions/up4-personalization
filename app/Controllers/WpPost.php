@@ -8,8 +8,6 @@ class WpPost
      */
     public static function get($sku)
     {
-        global $wp_query;
-
         $post_type = [
             'products'
         ];
@@ -21,10 +19,10 @@ class WpPost
                 'meta_value' => $sku
             ];
 
-        $wp_query = new \WP_Query($args);
+        $post_query = new \WP_Query($args);
 
-        if ($wp_query->have_posts()) {
-            return current($wp_query->posts);
+        if ($post_query->have_posts()) {
+            return current($post_query->posts);
         }
 
         return false;
