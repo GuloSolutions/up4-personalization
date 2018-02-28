@@ -116,31 +116,14 @@ class Facebook_Social_Public
             false
         );
 
-        if ($this->up4 && $this->up4->isSurveyTaken()) {
-            wp_register_script(
-                'survey-social-public',
-                plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-                array(),
-                $this->version,
-                true
-            );
-        } else {
-            wp_register_script(
-            'facebook-social-public',
-              plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
-            array(),
-              $this->version,
-              false
-            );
 
-            wp_register_script(
+        wp_register_script(
                 'survey-social-public',
                  plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
                 array(),
                  $this->version,
                  true
             );
-        }
     }
 
 
@@ -158,12 +141,8 @@ class Facebook_Social_Public
 
     public function register_styles()
     {
-        if ($this->up4 && $this->up4->isSurveyTaken()) {
-            wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
-        } else {
-            wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
-            wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
-        }
+        wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . '/css/survey-social-public.css');
+        wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
     }
 
     public function startUp4Session()
@@ -223,6 +202,11 @@ class Facebook_Social_Public
         add_shortcode($this->plugin_name . '_survey_hide_button', array($this, 'process_survey_hide_button'));
     }
 
+    public function register_survey_start_over_button()
+    {
+        add_shortcode($this->plugin_name . '_survey_start_over_button', array($this, 'process_survey_start_over_button'));
+    }
+
     public function process_button($attrs, $content)
     {
         wp_enqueue_style('facebook-social-public-style', plugin_dir_url(__FILE__) . '/css/facebook-social-public.css');
@@ -268,12 +252,13 @@ class Facebook_Social_Public
             ]
         );
 
-        if (!$this->up4->isSurveyTaken()) {
+        if ($this->up4->isSurveyTaken()) {
             $content = <<<EOS
 
             <div id="survey-social-public">
 
             <div class="container">
+
                 <button id="start-over" v-on:click="restartSurvey">Start over</button>
 
                 <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
@@ -417,6 +402,11 @@ EOS;
         }
     }
 
+    public function process_start_over_button($content, $attrs)
+    {
+        return $content = '<button id="show-survey-again">Start over</button>';
+    }
+
     public function survey_receiver()
     {
         $response = $_POST['response'];
@@ -449,111 +439,7 @@ EOS;
 
     public function survey_loader_helper()
     {
-        if ($this->up4 && $this->up4->isSurveyTaken()) {
-            return;
-        } else {
-            $this->register_survey_button();
-
-            $this->register_survey_shortcode();
-        }
-    }
-
-    public function survey_form_receiver()
-    {
-        return '
-
-        <template>
-        <div id="survey-social-public">
-
-
-        <div class="wizard-navigation">
-         {{ resetForm }}
-        </div>
-
-            <div class="wizard-navigation-number">
-
-            {{ counter }} / {{ counterMax }}
-
-            </div>
-
-            <form-wizard @on-complete="onComplete"
-                @on-change="incrementCounter"
-                     color="gray"
-                     error-color="#a94442"
-                     title=""
-                     subtitle=""
-                    >
-
-            <tab-content
-                         icon="ti-user" :before-change="validateAgeTab">
-               <vue-form-generator :model="model"
-                                   :schema="ageTabSchema"
-                                   :options="formOptions"
-                                   ref="ageTabForm"
-                                   >
-               </vue-form-generator>
-            </tab-content>;
-
-
-
-            <tab-content
-
-                icon="ti-settings" :before-change="validateGenderTab">
-                <vue-form-generator :model="model"
-                                   :schema="genderTabSchema"
-                                   :options="formOptions"
-                                   ref="genderTabForm"
-                                   >
-                </vue-form-generator>
-
-            </tab-content>;
-
-
-            <tab-content
-                         icon="ti-user" :before-change="validateTravelTab">
-                <vue-form-generator :model="model"
-                                   :schema="travelTabSchema"
-                                   :options="formOptions"
-                                   ref="travelTabForm"
-                                   >
-                </vue-form-generator>
-            </tab-content>;
-
-
-            <tab-content
-                         icon="ti-user" :before-change="validateChildrenTab">
-                <vue-form-generator :model="model"
-                                   :schema="childrenTabSchema"
-                                   :options="formOptions"
-                                   ref="childrenTabForm"
-                                   >
-                </vue-form-generator>
-            </tab-content>;
-
-
-            <tab-content
-                         icon="ti-user" :before-change="validateExerciseTab">
-                <vue-form-generator :model="model"
-                                   :schema="exerciseTabSchema"
-                                   :options="formOptions"
-                                   ref="exerciseTabForm"
-                                   >
-                </vue-form-generator>
-            </tab-content>;
-
-             <tab-content
-                         icon="ti-user" :before-change="validateExerciseTab">
-                <vue-form-generator :model="model"
-                                   :schema="healthTabSchema"
-                                   :options="formOptions"
-                                   ref="healthTabForm"
-                                   >
-                </vue-form-generator>
-            </tab-content>;
-
-            </form-wizard>
-        </div>
-
-        </template>';
+        $this->register_survey_button();
+        $this->register_survey_shortcode();
     }
 }
