@@ -55,7 +55,7 @@ var vm = new Vue({
         values: [
           "female",
           "male",
-          "Prefer not to say"
+          "Other"
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -171,7 +171,7 @@ if (this.model.age === "50+"){
     this.model.age = 50;
 }
 
-if (this.model.gender === "Prefer not to say") {
+if (this.model.gender === "Other") {
     this.model.gender = "null";
 }
 

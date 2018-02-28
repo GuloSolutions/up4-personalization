@@ -438,7 +438,7 @@ var vm = new _vue2.default({
         type: "radios",
         model: "gender",
         required: true,
-        values: ["female", "male", "Prefer not to say"],
+        values: ["female", "male", "Other"],
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -514,7 +514,7 @@ var vm = new _vue2.default({
         this.model.age = 50;
       }
 
-      if (this.model.gender === "Prefer not to say") {
+      if (this.model.gender === "Other") {
         this.model.gender = "null";
       }
 
@@ -588,7 +588,6 @@ var vm = new _vue2.default({
         this.$refs.wizard.navigateToTab(0);
       }
     },
-
     hideSurveyDiv: function hideSurveyDiv(event) {
       if (event) {
         $('#survey-social-public').hide();
