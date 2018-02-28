@@ -25,25 +25,37 @@ class Segmentation
      */
     private $user_segment;
 
+    /*
+     * The segment post object
+     */
+    private $post_segment;
+
     public function __construct()
     {
         $this->init();
     }
 
     /*
-     * Gets our user segment and sets the cookie
+     * Gets our passed user segment and sets our cookie
+     * otherwise loads user segment from stored cookie
      * @return Void
      */
     public function init()
     {
-        $this->user_segment = $this->getPassed();
-
-        // if a segment is ever passed, we want to reset our cookie
-        if ($this->user_segment) {
+        if ($this->exists($this->getPassed())) {
             $this->setSessionCookie();
         } elseif ($this->isCookieSet()) {
-            $this->user_segment = $this->decode();
+            $this->exists($this->decode());
         }
+    }
+
+    /*
+     * Gets our post segment
+     * @return WP_POST
+     */
+    public function getPost()
+    {
+        return $this->post_segment;
     }
 
     /*
@@ -121,10 +133,14 @@ class Segmentation
      */
     public function getSegmentTemplate()
     {
+        global $post;
         global $up4_user;
 
         if (!$up4_user->isLoggedIn() && $this->isCookieSet()) {
+            $post = $this->post_segment;
+            setup_postdata($post);
             get_template_part('single-segments');
+            wp_reset_postdata();
         }
     }
 
@@ -132,17 +148,18 @@ class Segmentation
      * Checks to see if the user segment post type exists
      * @return Boolean
      */
-    public function exists()
+    public function exists($user_segment)
     {
         global $up4_user;
-        global $wp_query;
 
-        if (!$up4_user->isLoggedIn() && $this->user_segment) {
+        if (!$up4_user->isLoggedIn() && $user_segment) {
             // get our custom segment
-            $wp_query = new \WP_Query(['title' => $this->user_segment, 'post_type' => 'segments']);
+            $segment_query = new \WP_Query(['title' => $user_segment, 'post_type' => 'segments']);
 
-            if ($wp_query->have_posts()) {
-                setup_postdata($wp_query->the_post());
+            if ($segment_query->have_posts()) {
+                $this->post_segment = current($segment_query->posts);
+
+                $this->user_segment = $user_segment;
 
                 return true;
             }
