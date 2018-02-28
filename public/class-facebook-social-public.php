@@ -44,15 +44,10 @@ class Facebook_Social_Public
      */
     private $version;
 
-
+    /*
+     * @var Controllers\Up4
+     */
     private $up4;
-
-
-    private $fbUser;
-
-
-    private $utm_user;
-
 
     /**
      * Initialize the class and set its properties.
@@ -205,9 +200,7 @@ class Facebook_Social_Public
     {
         global $segmented_user;
 
-        $this->utm_user = new Controllers\Segmentation;
-
-        $segmented_user = $this->utm_user;
+        $segmented_user = new Controllers\Segmentation;
     }
 
     public function register_facebook_shortcode()
