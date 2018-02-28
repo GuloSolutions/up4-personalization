@@ -83,7 +83,7 @@ class Up4Users
 
     public function setupSurveyResponse($response)
     {
-        if ($response['gender'] && $response['age']) {
+        if ($response['gender'] && $response['age'] && !$this->up4User->age && !$this->up4User->gender) {
             $this->survey_data['gender'] = $response['gender'];
             $this->survey_data['age'] = $response['age'];
         }
