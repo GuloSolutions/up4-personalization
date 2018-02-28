@@ -169,11 +169,11 @@ class Facebook_Social
     {
         $plugin_public = new Facebook_Social_Public($this->get_plugin_name(), $this->get_version());
 
-        $this->loader->add_action('init', $plugin_public, 'startSegmentationUser', 1);
-
         $this->loader->add_action('init', $plugin_public, 'startUp4Session', 10);
 
-        $this->loader->add_action('init', $plugin_public, 'startUp4User', 100);
+        $this->loader->add_action('init', $plugin_public, 'startUp4User', 15);
+
+        $this->loader->add_action('init', $plugin_public, 'startSegmentationUser', 20);
 
         $this->loader->add_action('wp_register_scripts', $plugin_public, 'register_scripts', 10);
         $this->loader->add_action('wp_register_scripts', $plugin_public, 'register_helper_scripts', 30);
