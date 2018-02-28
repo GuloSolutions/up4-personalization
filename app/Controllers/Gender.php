@@ -20,34 +20,34 @@ class Gender
                 $this->gender = $value;
             break;
             default:
-                throw new Exception('No gender defined');
+                throw new \Exception('No gender defined');
             break;
         }
     }
 
-    public function getGender()
+    public function get()
     {
         return $this->gender;
     }
 
-    public static function isMale($gender)
+    public function isMale()
     {
-        return $gender == self::MALE ? true : false;
+        return $this->gender === self::MALE ? true : false;
     }
 
-    public static function isFemale($gender)
+    public function isFemale()
     {
-        return $gender == self::FEMALE ? true : false;
+        return $this->gender === self::FEMALE ? true : false;
     }
 
-    public static function isEitherUser($gender)
+    public function isEitherUser()
     {
-        return $gender == self::MALE  || $gender == self::FEMALE  ? true : false;
+        return $this->isEither();
     }
 
-    public static function isEither($gender)
+    public function isEither()
     {
-        return $gender == self::BOTH ? true : false;
+        return $this->gender === self::BOTH ? true : false;
     }
 
     public static function getBoth()

@@ -8,13 +8,18 @@ class ProductWomensAdvancedCare extends AbstractProduct
 {
     private const SKU = 40000600282;
 
+    private const RANK = 7;
+
     public $gender;
+
     public $age;
 
     public function __construct()
     {
         $this->age = new AGE(AGE::ISALL);
         $this->gender = new Gender(Gender::FEMALE);
+
+        $this->rank = self::RANK;
     }
 
     public function getGender()
@@ -34,22 +39,22 @@ class ProductWomensAdvancedCare extends AbstractProduct
 
     public function isTravelsOften()
     {
-        return (int) 0;
+        return false;
     }
 
     public function isExercisesOften()
     {
-        return (int) 0;
+        return false;
     }
 
     public function hasChildren()
     {
-        return (int) 0;
+        return false;
     }
 
     public function isUrinary()
     {
-        return (int) 0;
+        return false;
     }
 
     public function isVaginal()
@@ -59,16 +64,16 @@ class ProductWomensAdvancedCare extends AbstractProduct
 
     public function isDigestive()
     {
-        return  (int) 0;
+        return  false;
     }
 
     public function isImmune()
     {
-        return (int) 0;
+        return false;
     }
 
     public function isHeart()
     {
-        return (int) 0;
+        return false;
     }
 }

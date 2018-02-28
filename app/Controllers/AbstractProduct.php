@@ -8,6 +8,10 @@ use Controllers\WpPost;
 
 abstract class AbstractProduct
 {
+    protected $rank;
+
+    protected $score;
+
     abstract protected function getSku();
 
     abstract protected function isTravelsOften();
@@ -25,6 +29,21 @@ abstract class AbstractProduct
     abstract protected function isImmune();
 
     abstract protected function isHeart();
+
+    public function score()
+    {
+        $this->score++;
+    }
+
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    public function getRank()
+    {
+        return $this->rank;
+    }
 
     /*
      * @return Gender

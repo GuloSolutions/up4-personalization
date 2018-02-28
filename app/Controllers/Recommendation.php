@@ -6,15 +6,24 @@ use Controllers\Gender;
 class Recommendation
 {
     /*
-     * @param Up4
+     * @param Controllers/Up4
      */
     public $up4;
+
+    /*
+     * @param Models/Up4User
+     */
     public $user;
 
     /*
      * @param Array of Abstract Products
      */
-    private $products;
+    private $products = [];
+
+    /*
+     * @param Array of Abstract Products Recs
+     */
+    private $recommendations = [];
 
     public function __construct(\Controllers\Up4 $up4)
     {
@@ -49,103 +58,118 @@ class Recommendation
 
     public function getUserRecommendation()
     {
-        //user is a Models user not an up4User hence no access to isSurveyTaken()
-        if (!isset($this->user->travels_often)) {
-            return $this->getSurveyProductMatch();
-        } else {
-            return $this->getFacebookProductMatch();
-        }
+        $gender_recommendations = $this->filterRecommendationsByGender();
+
+        $age_recommendations = $this->filterRecommendationsByAge();
+
+        $this->recommendations = array_intersect_key($gender_recommendations, $age_recommendations);
+
+        $this->scoreAttributes();
+
+        $this->sortRecommendationsBy('score', 'rank');
+
+        return current($this->recommendations);
     }
 
-    private function getSurveyProductMatch()
+    private function sortRecommendationsBy($primary, $secondary = null)
     {
-        foreach ($this->products as $p) {
-            //female
-            if (GENDER::isFemale($this->user->gender) && Age::isALL($p->getAge())) {
-                if ($p->isVaginal() == $this->user->vaginal  &&  $p->isDigestive() != $this->user->digestive) {
-                    return $this->productWomensAdvancedCare;
-                } elseif ($this->user->urinary == $p->isUrinary() && $this->user->digestive == $p->isDigestive() && $this->user->vaginal == $p->isVaginal() && $this->user->immune == $p->isImmune()) {
-                    return $this->productWomens;
-                } elseif ($this->user->exercises_often == $p->isExercisesOften() && $p->hasChildren() != $this->user->has_children) {
-                    return $this->productSport;
-                } elseif ($p->hasChildren() == $this->user->has_children) {
-                    return $this->productKidsCubes;
+        $getter = 'get' . ucfirst($primary);
+
+        if ($secondary) {
+            $sec_getter = 'get' . ucfirst($secondary);
+        }
+
+        $sorter = function ($objA, $objB) use ($getter, $sec_getter) {
+            if (method_exists($objA, $getter)) {
+                if ($objA->$getter() == $objB->$getter()) {
+                    if (isset($sec_getter)) {
+                        return $objA->$sec_getter() - $objB->$sec_getter();
+                    } else {
+                        return 0;
+                    }
+                }
+
+                if (isset($sec_getter)) {
+                    return ($objA->$getter() < $objB->$getter()) ? 1 : -1;
                 } else {
-                    return $this->productAdult;
-                }
-            } elseif (GENDER::isFemale($this->user->gender) && Age::isBetween24And39($this->user->age)) {
-                if ($p->isTravelsOften() == $this->user->travels_often && $p->isDigestive() == $this->user->digestive  && $p->isImmune() == $this->user->immune) {
-                    return $this->productUltra;
-                }
-            } elseif (GENDER::isFemale($this->user->gender) && Age::isBetween40And60($this->user->age)) {
-                if ($p->isHeart() == $this->user->heart) {
-                    return $this->productHeartHealth;
-                }
-            } elseif (GENDER::isFemale($this->user->gender) &&  Age::is50Plus($this->user->age)) {
-                if ($p->isDigestive() == $this->user->digestive) {
-                    return $this->productAdult50Plus;
-                }
-                //male
-            } elseif (GENDER::isMale($this->user->gender) && Age::isALL($p->getAge())) {
-                if ($this->user->digestive == $p->isDigestive() && $p->isImmune() == $this->user->immune && $this->user->travels_often != $p->isTravelsOften() && $this->user->exercises_often != 1) {
-                    return $this->productAdult;
-                }
-                if ($this->user->exercises_often == $p->isExercisesOften()) {
-                    return $this->productSport;
-                } else {
-                    return $this->productAdult;
-                }
-            } elseif (GENDER::isMale($this->user->gender) && Age::isBetween24And39($this->user->age)) {
-                if ($this->user->digestive == $p->isDigestive() && $this->user->travels_often == $p->isTravelsOften() && $this->user->immune == $p->isImmune()) {
-                    return $this->productUltra;
-                }
-            } elseif (GENDER::isMale($this->user->gender) && Age::is50Plus($this->user->age)) {
-                if ($this->user->digestive == $p->isDigestive()) {
-                    return $this->productAdult50Plus;
-                }
-            } elseif (GENDER::isMale($this->user->gender) && Age::isBetween40And60($this->user->age)) {
-                if ($this->user->heart == $p->isHeart()) {
-                    return $this->productHeartHealth;
-                }
-            } elseif (GENDER::isMale($this->user->gender) && Age::isBetween50Plus($this->user->age)) {
-                if ($this->user->digestive == $p->isDigestive()) {
-                    return $this->productAdult50Plus;
+                    return ($objA->$getter() > $objB->$getter()) ? 1 : -1;
                 }
             }
-        }
-        return $this->productAdult;
+        };
+
+        usort($this->recommendations, $sorter);
     }
 
-    private function getFacebookProductMatch()
+    private function filterRecommendationsByGender()
     {
-        foreach ($this->products  as $p) {
-            if ((GENDER::isFemale($this->user->gender) || GENDER::isMale($this->user->gender)) && Age::isALL($p->getAge())) {
-                if (Age::isBetween24And39($this->user->age) || Age::isLessThan24($this->user->age)) {
-                    return $this->productAdult;
-                } elseif (Age::isBetween40And60($this->user->age)) {
-                    return $this->productHeartHealth;
-                } elseif (Age::is50Plus($this->user->age)) {
-                    return $this->productAdult50Plus;
-                } else {
-                    $this->processFurtherOptions();
-                }
+        $recommendations = [];
+
+        foreach ($this->products as $key => $p) {
+            if ($p->getGender()->get() === $this->user->gender ||
+                    $p->getGender()->isEither()) {
+                $recommendations[$key] = $p;
             }
         }
 
-        return $this->processFurtherOptions();
+        return $recommendations;
     }
-    // randomize Facebook results
-    private function processFurtherOptions()
-    {
-        $a = rand(10, 100);
-        $b = rand(10, 100);
 
-        if ($a < $b) {
-            return $this->productUltra;
-        } elseif ($a = $b) {
-            return $this->productAdult;
-        } else {
-            return $this->productSport;
+    private function filterRecommendationsByAge()
+    {
+        $recommendations = [];
+
+        $age = $this->user->age;
+        $userAge = new Age($this->user->age);
+
+        foreach ($this->products as $key => $p) {
+            if (in_array($p->getAge()->getType(), $p->getAge()->find($age))) {
+                $recommendations[$key] = $p;
+            }
+        }
+
+        return $recommendations;
+    }
+
+    /*
+     * Score an attribute for a product
+     * if the product attribute is true
+     * and the user matches the product attribute
+     * @return Void
+     */
+    private function scoreAttributes()
+    {
+        foreach ($this->recommendations as $p) {
+            if ($p->isTravelsOften() && $p->isTravelsOften() == $this->user->travels_often) {
+                $p->score();
+            }
+
+            if ($p->isExercisesOften() && $p->isExercisesOften() == $this->user->exercises_often) {
+                $p->score();
+            }
+
+            if ($p->hasChildren() && $p->hasChildren() == $this->user->has_children) {
+                $p->score();
+            }
+
+            if ($p->isUrinary() && $p->isUrinary() == $this->user->urinary) {
+                $p->score();
+            }
+
+            if ($p->isDigestive() && $p->isDigestive() == $this->user->digestive) {
+                $p->score();
+            }
+
+            if ($p->isVaginal() && $p->isVaginal() == $this->user->vaginal) {
+                $p->score();
+            }
+
+            if ($p->isImmune() && $p->isImmune() == $this->user->immune) {
+                $p->score();
+            }
+
+            if ($p->isHeart() && $p->isHeart() == $this->user->heart) {
+                $p->score();
+            }
         }
     }
 }
