@@ -398,7 +398,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vueFormWizard2.default);
 _vue2.default.use(_vueFormGenerator2.default);
-_vue2.default.config.devtools = true;
+_vue2.default.config.devtools = false;
 _vue2.default.config.productionTip = true;
 _vue2.default.prototype.$http = _axios2.default;
 

@@ -5,7 +5,7 @@ import axios from 'axios';
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
-Vue.config.devtools = true;
+Vue.config.devtools = false;
 Vue.config.productionTip = true;
 Vue.prototype.$http = axios;
 
