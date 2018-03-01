@@ -252,7 +252,6 @@ class Facebook_Social_Public
             ]
         );
 
-        if ($this->up4->isSurveyTaken()) {
             $content = <<<EOS
 
             <div id="survey-social-public">
@@ -377,9 +376,8 @@ EOS;
 EOS;
 
             return $content;
-        }
 
-        return;
+
     }
 
     public function fb_receiver()
@@ -439,7 +437,10 @@ EOS;
 
     public function survey_loader_helper()
     {
+
         $this->register_survey_button();
         $this->register_survey_shortcode();
     }
+
+
 }
