@@ -63,7 +63,7 @@ class Weather
 
     public function getTemperature()
     {
-        return (int) $this->temperature;
+        return round($this->temperature);
     }
 
     public function getOrigin()
