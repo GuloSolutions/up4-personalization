@@ -396,7 +396,7 @@ EOS;
         if ($this->up4->isLoggedInFacebook() && $this->up4->isSurveyTaken()) {
             return;
         } else {
-            return $content = '<button id="show-survey">Fill out survey</button>';
+            return $content = '<button id="show-survey">Take the Quiz</button>';
         }
     }
 
