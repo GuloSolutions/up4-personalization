@@ -89,7 +89,9 @@ function sendToApp() {
         });
 
         $('#fb-logout').on('click', function(e) {
+
             e.preventDefault();
+
 
             facebookLogout();
         });

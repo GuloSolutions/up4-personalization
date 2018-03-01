@@ -6,7 +6,7 @@ import axios from 'axios';
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
 Vue.config.devtools = false;
-Vue.config.productionTip = true;
+Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
 window.app = vm;
@@ -36,7 +36,7 @@ var vm = new Vue({
         model: "age",
         required:true,
         values: [
-          "under 24",
+          "Under 24",
           "24-39",
           "40-49",
           "50+"
@@ -53,8 +53,8 @@ var vm = new Vue({
         model: "gender",
         required:true,
         values: [
-          "female",
-          "male",
+          "Female",
+          "Male",
           "Other"
         ],
         validator: VueFormGenerator.validators.required,
@@ -69,9 +69,9 @@ var vm = new Vue({
         model: "travels_often",
         required:true,
         values: [
-          "Jet Setter",
-          "Weekend Traveler",
-          "Neighborhood Roamer",
+          "Jet setter",
+          "Weekend traveler",
+          "Neighborhood roamer",
           "Homebody"
         ],
         validator: VueFormGenerator.validators.required,
@@ -106,7 +106,7 @@ var vm = new Vue({
         values: [
           "Every day",
           "A few times a week",
-          "Weekend Stroller",
+          "Weekend stroller",
           "I don’t workout"
         ],
         validator: VueFormGenerator.validators.required,
@@ -125,15 +125,15 @@ var vm = new Vue({
           "Digestive",
           "Immune",
           "Vaginal",
-          "Urinary Tract",
-          "Heart Health"
+          "Urinary tract",
+          "Heart health"
         ],
         checklistOptions: {
           name: "Digestive",
           name: "Immune",
           name: "Vaginal",
-          name: "Urinary Tract",
-          name: "Heart Health"
+          name: "Urinary tract",
+          name: "Heart health"
 
         },
         validator: VueFormGenerator.validators.required,
@@ -155,7 +155,7 @@ var vm = new Vue({
 
 var params = new URLSearchParams();
 
-if (this.model.age === "under 24"){
+if (this.model.age === "Under 24"){
     this.model.age = 20;
 }
 
@@ -183,11 +183,11 @@ if (this.model.has_children === "Yes, and they’re out of the house" || this.mo
     this.model.has_children = 0;
 };
 
-if (this.model.travels_often === "Jet Setter" || this.model.travels_often === "Weekend Traveler"){
+if (this.model.travels_often === "Jet retter" || this.model.travels_often === "Weekend Traveler"){
     this.model.travels_often = 1;
 };
 
-if (this.model.travels_often === "Neighborhood Roamer" || this.model.travels_often === "Homebody" ) {
+if (this.model.travels_often === "Neighborhood roamer" || this.model.travels_often === "Homebody" ) {
       this.model.travels_often = 0;
 };
 
@@ -195,7 +195,7 @@ if (this.model.exercises_often === "Everyday" || this.model.exercises_often === 
     this.model.exercises_often = 1;
 };
 
-if (this.model.exercises_often === "Weekend Stroller" || this.model.exercises_often === "I don’t workout" ){
+if (this.model.exercises_often === "Weekend stroller" || this.model.exercises_often === "I don’t workout" ){
     this.model.exercises_often = 0;
 };
 
