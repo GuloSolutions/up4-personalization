@@ -175,11 +175,6 @@ class Up4Users
      */
     private function setData()
     {
-        error_log(print_r('here before', true));
-
-        error_log(print_r($this->fb_data, true));
-
-
         if ($this->fb_data) {
             if ($this->fb_user->id !== null) {
                 $this->fb_user->session_id = $this->up4Session->id;
