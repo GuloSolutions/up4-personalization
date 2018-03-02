@@ -11,6 +11,7 @@ Vue.prototype.$http = axios;
 
 window.app = vm;
 
+
 var vm = new Vue({
  el: '#survey-social-public',
  ref:'wizard',
@@ -36,8 +37,8 @@ var vm = new Vue({
         model: "age",
         required:true,
         values: [
-          "Under 24",
-          "24-39",
+          "Under 25",
+          "25-39",
           "40-49",
           "50+"
         ],
@@ -69,10 +70,10 @@ var vm = new Vue({
         model: "travels_often",
         required:true,
         values: [
+          "Go-getter",
           "Jet setter",
-          "Weekend traveler",
-          "Neighborhood roamer",
-          "Homebody"
+          "Homebody",
+          "Free spirit"
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -104,10 +105,10 @@ var vm = new Vue({
         model: "exercises_often",
         required:true,
         values: [
-          "Every day",
-          "A few times a week",
-          "Weekend stroller",
-          "I don’t workout"
+          "I train to compete",
+          "The gym is my domain",
+          "Hey, life is busy",
+          "I like my couch"
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -155,11 +156,11 @@ var vm = new Vue({
 
 var params = new URLSearchParams();
 
-if (this.model.age === "Under 24"){
+if (this.model.age === "Under 25"){
     this.model.age = 20;
 }
 
-if (this.model.age === "24-39"){
+if (this.model.age === "25-39"){
     this.model.age = 30;
 }
 
@@ -183,19 +184,19 @@ if (this.model.has_children === "Yes, and they’re out of the house" || this.mo
     this.model.has_children = 0;
 };
 
-if (this.model.travels_often === "Jet retter" || this.model.travels_often === "Weekend Traveler"){
+if (this.model.travels_often === "Go-getter" || this.model.travels_often === "Jet setter"){
     this.model.travels_often = 1;
 };
 
-if (this.model.travels_often === "Neighborhood roamer" || this.model.travels_often === "Homebody" ) {
+if (this.model.travels_often === "Homebody" || this.model.travels_often === "Free spirit" ) {
       this.model.travels_often = 0;
 };
 
-if (this.model.exercises_often === "Everyday" || this.model.exercises_often === "A few times a week" ){
+if (this.model.exercises_often === "I train to compete" || this.model.exercises_often === "The gym is my domain" ){
     this.model.exercises_often = 1;
 };
 
-if (this.model.exercises_often === "Weekend stroller" || this.model.exercises_often === "I don’t workout" ){
+if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_often === "I like my couch" ){
     this.model.exercises_often = 0;
 };
 
@@ -283,6 +284,10 @@ axios.post(ajax_receiver.ajax_url,
         }
   },
 
+  beforeMount: function (){
+    vm.hide();
+  },
+
   mounted: function(event, tabIndex, activeTabIndex, prevIndex, nextIndex) {
       this.$nextTick(function (event) {
       this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;
@@ -299,4 +304,3 @@ axios.post(ajax_receiver.ajax_url,
 
   },
 })
-

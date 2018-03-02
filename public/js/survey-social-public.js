@@ -399,7 +399,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _vue2.default.use(_vueFormWizard2.default);
 _vue2.default.use(_vueFormGenerator2.default);
 _vue2.default.config.devtools = false;
-_vue2.default.config.productionTip = true;
+_vue2.default.config.productionTip = false;
 _vue2.default.prototype.$http = _axios2.default;
 
 window.app = vm;
@@ -428,7 +428,7 @@ var vm = new _vue2.default({
         type: "radios",
         model: "age",
         required: true,
-        values: ["under 24", "24-39", "40-49", "50+"],
+        values: ["Under 25", "25-39", "40-49", "50+"],
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-6'
       }]
@@ -438,7 +438,7 @@ var vm = new _vue2.default({
         type: "radios",
         model: "gender",
         required: true,
-        values: ["female", "male", "Other"],
+        values: ["Female", "Male", "Other"],
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -448,7 +448,7 @@ var vm = new _vue2.default({
         type: "radios",
         model: "travels_often",
         required: true,
-        values: ["Jet Setter", "Weekend Traveler", "Neighborhood Roamer", "Homebody"],
+        values: ["Go-getter", "Jet setter", "Homebody", "Free spirit"],
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -468,7 +468,7 @@ var vm = new _vue2.default({
         type: "radios",
         model: "exercises_often",
         required: true,
-        values: ["Every day", "A few times a week", "Weekend Stroller", "I don’t workout"],
+        values: ["I train to compete", "The gym is my domain", "Hey, life is busy", "I like my couch"],
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -479,10 +479,10 @@ var vm = new _vue2.default({
         model: "health_needs",
         listBox: true,
         required: true,
-        values: ["Digestive", "Immune", "Vaginal", "Urinary Tract", "Heart Health"],
+        values: ["Digestive", "Immune", "Vaginal", "Urinary tract", "Heart health"],
         checklistOptions: (_checklistOptions = {
           name: "Digestive"
-        }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary Tract"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Heart Health"), _checklistOptions),
+        }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary tract"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Heart health"), _checklistOptions),
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -498,11 +498,11 @@ var vm = new _vue2.default({
 
       var params = new URLSearchParams();
 
-      if (this.model.age === "under 24") {
+      if (this.model.age === "Under 25") {
         this.model.age = 20;
       }
 
-      if (this.model.age === "24-39") {
+      if (this.model.age === "25-39") {
         this.model.age = 30;
       }
 
@@ -526,19 +526,19 @@ var vm = new _vue2.default({
         this.model.has_children = 0;
       };
 
-      if (this.model.travels_often === "Jet Setter" || this.model.travels_often === "Weekend Traveler") {
+      if (this.model.travels_often === "Go-getter" || this.model.travels_often === "Jet setter") {
         this.model.travels_often = 1;
       };
 
-      if (this.model.travels_often === "Neighborhood Roamer" || this.model.travels_often === "Homebody") {
+      if (this.model.travels_often === "Homebody" || this.model.travels_often === "Free spirit") {
         this.model.travels_often = 0;
       };
 
-      if (this.model.exercises_often === "Everyday" || this.model.exercises_often === "A few times a week") {
+      if (this.model.exercises_often === "I train to compete" || this.model.exercises_often === "The gym is my domain") {
         this.model.exercises_often = 1;
       };
 
-      if (this.model.exercises_often === "Weekend Stroller" || this.model.exercises_often === "I don’t workout") {
+      if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_often === "I like my couch") {
         this.model.exercises_often = 0;
       };
 
@@ -615,6 +615,10 @@ var vm = new _vue2.default({
         });
       }
     }
+  },
+
+  beforeMount: function beforeMount() {
+    vm.hide();
   },
 
   mounted: function mounted(event, tabIndex, activeTabIndex, prevIndex, nextIndex) {
