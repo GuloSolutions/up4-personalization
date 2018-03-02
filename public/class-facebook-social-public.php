@@ -252,7 +252,7 @@ class Facebook_Social_Public
             ]
         );
 
-            $content = <<<EOS
+        $content = <<<EOS
 
             <div id="survey-social-public">
 
@@ -278,8 +278,8 @@ class Facebook_Social_Public
                     >
 EOS;
 
-            if (!$this->up4->get()->age) {
-                $questions[] = '
+        if (!$this->up4->get()->age) {
+            $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateAgeTab">
                <label for="radio"  class="control control--checkbox">How old are you?</label>
@@ -291,16 +291,16 @@ EOS;
                </vue-form-generator>
 
             </tab-content>';
-            }
+        }
 
 
 
-            if (!$this->up4->get()->gender) {
-                $questions[] = '
+        if (!$this->up4->get()->gender) {
+            $questions[] = '
             <tab-content
 
                 icon="ti-user" :before-change="validateGenderTab">
-                <label for="radio"  class="control control--checkbox">What is your sex?</label>
+                <label for="radio"  class="control control--checkbox">To which gender do you most identify?</label>
 
                 <vue-form-generator :model="model"
                                    :schema="genderTabSchema"
@@ -310,12 +310,12 @@ EOS;
                 </vue-form-generator>
 
             </tab-content>';
-            }
+        }
 
-            $questions[] = '
+        $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateTravelTab">
-                <label for="radio"  class="control control--checkbox">You are a ...?</label>
+                <label for="radio"  class="control control--checkbox">You are best described as a...?</label>
 
                 <vue-form-generator :model="model"
                                    :schema="travelTabSchema"
@@ -325,7 +325,7 @@ EOS;
                 </vue-form-generator>
             </tab-content>';
 
-            $questions[] = '
+        $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateChildrenTab">
                         <label for="radio">Do you have children?</label>
@@ -337,7 +337,7 @@ EOS;
                 </vue-form-generator>
             </tab-content>';
 
-            $questions[] = '
+        $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateExerciseTab">
                          <label for="radio">How would you describe your workouts?</label>
@@ -349,7 +349,7 @@ EOS;
                 </vue-form-generator>
             </tab-content>';
 
-            $questions[] = '
+        $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateHealthTab">
                          <label for="checkbox" >Which health needs are most important to you?
@@ -362,11 +362,11 @@ EOS;
 
             </tab-content>';
 
-            foreach ($questions as $question) {
-                $content .= $question;
-            }
+        foreach ($questions as $question) {
+            $content .= $question;
+        }
 
-            $content .= <<<EOS
+        $content .= <<<EOS
 
             </form-wizard>
             </div>
@@ -375,9 +375,7 @@ EOS;
 
 EOS;
 
-            return $content;
-
-
+        return $content;
     }
 
     public function fb_receiver()
@@ -437,10 +435,7 @@ EOS;
 
     public function survey_loader_helper()
     {
-
         $this->register_survey_button();
         $this->register_survey_shortcode();
     }
-
-
 }
