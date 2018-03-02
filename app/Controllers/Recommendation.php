@@ -138,7 +138,7 @@ class Recommendation
      */
     private function scoreAttributes()
     {
-        foreach ($this->recommendations as $p) {
+        foreach ($this->recommendations as $name => $p) {
             if ($p->isTravelsOften() && $p->isTravelsOften() == $this->user->travels_often) {
                 $p->score();
             }

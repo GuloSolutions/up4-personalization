@@ -64,7 +64,7 @@ class ProductUltra extends AbstractProduct
 
     public function isDigestive()
     {
-        return  true;
+        return true;
     }
 
     public function isImmune()
