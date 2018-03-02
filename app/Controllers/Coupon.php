@@ -7,11 +7,15 @@ use Models\Up4User;
 
 class Coupon
 {
+    const PCODE = 'camhong2296@yahoo.com';
+
+    const DEVELOPEMENT_CPT_OVERIDE = 'ndq2QwGjFT97N6h6lyRD4fVT9wL';
+
     //provided by Coupons.com
     private $checkCode;
     //dummy values for now
     const PIN_CODE='wdoidjqoixmxq[]qd-02-';
-    const SHORT_KEY= 'DJHDWQE233203289HDD0D29-';
+    const SHORT_KEY= 'DJHDWQE233203289HDD0D29';
     const LONG_KEY = 'DSDSKLDSHLDAJKDAH';
 
     public function encodeRequest($offerCode)
@@ -43,6 +47,15 @@ class Coupon
             $q = ($q + $s1 + $s2 + $s3) % 61;
             $cpt .= substr(self::LONG_KEY, $q, 1);
         }
-        return ['o' => $offerCode, 'cpt' =>$cpt];
+
+        if(self::DEVELOPEMENT_CPT_OVERIDE) {
+            $cpt = self::DEVELOPEMENT_CPT_OVERIDE;
+        }
+
+        return [
+            'o' => $offerCode,
+            'p' => self::PCODE,
+            'cpt' =>$cpt
+        ];
     }
 }
