@@ -6,7 +6,7 @@ use Controllers\Age;
 
 class ProductWomens extends AbstractProduct
 {
-    private const SKU = 725334011330;
+    private const SKU = 40000600281;
 
     private const RANK = 2;
 

@@ -12,34 +12,43 @@ abstract class AbstractProduct
 
     protected $score;
 
-    abstract protected function getSku();
+    abstract public function getSku();
 
-    abstract protected function isTravelsOften();
+    abstract public function isTravelsOften();
 
-    abstract protected function isExercisesOften();
+    abstract public function isExercisesOften();
 
-    abstract protected function hasChildren();
+    abstract public function hasChildren();
 
-    abstract protected function isUrinary();
+    abstract public function isUrinary();
 
-    abstract protected function isVaginal();
+    abstract public function isVaginal();
 
-    abstract protected function isDigestive();
+    abstract public function isDigestive();
 
-    abstract protected function isImmune();
+    abstract public function isImmune();
 
-    abstract protected function isHeart();
+    abstract public function isHeart();
 
+    /*
+     * @return Void
+     */
     public function score()
     {
         $this->score++;
     }
 
+    /*
+     * @return Int
+     */
     public function getScore()
     {
         return $this->score;
     }
 
+    /*
+     * @return Int
+     */
     public function getRank()
     {
         return $this->rank;
@@ -54,7 +63,7 @@ abstract class AbstractProduct
     }
 
     /*
-     * @return Gender
+     * @return Age
      */
     public function getAge()
     {

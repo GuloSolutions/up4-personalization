@@ -133,13 +133,14 @@ class Segmentation
      */
     public function getSegmentTemplate()
     {
-        global $post;
-        global $up4_user;
+        global $up4_user, $post;
 
         if (!$up4_user->isLoggedIn() && $this->isCookieSet()) {
             $post = $this->post_segment;
             setup_postdata($post);
+
             get_template_part('single-segments');
+
             wp_reset_postdata();
         }
     }
