@@ -315,7 +315,7 @@ EOS;
         $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateTravelTab">
-                <label for="radio"  class="control control--checkbox">You are best described as a...?</label>
+                <label for="radio"  class="control control--checkbox">You are best described as a...</label>
 
                 <vue-form-generator :model="model"
                                    :schema="travelTabSchema"
