@@ -139,7 +139,6 @@ class Up4Users
     private function linkSurveyUser()
     {
         $this->saveSurveyUser();
-        $this->create();
     }
 
     private function linkFacebookUser()
@@ -176,6 +175,11 @@ class Up4Users
      */
     private function setData()
     {
+        error_log(print_r('here before', true));
+
+        error_log(print_r($this->fb_data, true));
+
+
         if ($this->fb_data) {
             if ($this->fb_user->id !== null) {
                 $this->fb_user->session_id = $this->up4Session->id;
@@ -278,6 +282,7 @@ class Up4Users
             $this->fb_user->birthday = $user->birthday;
         }
         $this->fb_user->save();
+
         $this->create();
     }
 
