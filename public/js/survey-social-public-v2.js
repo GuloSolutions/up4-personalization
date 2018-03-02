@@ -284,10 +284,6 @@ axios.post(ajax_receiver.ajax_url,
         }
   },
 
-  beforeMount: function (){
-    vm.hide();
-  },
-
   mounted: function(event, tabIndex, activeTabIndex, prevIndex, nextIndex) {
       this.$nextTick(function (event) {
       this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;

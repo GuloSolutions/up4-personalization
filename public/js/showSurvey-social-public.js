@@ -3,5 +3,4 @@ $(function() {
             $('#survey-social-public').insertAfter($('.site-header'));
             $('#survey-social-public').show();
         });
-
 });
