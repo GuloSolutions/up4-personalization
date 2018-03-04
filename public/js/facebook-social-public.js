@@ -4,6 +4,7 @@ var up4_fb_data = {};
 
 var up4_fb_scope = 'id, name, email, first_name, last_name, gender, birthday, picture.width(800).height(800)';
 
+
 window.fbAsyncInit = function() {
     FB.init({
         appId      : '1350071051786117',
@@ -16,7 +17,7 @@ window.fbAsyncInit = function() {
 
     FB.Event.subscribe('auth.statusChange', function(response) {
         if (response.status === 'connected') {
-            connectToApp();
+            return;
         } else if (response.status === 'not_authorized') {
 
         } else {
@@ -25,6 +26,7 @@ window.fbAsyncInit = function() {
     });
 
     FB.Event.subscribe('auth.logout', function(response) {
+
         up4_fb_data = {
             'action': 'fb_logout',
             'trigger': true
@@ -32,13 +34,22 @@ window.fbAsyncInit = function() {
 
         sendToApp();
     });
+
 };
 
 function facebookLogout() {
    FB.logout(function(response) {
-        return;
+
    });
-}
+
+        up4_fb_data.trigger = true;
+
+        up4_fb_data = {
+            'action': 'fb_logout'
+        };
+
+        logoutFromApp();
+    };
 
 function facebookLogin() {
     FB.login(function(response) {
@@ -50,7 +61,7 @@ function facebookLogin() {
 
         return;
     }, {scope: 'email, user_birthday'});
-}
+};
 
 function connectToApp() {
     FB.api('/me',
@@ -62,15 +73,16 @@ function connectToApp() {
             sendToApp();
         }
     );
-}
+};
 
 function sendToApp() {
+
     jQuery.ajax({
         url: ajax_receiver.ajax_url,
         data: up4_fb_data,
         method: 'POST',
         success: function(data) {
-            if(up4_fb_data.trigger != undefined && up4_fb_data.trigger === true) {
+             if(up4_fb_data.trigger != 'undefined' && up4_fb_data.trigger === true) {
                 window.top.location = window.location.href;
             }
         },
@@ -78,7 +90,26 @@ function sendToApp() {
             console.log(data);
         }
     });
-}
+
+};
+
+function logoutFromApp() {
+
+    jQuery.ajax({
+        url: ajax_receiver.ajax_url,
+        data: up4_fb_data,
+        method: 'POST',
+        success: function(data) {
+            if(up4_fb_data.trigger != 'undefined' && up4_fb_data.trigger === true) {
+                window.top.location = window.location.href;
+            }
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    });
+
+};
 
 (function($) {
     $(function() {
@@ -89,12 +120,11 @@ function sendToApp() {
         });
 
         $('#fb-logout').on('click', function(e) {
-
             e.preventDefault();
 
-
-            facebookLogout();
+            var logout = facebookLogout();
         });
+
     });
 }) (jQuery);
 

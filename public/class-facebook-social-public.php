@@ -222,9 +222,9 @@ class Facebook_Social_Public
         );
 
         if ($this->up4->isLoggedInFacebook()) {
-            $content = '<button id="fb-logout">Sign out</button>';
+            $content = '<button  id="fb-logout">Sign out</button>';
         } else {
-            $content = '<button id="fb-login">Sign in with Facebook</button>';
+            $content = '<button id="fb-login" >Sign in with Facebook</button>';
         }
 
         return $content;
@@ -418,7 +418,9 @@ EOS;
 
     public function fb_logout()
     {
-        session_destroy();
+
+        Models\Up4Session::where('sid', session_id())->delete();
+
         wp_logout();
     }
 
