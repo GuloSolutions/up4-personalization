@@ -418,9 +418,7 @@ EOS;
 
     public function fb_logout()
     {
-
         Models\Up4Session::where('sid', session_id())->delete();
-
         wp_logout();
     }
 
