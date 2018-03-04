@@ -26,13 +26,12 @@ window.fbAsyncInit = function() {
     });
 
     FB.Event.subscribe('auth.logout', function(response) {
-
         up4_fb_data = {
             'action': 'fb_logout',
             'trigger': true
         };
 
-        sendToApp();
+        logoutFromApp();
     });
 
 };
@@ -40,15 +39,8 @@ window.fbAsyncInit = function() {
 function facebookLogout() {
    FB.logout(function(response) {
 
-   });
+    });
 
-        up4_fb_data.trigger = true;
-
-        up4_fb_data = {
-            'action': 'fb_logout'
-        };
-
-        logoutFromApp();
     };
 
 function facebookLogin() {
