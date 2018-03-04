@@ -31,16 +31,12 @@ window.fbAsyncInit = function() {
             'trigger': true
         };
 
-        logoutFromApp();
+        sendToApp();
     });
-
 };
 
 function facebookLogout() {
-   FB.logout(function(response) {
-
-    });
-
+   FB.logout(function(response) {});
     };
 
 function facebookLogin() {
@@ -85,23 +81,6 @@ function sendToApp() {
 
 };
 
-function logoutFromApp() {
-
-    jQuery.ajax({
-        url: ajax_receiver.ajax_url,
-        data: up4_fb_data,
-        method: 'POST',
-        success: function(data) {
-            if(up4_fb_data.trigger != 'undefined' && up4_fb_data.trigger === true) {
-                window.top.location = window.location.href;
-            }
-        },
-        error: function(data) {
-            console.log(data);
-        }
-    });
-
-};
 
 (function($) {
     $(function() {
