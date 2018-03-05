@@ -10,10 +10,19 @@ use Controllers\Up4Users;
 
 class Up4
 {
+    /*
+     * @var String
+     */
     public $session_id;
 
+    /*
+     * @var \Models\Up4User
+     */
     public $up4User;
 
+    /*
+     * @var \Models\Up4Session
+     */
     public $up4Session;
 
     public $product;

@@ -4,6 +4,15 @@ var up4_fb_data = {};
 
 var up4_fb_scope = 'id, name, email, first_name, last_name, gender, birthday, picture.width(800).height(800)';
 
+var up4Logout = function() {
+    up4_fb_data = {
+        'action': 'fb_logout',
+        'trigger': true
+    };
+
+    sendToApp();
+};
+
 window.fbAsyncInit = function() {
     FB.init({
         appId      : '1350071051786117',
@@ -15,46 +24,47 @@ window.fbAsyncInit = function() {
     });
 
     FB.Event.subscribe('auth.statusChange', function(response) {
-        if (response.status === 'connected') {
+        if (response && response.status === 'connected') {
             return;
         } else if (response.status === 'not_authorized') {
-
+            return;
         } else {
-          return;
+            return;
         }
     });
 
     FB.Event.subscribe('auth.logout', function(response) {
-        up4_fb_data = {
-            'action': 'fb_logout',
-            'trigger': true
-        };
-
-        sendToApp();
+        appLogout();
     });
 };
 
 function facebookLogout() {
-    FB.logout(function(response) {});
+    FB.getLoginStatus(function(response) {
+        if (response && response.status === 'connected') {
+            FB.logout(function(response) {});
+        } else {
+            appLogout();
+        }
+    });
 };
 
 function facebookLogin() {
     FB.login(function(response) {
-        if (response.status === 'connected') {
-            connectToApp();
+        if (response && response.status === 'connected') {
+            connectToApp(true);
         }
 
         return;
     }, {scope: 'email, user_birthday'});
 };
 
-function connectToApp() {
+function connectToApp(redirect) {
     FB.api('/me',
         {fields: up4_fb_scope},
         function(response) {
             up4_fb_data = {
                 'action': 'fb_receiver',
-                'trigger': true,
+                'trigger': redirect,
                 'response': response
             };
 
