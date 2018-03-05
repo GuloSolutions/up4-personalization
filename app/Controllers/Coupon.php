@@ -11,9 +11,9 @@ class Coupon
 
     const DEVELOPEMENT_CPT_OVERIDE = 'ndq2QwGjFT97N6h6lyRD4fVT9wL';
 
-    //provided by Coupons.com
+    // provided by Coupons.com
     private $checkCode;
-    //dummy values for now
+    // LONG_KEY and SHORT_CODE are production; PIN_CODE needs update
     const PIN_CODE='wdoidjqoixmxq[]qd-02-';
     const SHORT_KEY= 'DJHDWQE233203289HDD0D29';
     const LONG_KEY = 'DSDSKLDSHLDAJKDAH';
