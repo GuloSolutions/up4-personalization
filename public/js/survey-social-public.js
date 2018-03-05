@@ -617,10 +617,6 @@ var vm = new _vue2.default({
     }
   },
 
-  beforeMount: function beforeMount() {
-    vm.hide();
-  },
-
   mounted: function mounted(event, tabIndex, activeTabIndex, prevIndex, nextIndex) {
     this.$nextTick(function (event) {
       this.counterMax = $('ul.wizard-nav.wizard-nav-pills li').length;
