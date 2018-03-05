@@ -6,6 +6,7 @@ use Models\Up4User;
 use Models\Up4Session;
 use Carbon\Carbon;
 use Controllers\Recommendation;
+use Controllers\Up4Users;
 
 class Up4
 {
@@ -46,9 +47,9 @@ class Up4
      */
     public function isSurveyTaken()
     {
-        return (is_null($this->up4User->travels_often) ||
-                is_null($this->up4User->exercises_often) ||
-                    is_null($this->up4User->has_children)) ? false : true;
+        $up4User = new Up4Users($this->up4User, $this->up4Session);
+
+        return $up4User->isSurveyTaken();
     }
 
     /*
