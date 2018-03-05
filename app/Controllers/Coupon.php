@@ -15,8 +15,8 @@ class Coupon
     private $checkCode;
     //dummy values for now
     const PIN_CODE='wdoidjqoixmxq[]qd-02-';
-    const SHORT_KEY= 'DJHDWQE233203289HDD0D29';
-    const LONG_KEY = 'DSDSKLDSHLDAJKDAH';
+    const SHORT_KEY= 'vcb4fdqpzw';
+    const LONG_KEY = 'ZtQ7OsPjRc1XAex8DL3ulMYig65naf9zNyFBv2oTpwGkVWShUIKqEC4JHdbrm';
 
     public function encodeRequest($offerCode)
     {
