@@ -30,7 +30,7 @@ window.fbAsyncInit = function() {
             'trigger': true
         };
 
-        logoutFromApp();
+        sendToApp();
     });
 };
 
@@ -53,7 +53,7 @@ function connectToApp() {
         {fields: up4_fb_scope},
         function(response) {
             up4_fb_data = {
-                'action': 'fb_logout',
+                'action': 'fb_receiver',
                 'trigger': true,
                 'response': response
             };
@@ -79,26 +79,6 @@ function sendToApp() {
     });
 };
 
-<<<<<<< HEAD
-function logoutFromApp() {
-
-    jQuery.ajax({
-        url: ajax_receiver.ajax_url,
-        data: up4_fb_data,
-        method: 'POST',
-        success: function(data) {
-            if(up4_fb_data.trigger != 'undefined' && up4_fb_data.trigger === true) {
-                window.top.location = window.location.href;
-            }
-        },
-        error: function(data) {
-            console.log(data);
-        }
-    });
-};
-
-=======
->>>>>>> 3e02a7aa29962a674edfdd1a3fba42fac2b46d5c
 (function($) {
     $(function() {
         $('#fb-login').on('click', function(e) {
