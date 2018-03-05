@@ -16,7 +16,6 @@ window.fbAsyncInit = function() {
 
     FB.Event.subscribe('auth.statusChange', function(response) {
         if (response.status === 'connected') {
-            // connectToApp(false);
             return;
         } else if (response.status === 'not_authorized') {
             return;
