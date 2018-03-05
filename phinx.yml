@@ -13,12 +13,11 @@ environments:
         pass: Sn5xd9GZjrzLP1Pq
         port: 3306
         charset: utf8
-
     development:
         adapter: mysql
         host: localhost
-        name: up4-probiotics
-        user: up4-probiotics
+        name: up4-probiotics-dev
+        user: up4-probiotics-dev
         pass: Sn5xd9GZjrzLP1Pq
         port: 3306
         charset: utf8
