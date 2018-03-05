@@ -4,7 +4,6 @@ var up4_fb_data = {};
 
 var up4_fb_scope = 'id, name, email, first_name, last_name, gender, birthday, picture.width(800).height(800)';
 
-
 window.fbAsyncInit = function() {
     FB.init({
         appId      : '1350071051786117',
@@ -36,13 +35,11 @@ window.fbAsyncInit = function() {
 };
 
 function facebookLogout() {
-   FB.logout(function(response) {});
-    };
+    FB.logout(function(response) {});
+};
 
 function facebookLogin() {
     FB.login(function(response) {
-        up4_fb_data.trigger = true;
-
         if (response.status === 'connected') {
             connectToApp();
         }
@@ -55,8 +52,11 @@ function connectToApp() {
     FB.api('/me',
         {fields: up4_fb_scope},
         function(response) {
-            up4_fb_data.action = 'fb_receiver';
-            up4_fb_data.response = response;
+            up4_fb_data = {
+                'action': 'fb_logout',
+                'trigger': true,
+                'response': response
+            };
 
             sendToApp();
         }
@@ -64,7 +64,6 @@ function connectToApp() {
 };
 
 function sendToApp() {
-
     jQuery.ajax({
         url: ajax_receiver.ajax_url,
         data: up4_fb_data,
@@ -78,9 +77,9 @@ function sendToApp() {
             console.log(data);
         }
     });
-
 };
 
+<<<<<<< HEAD
 function logoutFromApp() {
 
     jQuery.ajax({
@@ -98,6 +97,8 @@ function logoutFromApp() {
     });
 };
 
+=======
+>>>>>>> 3e02a7aa29962a674edfdd1a3fba42fac2b46d5c
 (function($) {
     $(function() {
         $('#fb-login').on('click', function(e) {
@@ -109,16 +110,16 @@ function logoutFromApp() {
         $('#fb-logout').on('click', function(e) {
             e.preventDefault();
 
-            var logout = facebookLogout();
+            facebookLogout();
         });
 
     });
 }) (jQuery);
 
 (function(d, s, id){
-   var js, fjs = d.getElementsByTagName(s)[0];
-   if (d.getElementById(id)) {return;}
-   js = d.createElement(s); js.id = id;
-   js.src = "https://connect.facebook.net/en_US/sdk.js";
-   fjs.parentNode.insertBefore(js, fjs);
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
  }(document, 'script', 'facebook-jssdk'));
