@@ -82,6 +82,11 @@ class Up4Users
 
         // default method for checking against existing WP users
         $this->create();
+                    //error_log(print_r('this is user id', true));
+
+        error_log(print_r($this->user->ID, true));
+
+        $this->temp_user_id = $this->user->ID;
 
         $this->linkWithFacebookUser();
     }
@@ -97,6 +102,8 @@ class Up4Users
         $this->up4User->save();
 
         $this->create();
+
+        $this->temp_survey_user_id = $this->user->ID;
 
         $this->linkWithFacebookUser();
     }
@@ -160,33 +167,38 @@ class Up4Users
 
     private function linkWithFacebookUser()
     {
-        error_log(__METHOD__);
-error_log(print_r($this->up4User, true));
-error_log(print_r($this->fb_user, true));
-        // if previously logged in
-        if ($this->fb_user->session_id != session_id()) {
-            // get current wp user
-            $wpUser = wp_get_current_user();
-error_log(print_r($wpUser, true));
-            if($this->fb_user->user_id != $wpUser->ID
-                && !$this->isSurveyTaken()) {
-                $this->to_move_from_survey = Up4User::where('session_id', session_id())->where('user_id', $wpUser->ID)->first();
-            }
+        error_log(print_r('this is temp', true));
+        error_log(print_r($this->temp_user_id, true));
+        // facebook and then survey
+        if ($this->temp_user_id && ($this->temp_user_id != $this->user->ID)){
+            $this->up4User->user_id = $this->temp_user_id;
+                    error_log(print_r('in if', true));
 
-            if ($this->fb_user->user_id == $wpUser->ID
-                && !$this->isSurveyTaken()) {
-                $this->to_move_from_survey = Up4User::where('session_id', session_id())->whereNull('facebook_id')->first();
-            }
+            User::find($this->user->ID)->delete();
+        }
 
-error_log(print_r($this->to_move_from_survey, true));
-            if (isset($this->to_move_from_survey->id)) {
-                if ($this->fb_user->id && !$this->isSurveyTaken()) {
-                    $this->copySurveyUserToFBUser($this->to_move_from_survey);
-                }
+        // survey and then fb
+        elseif ($this->temp_user_id == $this->user->ID && $this->temp_survey_user_id) {
+            $this->up4User->user_id = $this->temp_user_id;
+            $this->up4User->save();
 
-                // delete temp survey user
-                $this->removeSurveyUser($this->to_move_from_survey);
-            }
+                    error_log(print_r('in survey and then fb', true));
+
+            User::find($this->temp_survey_user_id)->delete();
+        // standalone survey
+        } elseif ($this->temp_survey_user_id == $this->user->ID && $this->temp_user_id) {
+                    $this->up4User->user_id = $this->temp_user_id;
+                    $this->up4User->save();
+                    error_log(print_r('this is elsif', true));
+
+                // $this->up4User->user_id = $this->temp_survey_user_id;
+                // $this->up4User->user_id->save();
+                User::find($this->temp_survey_user_id)->delete();
+        } elseif($this->temp_survey_user_id = $this->user->ID && $this->temp_survey_id) {
+            $this->up4User->user_id = $this->temp_survey_user_id;
+            $this->up4User->save();
+            User::find($this->temp_survey_id)->delete();
+            error_log(print_r('this is elsif foor survey', true));
         }
     }
 
@@ -205,12 +217,13 @@ error_log(print_r($this->to_move_from_survey, true));
                     ->whereNull('facebook_id')->delete();
 
                 $this->fb_user->save();
-            } else {
+            } elseif ($this->facebook_id) {
                 $this->setObjectPropsFromData($this->up4User, $this->fb_data);
-
+                    error_log(print_r('in set data', true));
                 $this->establishSession();
             }
-        } else {
+        }
+        else {
             $this->establishSession();
         }
     }
@@ -229,6 +242,9 @@ error_log(print_r($this->to_move_from_survey, true));
         $this->setData();
 
         wp_set_auth_cookie($this->user->ID);
+                error_log(print_r('in create', true));
+
+        error_log(print_r($this->user, true));
 
         $this->updateMetaAndSave();
     }
@@ -279,7 +295,9 @@ error_log(print_r($this->to_move_from_survey, true));
 
     public function removeSurveyUser(Up4Users $user)
     {
-        error_log(__METHOD__);
+
+        error_log(print_r('in remove survey user', true));
+
         if (!is_null($user->id)) {
             User::destroy($user->id);
         }
@@ -330,6 +348,8 @@ error_log(print_r($this->to_move_from_survey, true));
     {
         error_log(__METHOD__);
         $this->up4User->session_id = $this->up4Session->id;
-        $this->up4User->user_id = $this->user->ID;
+         if ($this->facebook_id) {
+            $this->up4User->user_id = $this->user->ID;
+        }
     }
 }
