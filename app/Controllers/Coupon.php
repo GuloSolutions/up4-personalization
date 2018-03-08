@@ -30,6 +30,10 @@ class Coupon
 
     public function encodeRequest()
     {
+        if (!isset($this->long_cipher) || !isset($this->short_cipher) || !isset($this->offer_code)) {
+            return false;
+        }
+
         $decodeX = " abcdefghijklmnopqrstuvwxyz0123456789!$%()*+,-.@;<=>?[]^_{|}~";
         $encodeModulo = array_fill(0, 256, 0);
         $vob[0] = $this->offer_code % 100;
@@ -58,7 +62,7 @@ class Coupon
             $cpt .= substr(self::LONG_KEY, $q, 1);
         }
 
-        if(self::DEVELOPEMENT_CPT_OVERIDE) {
+        if (self::DEVELOPEMENT_CPT_OVERIDE) {
             $cpt = self::DEVELOPEMENT_CPT_OVERIDE;
         }
 
@@ -83,5 +87,4 @@ class Coupon
     {
         $this->offer_code = $offer_code;
     }
-
 }
