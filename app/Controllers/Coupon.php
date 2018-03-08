@@ -9,8 +9,6 @@ class Coupon
 {
     const PCODE = 'camhong2296@yahoo.com';
 
-    const DEVELOPEMENT_CPT_OVERIDE = 'ndq2QwGjFT97N6h6lyRD4fVT9wL';
-
     private $short_cipher;
     private $long_cipher;
     private $offer_code;
@@ -22,11 +20,6 @@ class Coupon
         $this->setShortCipher($short_cipher);
         $this->setOfferCode($offer_code);
     }
-
-    // SHORT_KEY and LONG_KEY are production keys;
-    const PIN_CODE='wdoidjqoixmxq[]qd-02-';
-    const SHORT_KEY= 'vcb4fdqpzw';
-    const LONG_KEY = 'ZtQ7OsPjRc1XAex8DL3ulMYig65naf9zNyFBv2oTpwGkVWShUIKqEC4JHdbrm';
 
     public function encodeRequest()
     {
@@ -50,20 +43,16 @@ class Coupon
 
         $q = 0;
         $j = strlen($pinCode);
-        $k = strlen(self::SHORT_KEY);
+        $k = strlen($this->short_cipher);
         $s1 = $s2 = $s3 = null;
         $cpt = '';
 
         for ($i = 0; $i < $j; $i++) {
             $s1 = $encodeModulo[substr($pinCode, $i, 1)];
-            $s2 = 2 * $encodeModulo[substr(self::SHORT_KEY, $i % $k, 1)];
+            $s2 = 2 * $encodeModulo[substr($this->short_cipher, $i % $k, 1)];
             $s3 = $vob[$i % 2];
             $q = ($q + $s1 + $s2 + $s3) % 61;
-            $cpt .= substr(self::LONG_KEY, $q, 1);
-        }
-
-        if (self::DEVELOPEMENT_CPT_OVERIDE) {
-            $cpt = self::DEVELOPEMENT_CPT_OVERIDE;
+            $cpt .= substr($this->long_cipher, $q, 1);
         }
 
         return [
