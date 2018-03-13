@@ -262,11 +262,7 @@ class Facebook_Social_Public
 
                 <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
 
-            <div class="wizard-numbers">
 
-            {{ counter }} / {{ counterMax }}
-
-            </div>
 
             <form-wizard @on-complete="onComplete"
                     @on-change="incrementCounter"
@@ -276,6 +272,9 @@ class Facebook_Social_Public
                      subtitle=""
                      ref="wizard"
                     >
+            <div class="wizard-numbers">
+                {{ counter }} / {{ counterMax }}
+            </div>
 EOS;
 
         if (!$this->up4->get()->age) {
@@ -352,7 +351,7 @@ EOS;
         $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateHealthTab">
-                         <label for="checkbox" >Which health needs are most important to you?
+                         <label for="checkbox" >Which health needs are most important to you?</label>
                 <vue-form-generator :model="model"
                                    :schema="healthTabSchema"
                                    :options="formOptions"
