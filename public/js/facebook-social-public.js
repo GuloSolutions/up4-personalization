@@ -4,15 +4,6 @@ var up4_fb_data = {};
 
 var up4_fb_scope = 'id, name, email, first_name, last_name, gender, birthday, picture.width(800).height(800)';
 
-var up4Logout = function() {
-    up4_fb_data = {
-        'action': 'fb_logout',
-        'trigger': true
-    };
-
-    sendToApp();
-};
-
 window.fbAsyncInit = function() {
     FB.init({
         appId      : '1350071051786117',
@@ -24,7 +15,7 @@ window.fbAsyncInit = function() {
     });
 
     FB.Event.subscribe('auth.statusChange', function(response) {
-        if (response && response.status === 'connected') {
+        if (response.status === 'connected') {
             return;
         } else if (response.status === 'not_authorized') {
             return;
@@ -34,23 +25,22 @@ window.fbAsyncInit = function() {
     });
 
     FB.Event.subscribe('auth.logout', function(response) {
-        appLogout();
+        up4_fb_data = {
+            'action': 'fb_logout',
+            'trigger': true
+        };
+
+        sendToApp();
     });
 };
 
 function facebookLogout() {
-    FB.getLoginStatus(function(response) {
-        if (response && response.status === 'connected') {
-            FB.logout(function(response) {});
-        } else {
-            appLogout();
-        }
-    });
+    FB.logout(function(response) {});
 };
 
 function facebookLogin() {
     FB.login(function(response) {
-        if (response && response.status === 'connected') {
+        if (response.status === 'connected') {
             connectToApp(true);
         }
 
