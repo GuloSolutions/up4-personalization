@@ -590,7 +590,8 @@ var vm = new _vue2.default({
     },
     hideSurveyDiv: function hideSurveyDiv(event) {
       if (event) {
-        $('#survey-social-public').hide();
+        $('#survey-social-public').removeClass('active');
+        $('.site-header').removeClass('under');
       }
     },
 

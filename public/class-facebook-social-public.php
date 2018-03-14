@@ -254,7 +254,7 @@ class Facebook_Social_Public
 
         $content = <<<EOS
 
-            <div style="display:none" id="survey-social-public">
+            <div id="survey-social-public">
 
             <div class="container">
 
