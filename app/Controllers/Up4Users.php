@@ -10,7 +10,6 @@ use Models\Up4User;
 use Models\Up4Session;
 use Carbon\Carbon;
 use Controllers\Up4;
-use Controllers\SurveyCookieUser;
 
 class Up4Users
 {
@@ -160,8 +159,6 @@ class Up4Users
         if ($this->fb_data) {
             if ($this->fb_user->id !== null) {
                 $this->fb_user->session_id = $this->up4Session->id;
-                // update fb user if survey taken again
-
                 // move data if survey taken after again and subsequent FB login
 
                 $this->copySurveyUserToFBUser($this->up4User);
@@ -176,7 +173,6 @@ class Up4Users
                 $this->establishSession();
             }
         } else {
-            //$this->setObjectPropsFromData($this->up4User, $this->survey_data);
             $this->establishSession();
         }
     }
