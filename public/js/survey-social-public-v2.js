@@ -296,7 +296,11 @@ axios.post(ajax_receiver.ajax_url,
     $("#survey-social-public input:radio").click(function(event) {
 
         vm.$refs.wizard.nextTab();
-  });
-
+    });
+        $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
   },
+  updated: function(){
+      $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
+      $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
+  }
 })
