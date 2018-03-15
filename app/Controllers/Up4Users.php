@@ -9,6 +9,8 @@ use Models\User;
 use Models\Up4User;
 use Models\Up4Session;
 use Carbon\Carbon;
+use Controllers\Up4;
+use Controllers\SurveyCookieUser;
 
 class Up4Users
 {
@@ -55,20 +57,19 @@ class Up4Users
     /*
      * @var Up4User
      */
-    // private $to_move;
+    private $to_move;
+
+    private $existing_facebook_user;
 
     public function __construct(\Models\Up4User $up4User, \Models\Up4Session $up4Session)
     {
-        error_log(__METHOD__);
         $this->up4User = $up4User;
-
         $this->up4Session = $up4Session;
     }
 
     private function setFacebookUser()
     {
-        error_log(__METHOD__);
-        if($this->facebook_id) {
+        if ($this->facebook_id) {
             $this->fb_user = Up4User::where('facebook_id', $this->facebook_id)
                 ->first();
         }
@@ -76,24 +77,16 @@ class Up4Users
 
     public function checkFBUser()
     {
-        error_log(__METHOD__);
         // generic logged in fb_user with session
         $this->setFacebookUser();
 
         // default method for checking against existing WP users
         $this->create();
-                    //error_log(print_r('this is user id', true));
-
-        error_log(print_r($this->user->ID, true));
-
-        $this->temp_user_id = $this->user->ID;
-
-        $this->linkWithFacebookUser();
     }
 
     public function checkSurveyUser()
     {
-        error_log(__METHOD__);
+
         // generic logged in fb_user with session
         $this->setFacebookUser();
 
@@ -102,15 +95,10 @@ class Up4Users
         $this->up4User->save();
 
         $this->create();
-
-        $this->temp_survey_user_id = $this->user->ID;
-
-        $this->linkWithFacebookUser();
     }
 
     public function setupSurveyResponse($response)
     {
-        error_log(__METHOD__);
         if ($response['gender'] && $response['age'] && !$this->up4User->age && !$this->up4User->gender) {
             $this->survey_data['gender'] = $response['gender'];
             $this->survey_data['age'] = $response['age'];
@@ -137,7 +125,6 @@ class Up4Users
 
     public function setupFacebookResponse($response)
     {
-        error_log(__METHOD__);
         $this->facebook_id = $response['id'];
 
         $this->email = $response['email'];
@@ -165,52 +152,19 @@ class Up4Users
         $this->fb_data['gender'] = $response['gender'];
     }
 
-    private function linkWithFacebookUser()
-    {
-        error_log(print_r('this is temp', true));
-        error_log(print_r($this->temp_user_id, true));
-        // facebook and then survey
-        if ($this->temp_user_id && ($this->temp_user_id != $this->user->ID)){
-            $this->up4User->user_id = $this->temp_user_id;
-                    error_log(print_r('in if', true));
-
-            User::find($this->user->ID)->delete();
-        }
-
-        // survey and then fb
-        elseif ($this->temp_user_id == $this->user->ID && $this->temp_survey_user_id) {
-            $this->up4User->user_id = $this->temp_user_id;
-            $this->up4User->save();
-
-                    error_log(print_r('in survey and then fb', true));
-
-            User::find($this->temp_survey_user_id)->delete();
-        // standalone survey
-        } elseif ($this->temp_survey_user_id == $this->user->ID && $this->temp_user_id) {
-                    $this->up4User->user_id = $this->temp_user_id;
-                    $this->up4User->save();
-                    error_log(print_r('this is elsif', true));
-
-                // $this->up4User->user_id = $this->temp_survey_user_id;
-                // $this->up4User->user_id->save();
-                User::find($this->temp_survey_user_id)->delete();
-        } elseif($this->temp_survey_user_id = $this->user->ID && $this->temp_survey_id) {
-            $this->up4User->user_id = $this->temp_survey_user_id;
-            $this->up4User->save();
-            User::find($this->temp_survey_id)->delete();
-            error_log(print_r('this is elsif foor survey', true));
-        }
-    }
-
     /*
      * Sets up4User properties
      */
     private function setData()
     {
-        error_log(__METHOD__);
         if ($this->fb_data) {
             if ($this->fb_user->id !== null) {
                 $this->fb_user->session_id = $this->up4Session->id;
+                // update fb user if survey taken again
+
+                // move data if survey taken after again and subsequent FB login
+
+                $this->copySurveyUserToFBUser($this->up4User);
 
                 // delete temp user if survey data entered again
                 Up4User::where('session_id', $this->fb_user->session_id)
@@ -219,39 +173,28 @@ class Up4Users
                 $this->fb_user->save();
             } elseif ($this->facebook_id) {
                 $this->setObjectPropsFromData($this->up4User, $this->fb_data);
-                    error_log(print_r('in set data', true));
                 $this->establishSession();
             }
-        }
-        else {
+        } else {
+            //$this->setObjectPropsFromData($this->up4User, $this->survey_data);
             $this->establishSession();
         }
     }
 
     private function create()
     {
-        error_log(__METHOD__);
         if (!empty($this->name) && !empty($this->email)) {
             $wpUser = new WordpressUsers($this->name, $this->email);
-        } else {
-            $wpUser = new WordpressUsers();
+            $this->user = $wpUser->setup();
+            wp_set_auth_cookie($this->user->ID);
         }
 
-        $this->user = $wpUser->setup();
-
         $this->setData();
-
-        wp_set_auth_cookie($this->user->ID);
-                error_log(print_r('in create', true));
-
-        error_log(print_r($this->user, true));
-
         $this->updateMetaAndSave();
     }
 
     private function updateMetaAndSave()
     {
-        error_log(__METHOD__);
         $location = new Location();
         $weather = new Weather($location);
 
@@ -269,7 +212,6 @@ class Up4Users
      */
     private function getAge($birthday)
     {
-        error_log(__METHOD__);
         if (!$birthday) {
             return null;
         }
@@ -285,7 +227,6 @@ class Up4Users
      */
     public function isSurveyTaken()
     {
-        error_log(__METHOD__);
         return is_null($this->up4User->digestive) &&
             is_null($this->up4User->immune) &&
                 is_null($this->up4User->vaginal) &&
@@ -295,9 +236,6 @@ class Up4Users
 
     public function removeSurveyUser(Up4Users $user)
     {
-
-        error_log(print_r('in remove survey user', true));
-
         if (!is_null($user->id)) {
             User::destroy($user->id);
         }
@@ -305,7 +243,6 @@ class Up4Users
 
     private function copySurveyUserToFBUser(Up4User $user)
     {
-        error_log(__METHOD__);
         $this->fb_user->travels_often = $user->travels_often;
         $this->fb_user->exercises_often = $user->exercises_often;
         $this->fb_user->has_children = $user->has_children;
@@ -316,13 +253,10 @@ class Up4Users
         $this->fb_user->heart = $user->heart;
 
         $this->fb_user->save();
-
-        $this->create();
     }
 
     private function saveMetaData(Up4User $object, Weather $local_weather)
     {
-        error_log(__METHOD__);
         $object->location = $local_weather->getOrigin();
         $object->temperature = $local_weather->getTemperature();
         $object->conditions = $local_weather->getConditions();
@@ -333,10 +267,8 @@ class Up4Users
 
     private function setObjectPropsFromData(&$object, $data)
     {
-        error_log(__METHOD__);
         if (is_object($object)) {
             foreach ($data as $key => $value) {
-                // if ($value !== null) {
                 if (!empty($value)) {
                     $object->{$key} = $value;
                 }
@@ -346,9 +278,8 @@ class Up4Users
 
     private function establishSession()
     {
-        error_log(__METHOD__);
         $this->up4User->session_id = $this->up4Session->id;
-         if ($this->facebook_id) {
+        if ($this->facebook_id) {
             $this->up4User->user_id = $this->user->ID;
         }
     }
