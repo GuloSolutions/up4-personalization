@@ -48,18 +48,6 @@ class Up4Users
      */
     private $to_migrate;
 
-    /*
-     * @var Up4User
-     */
-    private $to_move_from_survey;
-
-    /*
-     * @var Up4User
-     */
-    private $to_move;
-
-    private $existing_facebook_user;
-
     public function __construct(\Models\Up4User $up4User, \Models\Up4Session $up4Session)
     {
         $this->up4User = $up4User;
@@ -160,8 +148,8 @@ class Up4Users
         if ($this->fb_data) {
             if ($this->fb_user->id !== null) {
                 $this->fb_user->session_id = $this->up4Session->id;
-                // move data if survey taken after again and subsequent FB login
 
+                // move data if survey taken after again and subsequent FB login
                 $this->copySurveyUserToFBUser($this->up4User);
 
                 // delete temp user if survey data entered again
@@ -195,8 +183,7 @@ class Up4Users
         $location = new Location();
         $weather = new Weather($location);
 
-        if (!empty($this->fb_user->id)
-            && !isset($this->to_move_from_survey->id)) {
+        if (!empty($this->fb_user->id)) {
             $this->saveMetaData($this->fb_user, $weather);
         } elseif (!isset($this->fb_user->id)) {
             $this->saveMetaData($this->up4User, $weather);
