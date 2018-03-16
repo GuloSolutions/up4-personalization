@@ -254,41 +254,36 @@ class Facebook_Social_Public
 
         $content = <<<EOS
 
-            <div id="survey-social-public">
+        <div id="survey-social-public">
+
+            <button id="start-over" v-on:click="restartSurvey">Start over</button>
+            <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
 
             <div class="container">
-
-                <button id="start-over" v-on:click="restartSurvey">Start over</button>
-
-                <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
-
-
-
-            <form-wizard @on-complete="onComplete"
-                    @on-change="incrementCounter"
-                     color="gray"
-                     error-color="#a94442"
-                     title=""
-                     subtitle=""
-                     ref="wizard"
+                <div class="row">
+                    <form-wizard @on-complete="onComplete"
+                            @on-change="incrementCounter"
+                             color="gray"
+                             error-color="#a94442"
+                             title=""
+                             subtitle=""
+                             ref="wizard"
                     >
-            <div class="wizard-numbers">
-                {{ counter }} / {{ counterMax }}
-            </div>
+                    <div class="wizard-numbers">
+                        {{ counter }} / {{ counterMax }}
+                    </div>
 EOS;
 
         if (!$this->up4->get()->age) {
             $questions[] = '
-            <tab-content
-                         icon="ti-user" :before-change="validateAgeTab">
+            <tab-content icon="ti-user" :before-change="validateAgeTab">
                <label for="radio"  class="control control--checkbox">How old are you?</label>
-               <vue-form-generator :model="model"
-                                   :schema="ageTabSchema"
-                                   :options="formOptions"
-                                   ref="ageTabForm"
-                                        >
+               <vue-form-generator
+                    :model="model"
+                    :schema="ageTabSchema"
+                    :options="formOptions"
+                    ref="ageTabForm">
                </vue-form-generator>
-
             </tab-content>';
         }
 
@@ -296,18 +291,14 @@ EOS;
 
         if (!$this->up4->get()->gender) {
             $questions[] = '
-            <tab-content
-
-                icon="ti-user" :before-change="validateGenderTab">
-                <label for="radio"  class="control control--checkbox">To which gender do you most identify?</label>
-
+            <tab-content icon="ti-user" :before-change="validateGenderTab">
+                <label for="radio" class="control control--checkbox">To which gender do you most identify?</label>
                 <vue-form-generator :model="model"
                                    :schema="genderTabSchema"
                                    :options="formOptions"
                                    ref="genderTabForm"
                                    >
                 </vue-form-generator>
-
             </tab-content>';
         }
 
@@ -369,7 +360,7 @@ EOS;
 
             </form-wizard>
             </div>
-
+            </div>
         </div>
 
 EOS;
