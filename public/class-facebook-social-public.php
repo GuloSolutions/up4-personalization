@@ -254,24 +254,27 @@ class Facebook_Social_Public
 
         $content = <<<EOS
 
-        <div id="survey-social-public">
-
-            <button id="start-over" v-on:click="restartSurvey">Start over</button>
-            <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
+            <div id="survey-social-public">
 
             <div class="container">
-                <div class="row">
-                    <form-wizard @on-complete="onComplete"
-                            @on-change="incrementCounter"
-                             color="gray"
-                             error-color="#a94442"
-                             title=""
-                             subtitle=""
-                             ref="wizard"
+
+                <button id="start-over" v-on:click="restartSurvey">Start over</button>
+
+                <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
+
+
+
+            <form-wizard @on-complete="onComplete"
+                    @on-change="incrementCounter"
+                     color="gray"
+                     error-color="#a94442"
+                     title=""
+                     subtitle=""
+                     ref="wizard"
                     >
-                    <div class="wizard-numbers">
-                        {{ counter }} / {{ counterMax }}
-                    </div>
+            <div class="wizard-numbers">
+                {{ counter }} / {{ counterMax }}
+            </div>
 EOS;
 
         if (!$this->up4->get()->age) {

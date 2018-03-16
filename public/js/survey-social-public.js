@@ -630,6 +630,11 @@ var vm = new _vue2.default({
         vm.$refs.wizard.nextTab();
       }, 500);
     });
+    $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
+  },
+  updated: function updated() {
+    $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
+    $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
   }
 });
 

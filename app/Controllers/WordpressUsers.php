@@ -11,8 +11,8 @@ class WordpressUsers
 
     public function __construct($name = null, $email = null)
     {
-        $this->email = !empty($email) ? $email : $this->emailGenerator();
-        $this->nice_name = !empty($name) ? preg_replace('/\s/', '-', $name) : preg_replace('/\s/', '-', $this->nameGenerator()) ;
+        $this->email = $email;
+        $this->nice_name = preg_replace('/\s/', '-', $name);
 
         $this->setData();
     }
@@ -57,41 +57,5 @@ class WordpressUsers
         $user->save();
 
         return $user;
-    }
-
-    public static function emailGenerator()
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $username_length = 10;
-
-        $randomName = '';
-
-        for ($j=0; $j<$username_length; $j++) {
-            $randomName .= $characters[rand(0, strlen($characters) -1)];
-        }
-
-        $fullAddress = $randomName . '@' . 'example.com';
-
-        return $fullAddress;
-    }
-
-    public static function nameGenerator()
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $username_length = 20;
-
-        $randomName = '';
-
-        for ($j=0; $j<$username_length; $j++) {
-            $randomName .= $characters[rand(0, strlen($characters) -1)];
-        }
-
-        $firstName = substr($randomName, 0, 6);
-
-        $lastName = substr($randomName, 7, 19);
-
-        $fullName = $firstName . ' ' . $lastName;
-
-        return $fullName;
     }
 }

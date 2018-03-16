@@ -11,22 +11,19 @@ use Controllers\Up4Users;
 class Up4
 {
     /*
-     * @var String
+     * @var string
      */
     public $session_id;
 
     /*
-     * @var \Models\Up4User
+     * @var Models\Up4User
      */
     public $up4User;
 
     /*
-     * @var \Models\Up4Session
+     * @var Models\Up4Session
      */
     public $up4Session;
-
-    public $product;
-
 
     public function __construct($session_id)
     {
