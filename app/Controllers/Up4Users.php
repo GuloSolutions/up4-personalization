@@ -99,7 +99,7 @@ class Up4Users
     public function setupSurveyResponse($response)
     {
         if ($response['gender'] && $response['age'] && !$this->up4User->age && !$this->up4User->gender) {
-            $this->survey_data['gender'] = $response['gender'];
+            $this->survey_data['gender'] = strtolower($response['gender']);
             $this->survey_data['age'] = $response['age'];
         }
 
@@ -113,6 +113,7 @@ class Up4Users
 
         foreach ($health_needs as $key=>$value) {
             $value = strtolower($value);
+
             if (strpos($value, " ") !== false) {
                 $first = explode(" ", $value);
                 $value = $first[0];
@@ -148,7 +149,7 @@ class Up4Users
         $this->fb_data['age'] = array_key_exists('birthday', $response) ?
             $this->getAge($response['birthday']) :  null;
 
-        $this->fb_data['gender'] = $response['gender'];
+        $this->fb_data['gender'] = strtolower($response['gender']);
     }
 
     /*
