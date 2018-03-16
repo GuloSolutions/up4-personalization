@@ -43,11 +43,6 @@ class Up4Users
      */
     private $fb_data;
 
-    /*
-     * @var Up4User
-     */
-    private $to_migrate;
-
     public function __construct(\Models\Up4User $up4User, \Models\Up4Session $up4Session)
     {
         $this->up4User = $up4User;
@@ -149,7 +144,7 @@ class Up4Users
             if ($this->fb_user->id !== null) {
                 $this->fb_user->session_id = $this->up4Session->id;
 
-                // move data if survey taken after again and subsequent FB login
+                // move data if survey taken again and subsequent FB login
                 $this->copySurveyUserToFBUser($this->up4User);
 
                 // delete temp user if survey data entered again
