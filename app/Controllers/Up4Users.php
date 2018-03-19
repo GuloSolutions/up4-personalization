@@ -9,7 +9,6 @@ use Models\User;
 use Models\Up4User;
 use Models\Up4Session;
 use Carbon\Carbon;
-use Controllers\Up4;
 
 class Up4Users
 {
