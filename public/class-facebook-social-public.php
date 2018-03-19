@@ -256,13 +256,10 @@ class Facebook_Social_Public
 
             <div id="survey-social-public">
 
+            <button id="start-over" v-on:click="restartSurvey">Start over</button>
+            <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
+
             <div class="container">
-
-                <button id="start-over" v-on:click="restartSurvey">Start over</button>
-
-                <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
-
-
 
             <form-wizard @on-complete="onComplete"
                     @on-change="incrementCounter"
