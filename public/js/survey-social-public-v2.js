@@ -256,7 +256,8 @@ axios.post(ajax_receiver.ajax_url,
    },
    hideSurveyDiv: function (event){
     if (event){
-      $('#survey-social-public').hide();
+        $('#survey-social-public').removeClass('active');
+        $('.site-header').removeClass('under');
     }
 
    },
