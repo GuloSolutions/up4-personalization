@@ -301,6 +301,6 @@ axios.post(ajax_receiver.ajax_url,
   },
   updated: function(){
       $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
-      $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
+      $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish').addClass('pulse');
   }
 })
