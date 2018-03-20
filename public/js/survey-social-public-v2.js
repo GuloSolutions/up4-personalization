@@ -298,9 +298,14 @@ axios.post(ajax_receiver.ajax_url,
         vm.$refs.wizard.nextTab();
     });
         $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
+
   },
   updated: function(){
       $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
-      $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish').addClass('pulse');
+      $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
+      $("#survey-social-public input:checkbox").click(function(event) {
+        $("#survey-social-public button:contains('Finish')").addClass('pulse');
+    });
+
   }
 })

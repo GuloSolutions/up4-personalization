@@ -632,7 +632,10 @@ var vm = new _vue2.default({
   },
   updated: function updated() {
     $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
-    $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish').addClass('pulse');
+    $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
+    $("#survey-social-public input:checkbox").click(function (event) {
+      $("#survey-social-public button:contains('Finish')").addClass('pulse');
+    });
   }
 });
 
