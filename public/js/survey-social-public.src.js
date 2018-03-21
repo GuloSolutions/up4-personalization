@@ -18,6 +18,7 @@ var vm = new Vue({
  data:{
    counter: 1,
    counterMax: 0,
+   checkBoxCount:0,
    model:{
     age: null,
     gender: null,
@@ -232,7 +233,7 @@ axios.post(ajax_receiver.ajax_url,
    validateGenderTab: function(){
      return this.$refs.genderTabForm.validate();
    },
-      validateTravelTab: function(){
+   validateTravelTab: function(){
      return this.$refs.travelTabForm.validate();
    },
       validateChildrenTab: function(){
@@ -259,7 +260,6 @@ axios.post(ajax_receiver.ajax_url,
         $('#survey-social-public').removeClass('active');
         $('.site-header').removeClass('under');
     }
-
    },
 
    prettyJSON: function(json) {
@@ -304,11 +304,12 @@ axios.post(ajax_receiver.ajax_url,
 
   },
   updated: function(){
-      $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
-      $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
       $("#survey-social-public input:checkbox").click(function(event) {
-        $("#survey-social-public button:contains('Finish')").addClass('pulse');
-    });
-
-  }
+        if(($("#survey-social-public input:checkbox:checked").length === 0)) {
+          $("#survey-social-public button:contains('Finish')").removeClass('pulse');
+        } else {
+          $("#survey-social-public button:contains('Finish')").addClass('pulse');
+        }
+      });
+  },
 })
