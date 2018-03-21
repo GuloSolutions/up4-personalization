@@ -423,10 +423,13 @@ EOS;
         }
     }
 
-
     public function blockusers_init() {
+
         global $up4_user;
-        if ( is_admin() && $up4_user->isLoggedInFacebook() ) {
+        $id = get_current_user_id();
+        $user = get_userdata($id);
+
+        if ( is_admin() && $up4_user->isLoggedInFacebook() && (empty($user->roles) || in_array('user', $user->roles)) ) {
             wp_redirect( home_url() );
             exit;
         }
@@ -437,4 +440,5 @@ EOS;
         $this->register_survey_button();
         $this->register_survey_shortcode();
     }
+
 }
