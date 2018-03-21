@@ -35,7 +35,8 @@ class Coupon
         for ($i = 0; $i < 61; $i++) {
             $encodeModulo[substr($decodeX, $i, 1)] = $i;
         }
-        $pinCode = strtolower(self::PIN_CODE) . strval($this->offer_code);
+        $pinCode = strtolower(self::PCODE) . strval($this->offer_code);
+
         if (strlen($pinCode) < 20) {
             $pinCode .= ' couponsincproduction';
             $pinCode = substr($pinCode, 0, 20);
@@ -44,6 +45,7 @@ class Coupon
         $q = 0;
         $j = strlen($pinCode);
         $k = strlen($this->short_cipher);
+
         $s1 = $s2 = $s3 = null;
         $cpt = '';
 
