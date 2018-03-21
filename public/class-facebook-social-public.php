@@ -267,8 +267,7 @@ class Facebook_Social_Public
                      error-color="#a94442"
                      title=""
                      subtitle=""
-                     ref="wizard"
-                    >
+                     ref="wizard">
             <div class="wizard-numbers">
                 {{ counter }} / {{ counterMax }}
             </div>
@@ -424,6 +423,14 @@ EOS;
         }
     }
 
+
+    public function blockusers_init() {
+        global $up4_user;
+        if ( is_admin() && $up4_user->isLoggedInFacebook() ) {
+            wp_redirect( home_url() );
+            exit;
+        }
+    }
 
     public function survey_loader_helper()
     {
