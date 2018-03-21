@@ -4,7 +4,7 @@ let path = require('path');
 module.exports = {
 
   entry: {
-    'survey-social-public': ['./public/js/survey-social-public-v2.js']
+    'survey-social-public': ['./public/js/survey-social-public.src.js']
   },
   output: {
     path: path.join(__dirname, 'public/'),

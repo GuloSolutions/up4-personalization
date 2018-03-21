@@ -299,7 +299,7 @@ axios.post(ajax_receiver.ajax_url,
         vm.$refs.wizard.nextTab();
       }, 500);
     });
-    
+
     $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
 
   },
