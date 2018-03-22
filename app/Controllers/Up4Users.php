@@ -13,17 +13,17 @@ use Carbon\Carbon;
 class Up4Users
 {
     /*
-     * @var User
+     * @var Models\User
      */
     public $user;
 
     /*
-     * @var Up4User
+     * @var Models\Up4User
      */
     public $up4User;
 
     /*
-     * @var Up4Session
+     * @var Models\Up4Session
      */
     public $up4Session;
 
@@ -70,17 +70,20 @@ class Up4Users
         // generic logged in fb_user with session
         $this->setFacebookUser();
 
-        if (!$this->facebook_id && !is_null(wp_get_current_user())) {
-            $name = explode('-', wp_get_current_user()->user_nicename);
+        // generic logged in fb_user with session
+        $current_wp_user = wp_get_current_user();
+
+        if (!$this->facebook_id && $current_wp_user instanceof WP_User && $current_user->ID != 0) {
+            $name = explode('-', $current_wp_user->user_nicename);
 
             $this->setObjectPropsFromData($this->up4User, $this->survey_data);
             $this->updateMetaAndSave();
 
-            $this->up4User->user_id = wp_get_current_user()->ID;
+            $this->up4User->user_id = $current_wp_user->ID;
             $this->up4User->session_id = $this->up4Session->id;
 
             $this->up4User->first_name = $name[0];
-            $this->up4User->last_name = $name[1];
+            $this->up4User->last_name = isset($name[1]) ? $name[1]: null;
 
             $this->up4User->save();
 
