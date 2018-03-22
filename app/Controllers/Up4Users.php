@@ -67,9 +67,25 @@ class Up4Users
 
     public function checkSurveyUser()
     {
-
         // generic logged in fb_user with session
         $this->setFacebookUser();
+
+        if (!$this->facebook_id && !is_null(wp_get_current_user())) {
+            $name = explode('-', wp_get_current_user()->user_nicename);
+
+            $this->setObjectPropsFromData($this->up4User, $this->survey_data);
+            $this->updateMetaAndSave();
+
+            $this->up4User->user_id = wp_get_current_user()->ID;
+            $this->up4User->session_id = $this->up4Session->id;
+
+            $this->up4User->first_name = $name[0];
+            $this->up4User->last_name = $name[1];
+
+            $this->up4User->save();
+
+            return;
+        }
 
         $this->setObjectPropsFromData($this->up4User, $this->survey_data);
 
