@@ -17,7 +17,7 @@ class ProductWomens extends AbstractProduct
     public function __construct()
     {
         $this->gender = new Gender(Gender::FEMALE);
-        $this->age = new Age(Age::ISALL);
+        $this->age = new Age(Age::IS2439);
 
         $this->rank = self::RANK;
     }

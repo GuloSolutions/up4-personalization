@@ -15,6 +15,7 @@ class WpPost
         $args = [
                 'posts_per_page' => 1,
                 'post_type' => $post_type,
+                'post_status' => 'publish',
                 'meta_key' => 'sku',
                 'meta_value' => $sku
             ];

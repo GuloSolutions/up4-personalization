@@ -164,11 +164,11 @@ class Up4
 
     public function getPrimaryRecommendation()
     {
-        $this->recommendation = new Recommendation($this);
-        $recommendationClass = $this->recommendation->getUserRecommendation();
+        $recommendation = new Recommendation($this);
+        $productClass = $recommendation->getUserRecommendation();
 
-        if (method_exists($recommendationClass, 'getPost')) {
-            return $recommendationClass->getPost();
+        if (method_exists($productClass, 'getPost')) {
+            return $productClass->getPost();
         }
 
         return;

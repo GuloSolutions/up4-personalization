@@ -8,9 +8,23 @@ use Controllers\WpPost;
 
 abstract class AbstractProduct
 {
-    protected $rank;
+    /*
+     * Recommedations on be default
+     * @param Boolean
+     */
+    private $recommendation = true;
 
-    protected $score;
+    /*
+     * Product ranking
+     * @param Integer
+     */
+    protected $rank = 0;
+
+    /*
+     * Product score
+     * @param Integer
+     */
+    protected $score = 0;
 
     abstract public function getSku();
 
@@ -68,6 +82,23 @@ abstract class AbstractProduct
     public function getAge()
     {
         return $this->age;
+    }
+
+    /*
+     * @return Boolean
+     */
+    public function isRecommendation()
+    {
+        return $this->recommendation;
+    }
+
+    /*
+     * Turn off recommendation
+     * @return Void
+     */
+    protected function turnOffRecommendation()
+    {
+        $this->recommendation = false;
     }
 
     /*

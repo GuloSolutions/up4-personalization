@@ -56,13 +56,12 @@ class Recommendation
         }
     }
 
+    /*
+     * @return Controllers\AbstractProduct
+     */
     public function getUserRecommendation()
     {
-        $gender_recommendations = $this->filterRecommendationsByGender();
-
-        $age_recommendations = $this->filterRecommendationsByAge();
-
-        $this->recommendations = array_intersect_key($gender_recommendations, $age_recommendations);
+        $this->recommendations = $this->filterRecommendationsByGenderAndAge();
 
         $this->scoreAttributes();
 
@@ -82,8 +81,15 @@ class Recommendation
         $sorter = function ($objA, $objB) use ($getter, $sec_getter) {
             if (method_exists($objA, $getter)) {
                 if ($objA->$getter() == $objB->$getter()) {
-                    if (isset($sec_getter)) {
-                        return $objA->$sec_getter() - $objB->$sec_getter();
+                    if (isset($sec_getter) &&
+                        method_exists($objA, $sec_getter) &&
+                            method_exists($objB, $sec_getter)) {
+                        if($objA->$sec_getter() !== false ||
+                                    $objB->$sec_getter() !== false) {
+                            return;
+                        } else {
+                            return $objA->$sec_getter() - $objB->$sec_getter();
+                        }
                     } else {
                         return 0;
                     }
@@ -100,30 +106,24 @@ class Recommendation
         usort($this->recommendations, $sorter);
     }
 
-    private function filterRecommendationsByGender()
-    {
-        $recommendations = [];
-
-        foreach ($this->products as $key => $p) {
-            if ($p->getGender()->get() === $this->user->gender ||
-                    $p->getGender()->isEither()) {
-                $recommendations[$key] = $p;
-            }
-        }
-
-        return $recommendations;
-    }
-
-    private function filterRecommendationsByAge()
+    /*
+     * @return Array of Abstract Products
+     */
+    private function filterRecommendationsByGenderAndAge()
     {
         $recommendations = [];
 
         $age = $this->user->age;
         $userAge = new Age($this->user->age);
 
-        foreach ($this->products as $key => $p) {
-            if (in_array($p->getAge()->getType(), $p->getAge()->find($age))) {
-                $recommendations[$key] = $p;
+        foreach ($this->products as $key => $product) {
+            if ($product->isRecommendation() !== false) {
+                if ($product->getGender()->get() === $this->user->gender ||
+                        $product->getGender()->isEither()) {
+                    $recommendations[$key] = $product;
+                } else if (in_array($product->getAge()->getType(), $product->getAge()->find($age))) {
+                    $recommendations[$key] = $product;
+                }
             }
         }
 
@@ -138,37 +138,37 @@ class Recommendation
      */
     private function scoreAttributes()
     {
-        foreach ($this->recommendations as $name => $p) {
-            if ($p->isTravelsOften() && $p->isTravelsOften() == $this->user->travels_often) {
-                $p->score();
+        foreach ($this->recommendations as $name => $product) {
+            if ($product->isTravelsOften() && $product->isTravelsOften() == $this->user->travels_often) {
+                $product->score();
             }
 
-            if ($p->isExercisesOften() && $p->isExercisesOften() == $this->user->exercises_often) {
-                $p->score();
+            if ($product->isExercisesOften() && $product->isExercisesOften() == $this->user->exercises_often) {
+                $product->score();
             }
 
-            if ($p->hasChildren() && $p->hasChildren() == $this->user->has_children) {
-                $p->score();
+            if ($product->hasChildren() && $product->hasChildren() == $this->user->has_children) {
+                $product->score();
             }
 
-            if ($p->isUrinary() && $p->isUrinary() == $this->user->urinary) {
-                $p->score();
+            if ($product->isUrinary() && $product->isUrinary() == $this->user->urinary) {
+                $product->score();
             }
 
-            if ($p->isDigestive() && $p->isDigestive() == $this->user->digestive) {
-                $p->score();
+            if ($product->isDigestive() && $product->isDigestive() == $this->user->digestive) {
+                $product->score();
             }
 
-            if ($p->isVaginal() && $p->isVaginal() == $this->user->vaginal) {
-                $p->score();
+            if ($product->isVaginal() && $product->isVaginal() == $this->user->vaginal) {
+                $product->score();
             }
 
-            if ($p->isImmune() && $p->isImmune() == $this->user->immune) {
-                $p->score();
+            if ($product->isImmune() && $product->isImmune() == $this->user->immune) {
+                $product->score();
             }
 
-            if ($p->isHeart() && $p->isHeart() == $this->user->heart) {
-                $p->score();
+            if ($product->isHeart() && $product->isHeart() == $this->user->heart) {
+                $product->score();
             }
         }
     }

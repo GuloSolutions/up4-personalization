@@ -4,9 +4,9 @@ namespace Controllers;
 use Controllers\Gender;
 use Controllers\Age;
 
-class ProductKidsCubes extends AbstractProduct
+class ProductAdultCubes extends AbstractProduct
 {
-    private const SKU = 40000600391;
+    private const SKU = 40000600519;
 
     private const RANK = 0;
 
@@ -16,7 +16,7 @@ class ProductKidsCubes extends AbstractProduct
 
     public function __construct()
     {
-        $this->age = new Age(Age::ISKID);
+        $this->age = new Age(Age::ISALL);
         $this->gender = new Gender(Gender::BOTH);
 
         $this->rank = self::RANK;
@@ -51,7 +51,7 @@ class ProductKidsCubes extends AbstractProduct
 
     public function hasChildren()
     {
-        return true;
+        return false;
     }
 
     public function isUrinary()
