@@ -16,4 +16,9 @@
         }
     });
 
+    if (location.hash == '#take-survey'){
+        $('#survey-social-public').addClass('active');
+        $('.site-header').addClass('under');
+    }
+
 })(jQuery);
