@@ -73,28 +73,26 @@ class Up4Users
         // currently logged in WP user if we have one
         $current_wp_user = wp_get_current_user();
 
-        if (!$this->facebook_id && $current_wp_user instanceof WP_User && $current_user->ID != 0) {
-            $name = explode('-', $current_wp_user->user_nicename);
+        // set survey user properties
+        $this->setObjectPropsFromData($this->up4User, $this->survey_data);
 
-            $this->setObjectPropsFromData($this->up4User, $this->survey_data);
+        if (!$this->facebook_id && ($current_wp_user instanceof \WP_User) && $current_wp_user->ID != 0) {
             $this->updateMetaAndSave();
 
             $this->up4User->user_id = $current_wp_user->ID;
             $this->up4User->session_id = $this->up4Session->id;
 
+            $name = explode(' ', $current_wp_user->display_name);
+
             $this->up4User->first_name = $name[0];
             $this->up4User->last_name = isset($name[1]) ? $name[1]: null;
-
-            $this->up4User->save();
-
-            return;
+        } else {
+            $this->create();
         }
-
-        $this->setObjectPropsFromData($this->up4User, $this->survey_data);
 
         $this->up4User->save();
 
-        $this->create();
+        return;
     }
 
     public function setupSurveyResponse($response)
