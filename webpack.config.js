@@ -5,7 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
 
   entry: {
-    'survey-social-public': ['./public/js/survey-social-public.src.js']
+    'survey-social-public': ['./public/js/survey-social-public.src.js', './public/js/showSurvey-social-public.js']
   },
   output: {
     path: path.join(__dirname, 'public/'),
