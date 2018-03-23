@@ -70,7 +70,7 @@ class Up4Users
         // generic logged in fb_user with session
         $this->setFacebookUser();
 
-        // generic logged in fb_user with session
+        // currently logged in WP user if we have one
         $current_wp_user = wp_get_current_user();
 
         if (!$this->facebook_id && $current_wp_user instanceof WP_User && $current_user->ID != 0) {

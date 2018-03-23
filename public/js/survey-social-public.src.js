@@ -3,6 +3,7 @@ import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
 
+
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
 Vue.config.devtools = false;
@@ -18,7 +19,6 @@ var vm = new Vue({
  data:{
    counter: 1,
    counterMax: 0,
-   checkBoxCount:0,
    model:{
     age: null,
     gender: null,
@@ -297,13 +297,14 @@ axios.post(ajax_receiver.ajax_url,
     $("#survey-social-public input:radio").click(function (event) {
       setTimeout(function(){
         vm.$refs.wizard.nextTab();
-      }, 500);
+     }, 500);
     });
 
     $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
 
   },
   updated: function(){
+
       $("#survey-social-public input:checkbox").click(function(event) {
         if(($("#survey-social-public input:checkbox:checked").length === 0)) {
           $("#survey-social-public button:contains('Finish')").removeClass('pulse');
@@ -311,5 +312,9 @@ axios.post(ajax_receiver.ajax_url,
           $("#survey-social-public button:contains('Finish')").addClass('pulse');
         }
       });
+
+      $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
+      $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
+
   },
 })

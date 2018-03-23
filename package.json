@@ -13,6 +13,7 @@
     "axios": "^0.17.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "velocity-animate": "^1.5.1",
     "vue": "^2.5.11",
     "vue-form-generator": "^2.2.0",
     "vue-form-wizard": "*"
@@ -38,6 +39,7 @@
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.3",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "vuex": "^3.0.1",
