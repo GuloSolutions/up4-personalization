@@ -52,6 +52,26 @@ class WpPost
     }
 
     /*
+     * @param String
+     * @return WP_Post
+     */
+    public static function getPersonalization($title)
+    {
+        $post_type = [
+            'personalizations'
+        ];
+
+        $args = [
+                'posts_per_page' => 1,
+                'post_type' => $post_type,
+                'post_status' => 'publish',
+                'title' => $title
+            ];
+
+        return self::get($args, $title);
+    }
+
+    /*
      * @param Array
      * @param String
      * @return WP_Post
