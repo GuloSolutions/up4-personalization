@@ -5,22 +5,48 @@ use Stash;
 
 class ApiCache
 {
+    /*
+     * 1 hour expiry
+     */
     const CACHE_EXPIRE = 3600;
 
-    private $driver;
+    /*
+     * @param Stash\Pool
+     */
     private $pool;
+
+    /*
+     * @param Boolean
+     */
     private $cache;
+
+    /*
+     * @param Stash\Item
+     */
     private $item;
+
+    /*
+     * Seconds for expiration
+     * @param Integer
+     */
     private $expiration;
 
-    public function __construct($expiration)
+    /*
+     * @param Integer
+     */
+    public function __construct(int $expiration = null)
     {
-        $this->driver = new Stash\Driver\FileSystem(array());
-        $this->pool = new Stash\Pool($this->driver);
-        $this->expiration = !is_null($expiration) ? $expiration : self::CACHE_EXPIRE;
+        $driver = new Stash\Driver\FileSystem(array());
+        $this->pool = new Stash\Pool($driver);
+
+        $this->expiration = is_int($expiration) ? $expiration : self::CACHE_EXPIRE;
+
         $this->setCache(true);
     }
 
+    /*
+     * @return Mixed - false no cache fail, data otherwise
+     */
     public function getCachedItem($cachedItem)
     {
         if ($this->getCache() === true) {
@@ -28,7 +54,7 @@ class ApiCache
             $data = $this->item->get();
         }
 
-        if ($data === false) {
+        if ($this->item->isMiss()) {
             return false;
         }
 
@@ -37,7 +63,7 @@ class ApiCache
 
     public function saveItemInCache($data)
     {
-        if ($this->getCache() === true) {
+        if ($this->getCache() === true && $this->item->isMiss()) {
             $this->setExpiration();
             $this->pool->save($this->item->set($data));
         }
@@ -63,7 +89,10 @@ class ApiCache
         $this->item->expiresAfter($this->expiration);
     }
 
-    //delete entire cache
+    /*
+     * delete entire cache
+     * @return void
+     */
     public function deleteAllCache()
     {
         $this->pool->clear();

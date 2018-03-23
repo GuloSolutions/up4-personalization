@@ -87,7 +87,7 @@ class Weather
 
         $this->response = $this->apiCache->getCachedItem($zip);
 
-        if (!$this->response) {
+        if ($this->response === false) {
             $base_uri = sprintf(self::BASE_URI, $zip);
 
             $client = new Client();

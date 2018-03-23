@@ -1,6 +1,8 @@
 <?php
 namespace Controllers;
 
+use Controllers\WpPost;
+
 class Segmentation
 {
     /*
@@ -155,10 +157,10 @@ class Segmentation
 
         if (!$up4_user->isLoggedIn() && $user_segment) {
             // get our custom segment
-            $segment_query = new \WP_Query(['title' => $user_segment, 'post_type' => 'segments']);
+            $post_segment = WpPost::getSegment($user_segment);
 
-            if ($segment_query->have_posts()) {
-                $this->post_segment = current($segment_query->posts);
+            if ($post_segment) {
+                $this->post_segment = $post_segment;
 
                 $this->user_segment = $user_segment;
 

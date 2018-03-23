@@ -3,7 +3,6 @@ namespace Controllers;
 
 use Controllers\Gender;
 use Controllers\Age;
-
 use Controllers\WpPost;
 
 abstract class AbstractProduct
@@ -106,6 +105,6 @@ abstract class AbstractProduct
      */
     public function getPost()
     {
-        return WpPost::get($this->getSku());
+        return WpPost::getProduct($this->getSku());
     }
 }
