@@ -69,7 +69,7 @@ class ProductSport extends AbstractProduct
 
     public function isImmune()
     {
-        return false;
+        return true;
     }
 
     public function isHeart()

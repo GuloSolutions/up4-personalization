@@ -20,6 +20,8 @@ class ProductWomensAdvancedCare extends AbstractProduct
         $this->gender = new Gender(Gender::FEMALE);
 
         $this->rank = self::RANK;
+
+        $this->turnOffRecommendation();
     }
 
     public function getGender()
