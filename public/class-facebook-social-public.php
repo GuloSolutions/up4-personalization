@@ -170,10 +170,6 @@ class Facebook_Social_Public
 
     public function process_button($attrs, $content)
     {
-        //wp_enqueue_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
-
-        //wp_enqueue_script('facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false);
-
         wp_localize_script(
             'facebook-social-public',
             'ajax_receiver',
