@@ -71,7 +71,6 @@ class Facebook_Social_Public
      */
     public function enqueue_styles()
     {
-
         /**
          * This function is provided for demonstration purposes only.
          *
@@ -92,7 +91,6 @@ class Facebook_Social_Public
      */
     public function enqueue_scripts()
     {
-
         /**
          * This function is provided for demonstration purposes only.
          *
@@ -104,6 +102,41 @@ class Facebook_Social_Public
          * between the defined hooks and the functions defined in this
          * class.
          */
+    }
+
+    public function register_scripts()
+    {
+        if (WP_DEBUG) {
+            $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.src.js';
+
+            $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.src.js';
+        } else {
+            $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.min.js';
+
+            $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.min.js';
+        }
+
+        wp_register_script(
+            'facebook-social-public',
+            $facebook_social_public,
+            array('jquery'),
+            $this->version,
+            false
+        );
+
+        wp_register_script(
+            'survey-social-public',
+            $survey_social_public,
+            array(),
+            $this->version,
+            true
+        );
+    }
+
+    public function register_styles()
+    {
+        wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
+        wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
     }
 
     public function startUp4Session()
@@ -170,6 +203,10 @@ class Facebook_Social_Public
 
     public function process_button($attrs, $content)
     {
+        wp_enqueue_style('facebook-social-public-style');
+
+        wp_enqueue_script('facebook-social-public');
+
         wp_localize_script(
             'facebook-social-public',
             'ajax_receiver',
@@ -179,9 +216,9 @@ class Facebook_Social_Public
         );
 
         if ($this->up4->isLoggedInFacebook()) {
-            $content = '<button  id="fb-logout">Sign out</button>';
+            $content = '<button id="fb-logout">Sign out</button>';
         } else {
-            $content = '<button id="fb-login" >Sign in with Facebook</button>';
+            $content = '<button id="fb-login">Sign in with Facebook</button>';
         }
 
         return $content;
@@ -189,13 +226,9 @@ class Facebook_Social_Public
 
     public function process_survey($attrs, $content)
     {
-        wp_enqueue_script(
-            'survey-social-public',
-            plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-            array(),
-            $this->version,
-            true
-        );
+        wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
+
+        wp_enqueue_script('survey-social-public');
 
         wp_localize_script(
             'survey-social-public',
@@ -206,7 +239,6 @@ class Facebook_Social_Public
         );
 
         $content = <<<EOS
-
             <div id="survey-social-public">
 
             <button id="start-over" v-on:click="restartSurvey">Start over</button>
@@ -238,8 +270,6 @@ EOS;
                </vue-form-generator>
             </tab-content>';
         }
-
-
 
         if (!$this->up4->get()->gender) {
             $questions[] = '
@@ -331,6 +361,16 @@ EOS;
         wp_die();
     }
 
+    public function fb_logout()
+    {
+        $up4Sessions = new Controllers\Up4Sessions();
+        $up4Sessions->destroy($this->up4->up4Session->sid);
+
+        wp_logout();
+
+        wp_die();
+    }
+
     public function process_survey_button($content, $attrs)
     {
         if ($this->up4->isLoggedInFacebook() && $this->up4->isSurveyTaken()) {
@@ -350,20 +390,10 @@ EOS;
         $response = $_POST['response'];
 
         $survey_up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
-
         $survey_up4_user->setupSurveyResponse($response);
-
         $survey_up4_user->checkSurveyUser();
 
         wp_die();
-    }
-
-    public function fb_logout()
-    {
-        $up4Sessions = new Controllers\Up4Sessions();
-        $up4Sessions->destroy($this->up4->up4Session->sid);
-
-        wp_logout();
     }
 
     public function disableAdminBarforUserRole()
@@ -379,10 +409,24 @@ EOS;
     public function blockusers_init()
     {
         global $up4_user;
+
         $id = get_current_user_id();
         $user = get_userdata($id);
 
-        if (is_admin() && $up4_user->isLoggedInFacebook() && (empty($user->roles) || in_array('user', $user->roles))) {
+        /* it's an AJAX call don't do anything else */
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+            return;
+        }
+
+        /*
+         * is_admin() will return false when trying to access wp-login.php.
+         * is_admin() will return true when trying to make an ajax request
+         *      (both front-end and back-end requests)
+         * is_admin() will return true for calls to load-scripts.php and load-styles.php.
+         * is_admin() is not intended to be used for security checks.
+         */
+        if (is_admin() && $up4_user->isLoggedInFacebook() &&
+            (empty($user->roles) || in_array('user', $user->roles))) {
             wp_redirect(home_url());
             exit;
         }

@@ -100,7 +100,6 @@ class Facebook_Social
      */
     private function load_dependencies()
     {
-
         /**
          * The class responsible for orchestrating the actions and filters of the
          * core plugin.
@@ -169,13 +168,19 @@ class Facebook_Social
     {
         $plugin_public = new Facebook_Social_Public($this->get_plugin_name(), $this->get_version());
 
+        $this->loader->add_action('init', $plugin_public, 'register_scripts', 10);
+
+        $this->loader->add_action('init', $plugin_public, 'register_styles', 10);
+
         $this->loader->add_action('init', $plugin_public, 'startUp4Session', 10);
 
         $this->loader->add_action('init', $plugin_public, 'startUp4User', 15);
 
         $this->loader->add_action('init', $plugin_public, 'startSegmentationUser', 20);
 
-        $this->loader->add_action('wp_register_scripts', $plugin_public, 'register_scripts', 10);
+        $this->loader->add_action('init', $plugin_public, 'disableAdminBarforUserRole', 80);
+
+        $this->loader->add_action('init', $plugin_public, 'blockusers_init', 80);
 
         $this->loader->add_action('wp_ajax_nopriv_fb_receiver', $plugin_public, 'fb_receiver');
         $this->loader->add_action('wp_ajax_fb_receiver', $plugin_public, 'fb_receiver');
@@ -183,14 +188,8 @@ class Facebook_Social
         $this->loader->add_action('wp_ajax_nopriv_survey_receiver', $plugin_public, 'survey_receiver');
         $this->loader->add_action('wp_ajax_survey_receiver', $plugin_public, 'survey_receiver');
 
-        $this->loader->add_action('wp_ajax_nopriv_survey_receiver', $plugin_public, 'survey_form_receiver');
-        $this->loader->add_action('wp_ajax_survey_receiver', $plugin_public, 'survey_form_receiver');
-
         $this->loader->add_action('wp_ajax_nopriv_fb_logout', $plugin_public, 'fb_logout');
         $this->loader->add_action('wp_ajax_fb_logout', $plugin_public, 'fb_logout');
-
-        $this->loader->add_action('init', $plugin_public, 'disableAdminBarforUserRole', 80);
-        $this->loader->add_action('init', $plugin_public, 'blockusers_init', 80);
     }
 
     /**

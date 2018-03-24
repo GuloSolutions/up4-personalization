@@ -4,7 +4,6 @@ import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
 import css from '../css/survey-social-public.css';
 
-
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)
 Vue.config.devtools = false;
@@ -13,13 +12,13 @@ Vue.prototype.$http = axios;
 
 window.app = vm;
 
-
 var vm = new Vue({
  el: '#survey-social-public',
  ref:'wizard',
  data:{
    counter: 1,
    counterMax: 0,
+
    model:{
     age: null,
     gender: null,
@@ -28,11 +27,13 @@ var vm = new Vue({
     exercises_often: null,
     health_needs: null,
    },
+
    formOptions: {
     validationErrorClass: "has-error",
     validationSuccessClass: "has-success",
     validateAfterChanged: true
    },
+
    ageTabSchema:{
      fields:[{
         type: "radios",
@@ -49,6 +50,7 @@ var vm = new Vue({
      },
      ]
    },
+
    genderTabSchema:{
      fields:[
      {
@@ -65,6 +67,7 @@ var vm = new Vue({
      },
      ]
    },
+
    travelTabSchema:{
      fields:[
      {
@@ -83,6 +86,7 @@ var vm = new Vue({
 
      ]
    },
+
    childrenTabSchema:{
      fields:[
      {
@@ -100,6 +104,7 @@ var vm = new Vue({
      },
      ]
    },
+
    exerciseTabSchema:{
      fields:[
      {
@@ -117,7 +122,8 @@ var vm = new Vue({
      },
      ]
    },
-      healthTabSchema:{
+
+   healthTabSchema:{
      fields:[
      {
         type: "checklist",
@@ -237,16 +243,16 @@ axios.post(ajax_receiver.ajax_url,
    validateTravelTab: function(){
      return this.$refs.travelTabForm.validate();
    },
-      validateChildrenTab: function(){
+   validateChildrenTab: function(){
      return this.$refs.childrenTabForm.validate();
    },
-      validateExerciseTab: function(){
+   validateExerciseTab: function(){
      return this.$refs.exerciseTabForm.validate();
    },
-    validateHealthTab: function(){
+   validateHealthTab: function(){
      return this.$refs.healthTabForm.validate();
    },
-    incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
+   incrementCounter: function(tabIndex, activeTabIndex, prevIndex, nextIndex){
       this.counter = activeTabIndex + 1;
       this.$forceUpdate();
       return [this.counter, this.counterMax];
@@ -302,8 +308,8 @@ axios.post(ajax_receiver.ajax_url,
     });
 
     $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
-
   },
+
   updated: function(){
 
       $("#survey-social-public input:checkbox").click(function(event) {

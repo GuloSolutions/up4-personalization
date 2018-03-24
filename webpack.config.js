@@ -4,12 +4,15 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
-    'survey-social-public': ['./public/js/survey-social-public.src.js', './public/js/showSurvey-social-public.js', './public/js/facebook-social-public.js']
+    'survey-social-public': ['./public/js/survey-social-public.src.js', './public/js/showSurvey-social-public.js'],
+    'facebook-social-public': ['./public/js/facebook-social-public.src.js']
   },
+
   output: {
     path: path.join(__dirname, 'public/'),
-    filename: 'js/[name].js'
+    filename: 'js/[name].min.js'
   },
+
   module: {
     rules: [
       {
@@ -51,6 +54,7 @@ module.exports = {
       }
     ],
   },
+
   plugins: [
     new webpack.DefinePlugin({
         'process.env': {
