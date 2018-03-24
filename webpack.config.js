@@ -3,9 +3,8 @@ let path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
-
   entry: {
-    'survey-social-public': ['./public/js/survey-social-public.src.js', './public/js/showSurvey-social-public.js']
+    'survey-social-public': ['./public/js/survey-social-public.src.js', './public/js/showSurvey-social-public.js', './public/js/facebook-social-public.js']
   },
   output: {
     path: path.join(__dirname, 'public/'),
@@ -22,7 +21,7 @@ module.exports = {
             presets: ['env'],
             plugins: ['transform-runtime'
             ],
-          },
+          }
         },
       },
       {
@@ -30,7 +29,6 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           loaders: {
-
             'sass': [
               'vue-style-loader',
               'css-loader',
@@ -40,6 +38,17 @@ module.exports = {
 
         },
       },
+      {
+        test: /\.css$/,
+        loader: 'css-loader',
+        options: {
+          minimize:true
+        },
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      }
     ],
   },
   plugins: [
@@ -53,11 +62,11 @@ module.exports = {
 
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.common.js',
+      'vue$': 'vue/dist/vue.min.js',
       'vue-form-wizard$': 'vue-form-wizard/dist/vue-form-wizard.js',
       'vue-form-generator$': 'vue-form-generator/dist/vfg.js',
       'axios$': 'axios/dist/axios.js',
     },
-    extensions: ['*', '.js', '.vue', '.json']
+    extensions: ['*', '.js', '.vue', '.json', 'css']
   },
 };

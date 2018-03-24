@@ -1,4 +1,5 @@
 'use strict';
+import css from '../css/facebook-social-public.css';
 
 var up4_fb_data = {};
 
@@ -11,7 +12,7 @@ window.fbAsyncInit = function() {
         xfbml      : true,
         autoLogAppEvents: true,
         status     : true,
-        version    : 'v2.11'
+        version    : 'v2.12'
     });
 
     FB.Event.subscribe('auth.statusChange', function(response) {

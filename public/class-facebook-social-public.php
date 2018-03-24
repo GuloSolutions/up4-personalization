@@ -106,32 +106,6 @@ class Facebook_Social_Public
          */
     }
 
-    public function register_scripts()
-    {
-        wp_register_script(
-            'facebook-social-public',
-            plugin_dir_url(__FILE__) . 'js/facebook-social-public.js',
-            array(),
-            $this->version,
-            false
-        );
-
-
-        wp_register_script(
-                'survey-social-public',
-                 plugin_dir_url(__FILE__) . 'js/survey-social-public.js',
-                array(),
-                 $this->version,
-                 true
-            );
-    }
-
-    public function register_styles()
-    {
-        wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
-        wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
-    }
-
     public function startUp4Session()
     {
         $session_id = session_id();
@@ -196,9 +170,9 @@ class Facebook_Social_Public
 
     public function process_button($attrs, $content)
     {
-        wp_enqueue_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
+        //wp_enqueue_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
 
-        wp_enqueue_script('facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false);
+        //wp_enqueue_script('facebook-social-public', plugin_dir_url(__FILE__) . 'js/facebook-social-public.js', array( 'jquery' ), $this->version, false);
 
         wp_localize_script(
             'facebook-social-public',
@@ -219,8 +193,6 @@ class Facebook_Social_Public
 
     public function process_survey($attrs, $content)
     {
-        wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
-
         wp_enqueue_script(
             'survey-social-public',
             plugin_dir_url(__FILE__) . 'js/survey-social-public.js',

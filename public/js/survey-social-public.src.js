@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
+import css from '../css/survey-social-public.css';
 
 
 Vue.use(VueFormWizard)
@@ -315,6 +316,5 @@ axios.post(ajax_receiver.ajax_url,
 
       $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
       $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
-
   },
 })
