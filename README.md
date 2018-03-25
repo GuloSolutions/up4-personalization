@@ -58,10 +58,14 @@ the following commands.
 - To compile the Vue files use for production:
 
 ```
+set WP_DEBUG to false in wp-config.php
+
 npm run build
 ```
-- To compile the Vue files use for development:
+- To compile and use the Vue files for development:
 
 ```
-npm run dev
+set WP_DEBUG to true in wp-config.php
 
+npm run dev
+```
