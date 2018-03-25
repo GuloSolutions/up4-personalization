@@ -111,18 +111,21 @@ class Facebook_Social_Public
 
             $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.js';
         } else {
-            $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.min.js';
+            //$facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.min.js';
 
             $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.min.js';
         }
 
-        wp_register_script(
-            'facebook-social-public',
-            $facebook_social_public,
-            array('jquery'),
-            $this->version,
-            false
-        );
+        if ($facebook_social_public) {
+
+            wp_register_script(
+                'facebook-social-public',
+                $facebook_social_public,
+                array('jquery'),
+                $this->version,
+                false
+            );
+        }
 
         wp_register_script(
             'survey-social-public',
@@ -135,9 +138,7 @@ class Facebook_Social_Public
 
     public function register_styles()
     {
-        if (WP_DEBUG) {
-            wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
-        }
+        wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
     }
 
     public function startUp4Session()
@@ -204,9 +205,7 @@ class Facebook_Social_Public
 
     public function process_button($attrs, $content)
     {
-        if (WP_DEBUG){
-            wp_enqueue_style('facebook-social-public-style');
-        }
+        wp_enqueue_style('facebook-social-public-style');
 
         wp_enqueue_script('facebook-social-public');
 
