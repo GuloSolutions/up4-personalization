@@ -55,14 +55,13 @@ the following commands.
 ```
     echo do_shortcode('[facebook-social_survey_form]');
 ```
-- To compile the Vue files use: 
+- To compile the Vue files use for production:
 
 ```
 npm run build
 ```
+- To compile the Vue files use for development:
 
-  
-  
-
-
+```
+npm run dev
 
