@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
 import axios from 'axios';
-import css from '../css/survey-social-public.css';
 
 Vue.use(VueFormWizard)
 Vue.use(VueFormGenerator)

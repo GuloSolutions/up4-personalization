@@ -109,7 +109,7 @@ class Facebook_Social_Public
         if (WP_DEBUG) {
             $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.src.js';
 
-            $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.src.js';
+            $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.js';
         } else {
             $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.min.js';
 
@@ -135,8 +135,9 @@ class Facebook_Social_Public
 
     public function register_styles()
     {
-        wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
-        wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
+        if (WP_DEBUG) {
+            wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
+        }
     }
 
     public function startUp4Session()
@@ -203,7 +204,9 @@ class Facebook_Social_Public
 
     public function process_button($attrs, $content)
     {
-        wp_enqueue_style('facebook-social-public-style');
+        if (WP_DEBUG){
+            wp_enqueue_style('facebook-social-public-style');
+        }
 
         wp_enqueue_script('facebook-social-public');
 
@@ -226,7 +229,9 @@ class Facebook_Social_Public
 
     public function process_survey($attrs, $content)
     {
-        wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
+        if (WP_DEBUG) {
+            wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
+        }
 
         wp_enqueue_script('survey-social-public');
 
