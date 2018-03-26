@@ -319,6 +319,15 @@ axios.post(ajax_receiver.ajax_url,
 
   updated: function(){
 
+
+
+        var after_hash = window.location.href.split('#')[1];
+        var before_hash = window.location.href.split('#')[0];
+        if (after_hash.length) {
+          window.location.href = before_hash;
+        }
+
+
       $("#survey-social-public input:checkbox").click(function(event) {
         if(($("#survey-social-public input:checkbox:checked").length === 0)) {
           $("#survey-social-public button:contains('Finish')").removeClass('pulse');
@@ -329,5 +338,7 @@ axios.post(ajax_receiver.ajax_url,
 
       $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
       $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
+
+
   },
 })
