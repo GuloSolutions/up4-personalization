@@ -161,7 +161,7 @@ var vm = new Vue({
  methods: {
   onComplete: function() {
 
-var params = new URLSearchParams();
+// var params = new URLSearchParams();
 
 if (this.model.age === "Under 25"){
     this.model.age = 20;
@@ -207,17 +207,20 @@ if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_o
     this.model.exercises_often = 0;
 };
 
-params.append('action', 'survey_receiver');
-params.append('response[age]', this.model.age);
-params.append('response[gender]', this.model.gender);
-params.append('response[has_children]', this.model.has_children);
-params.append('response[travels_often]', this.model.travels_often);
-params.append('response[exercises_often]', this.model.exercises_often);
-params.append('response[health_needs]', this.model.health_needs);
+var params = {
+  'action' :'survey_receiver',
+  'response[age]': this.model.age,
+  'response[gender]' :this.model.gender,
+  'response[has_children]' :this.model.has_children,
+  'response[travels_often]' :this.model.travels_often,
+  'response[exercises_often]':this.model.exercises_often,
+  'response[health_needs]' :this.model.health_needs
+}
 
+var recursiveDecoded = decodeURIComponent( $.param( params ) );
 
 axios.post(ajax_receiver.ajax_url,
-    params,
+    recursiveDecoded,
     {
         headers: {
             'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'

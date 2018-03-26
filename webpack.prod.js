@@ -1,10 +1,11 @@
+require('babel-polyfill');
 let webpack = require('webpack');
 let path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
-    'survey-social-public': ['./public/js/survey-social-public.src.js', './public/js/showSurvey-social-public.js', './public/css/survey-social-public.css'],
+    'survey-social-public': ['babel-polyfill','./public/js/survey-social-public.src.js', './public/js/showSurvey-social-public.js', './public/css/survey-social-public.css'],
     'facebook-social-public': ['./public/js/facebook-social-public.src.js']
   },
 
