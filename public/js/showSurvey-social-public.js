@@ -6,13 +6,13 @@
     });
 
     $(window).on('hashchange', function() {
-        if (window.location.hash.slice(1) == "take-survey") {
+        if (window.location.hash.slice(1) == "take-quiz") {
             $('#survey-social-public').addClass('active');
             $('.site-header').addClass('under');
         }
     });
 
-    if (window.location.hash == '#take-survey'){
+    if (window.location.hash == '#take-quiz'){
         $('#survey-social-public').addClass('active');
         $('.site-header').addClass('under');
     }
