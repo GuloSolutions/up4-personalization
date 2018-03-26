@@ -17,4 +17,10 @@
         $('.site-header').addClass('under');
     }
 
+
+    $('a[href="#take-quiz"]').click(function(){
+         $('#survey-social-public').addClass('active');
+         $('.site-header').addClass('under');
+    });
+
 })(jQuery);
