@@ -109,23 +109,20 @@ class Facebook_Social_Public
         if (WP_DEBUG) {
             $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.src.js';
 
-            $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.js';
+            $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.src.js';
         } else {
-            //$facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.min.js';
+            $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.min.js';
 
             $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.min.js';
         }
 
-        if ($facebook_social_public) {
-
-            wp_register_script(
-                'facebook-social-public',
-                $facebook_social_public,
-                array('jquery'),
-                $this->version,
-                false
-            );
-        }
+        wp_register_script(
+            'facebook-social-public',
+            $facebook_social_public,
+            array('jquery'),
+            $this->version,
+            false
+        );
 
         wp_register_script(
             'survey-social-public',
@@ -138,6 +135,7 @@ class Facebook_Social_Public
 
     public function register_styles()
     {
+        wp_register_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
         wp_register_style('facebook-social-public-style', plugin_dir_url(__FILE__) . 'css/facebook-social-public.css');
     }
 
@@ -228,9 +226,7 @@ class Facebook_Social_Public
 
     public function process_survey($attrs, $content)
     {
-        if (WP_DEBUG) {
-            wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
-        }
+        wp_enqueue_style('survey-social-public-style', plugin_dir_url(__FILE__) . 'css/survey-social-public.css');
 
         wp_enqueue_script('survey-social-public');
 
