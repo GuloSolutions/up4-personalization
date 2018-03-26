@@ -23,7 +23,10 @@
     }
 
 
-    $('a[href="#take-quiz"]').click(function(){
+    $('a[href="#take-quiz"]').click(function(response){
+
+        alert(response);
+
          $('#survey-social-public').addClass('active');
          $('.site-header').addClass('under');
 
