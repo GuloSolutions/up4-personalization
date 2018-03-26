@@ -18,11 +18,6 @@
     "vue-form-generator": "^2.2.0",
     "vue-form-wizard": "*"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",

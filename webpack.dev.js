@@ -53,6 +53,6 @@ module.exports = {
       'vue-form-generator$': 'vue-form-generator/dist/vfg.js',
       'axios$': 'axios/dist/axios.js',
     },
-    extensions: ['*', '.js', '.vue', '.json']
+    extensions: ['*', '.js', '.vue', '.json', 'css']
   },
 };

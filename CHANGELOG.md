@@ -1,7 +1,11 @@
 
 All changes to the plugin will be recorded here
 
+## 1.0.3 - 2018-03-26
 
+- Prod environment bug free
+- Minification
+- Fixed bugs related to compilation
 
 ## 1.0.2 - 2018-03-23
 
