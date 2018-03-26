@@ -268,7 +268,12 @@ axios.post(ajax_receiver.ajax_url,
     if (event){
         $('#survey-social-public').removeClass('active');
         $('.site-header').removeClass('under');
-    }
+        var after_hash = window.location.href.split('#')[1];
+        var before_hash = window.location.href.split('#')[0];
+        if (after_hash.length) {
+          window.location.href = before_hash;
+        }
+      }
    },
 
    prettyJSON: function(json) {
