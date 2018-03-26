@@ -1,6 +1,11 @@
 
 All changes to the plugin will be recorded here
 
+## 1.0.4 - 2018-03-26
+
+- Hash paramas activating the quiz do not block submission
+- IE11 bug resolved
+
 ## 1.0.3 - 2018-03-26
 
 - Prod environment bug free
