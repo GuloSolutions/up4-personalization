@@ -111,7 +111,7 @@ class Facebook_Social_Public
 
             $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.js';
         } else {
-            $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.min.js';
+            $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.src.js';
 
             $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.min.js';
         }
