@@ -1,6 +1,13 @@
 
 All changes to the plugin will be recorded here
 
+## 1.0.5 - 2018-03-27
+
+- Hash params final
+- IP fallback address added
+- Dev and prod modes
+- Survey response adjusted
+
 ## 1.0.5 - 2018-03-26
 
 - Hash params bug closing survey fixed
