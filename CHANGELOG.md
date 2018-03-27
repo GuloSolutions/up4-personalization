@@ -1,7 +1,14 @@
 
 All changes to the plugin will be recorded here
 
-## 1.0.5 - 2018-03-27
+
+
+## 1.0.7 - 2018-03-27
+
+- ApiCache bug fixed where cache returns null
+- Dev and prod modes final
+
+## 1.0.6 - 2018-03-27
 
 - Hash params final
 - IP fallback address added
