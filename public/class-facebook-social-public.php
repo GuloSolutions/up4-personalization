@@ -111,9 +111,9 @@ class Facebook_Social_Public
 
             $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.js';
         } else {
-            $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.js';
+            $facebook_social_public = plugin_dir_url(__FILE__) . 'js/facebook-social-public.min.js';
 
-            $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.js';
+            $survey_social_public = plugin_dir_url(__FILE__) . 'js/survey-social-public.min.js';
         }
 
         wp_register_script(
