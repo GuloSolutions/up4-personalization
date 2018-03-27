@@ -108,9 +108,7 @@ class Up4Users
 
         $this->survey_data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
 
-        $health_needs = explode(",", $response['health_needs']);
-
-        foreach ($health_needs as $key=>$value) {
+        foreach ($response['health_needs'] as $key=>$value) {
             $value = strtolower($value);
 
             if (strpos($value, " ") !== false) {
