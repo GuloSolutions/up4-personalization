@@ -149,14 +149,12 @@ var vm = new Vue({
      },
      ]
    },
-
     counterMax: document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length,
     computed: {
     dynamicAge: function () {
       return this.model.age;
       }
   }
-
  },
  methods: {
   onComplete: function() {
@@ -278,7 +276,7 @@ axios.post(ajax_receiver.ajax_url,
         var after_hash = window.location.href.split('#')[1];
         var before_hash = window.location.href.split('#')[0];
         if (after_hash != undefined) {
-          window.location.href = before_hash;
+            window.location.href = before_hash;
         }
       }
    },
@@ -322,12 +320,6 @@ axios.post(ajax_receiver.ajax_url,
     });
 
     $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
-
-        //     var after_hash = window.location.href.split('#')[1];
-        // var before_hash = window.location.href.split('#')[0];
-        // if (after_hash != undefined) {
-        //   window.location.href = before_hash;
-        // }
   },
 
   updated: function(){
@@ -342,7 +334,5 @@ axios.post(ajax_receiver.ajax_url,
 
       $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
       $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
-
-
   },
 })
