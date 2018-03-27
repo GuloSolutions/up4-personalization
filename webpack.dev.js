@@ -29,11 +29,14 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           loaders: {
+
             'sass': [
               'vue-style-loader',
               'css-loader',
             ],
+
           },
+
         },
       },
     ],
@@ -53,6 +56,6 @@ module.exports = {
       'vue-form-generator$': 'vue-form-generator/dist/vfg.js',
       'axios$': 'axios/dist/axios.js',
     },
-    extensions: ['*', '.js', '.vue', '.json', 'css']
+    extensions: ['*', '.js', '.vue', '.json']
   },
 };

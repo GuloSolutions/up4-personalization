@@ -505,8 +505,6 @@ var vm = new _vue2.default({
   methods: {
     onComplete: function onComplete() {
 
-      var params = new URLSearchParams();
-
       if (this.model.age === "Under 25") {
         this.model.age = 20;
       }
@@ -551,15 +549,26 @@ var vm = new _vue2.default({
         this.model.exercises_often = 0;
       };
 
-      params.append('action', 'survey_receiver');
-      params.append('response[age]', this.model.age);
-      params.append('response[gender]', this.model.gender);
-      params.append('response[has_children]', this.model.has_children);
-      params.append('response[travels_often]', this.model.travels_often);
-      params.append('response[exercises_often]', this.model.exercises_often);
-      params.append('response[health_needs]', this.model.health_needs);
+      var after_hash = window.location.href.split('#')[1];
+      var before_hash = window.location.href.split('#')[0];
+      if (after_hash != undefined) {
+        window.location.href = before_hash;
+        window.top.location = window.location.href;
+      }
 
-      _axios2.default.post(ajax_receiver.ajax_url, params, {
+      var params = {
+        'action': 'survey_receiver',
+        'response[age]': this.model.age,
+        'response[gender]': this.model.gender,
+        'response[has_children]': this.model.has_children,
+        'response[travels_often]': this.model.travels_often,
+        'response[exercises_often]': this.model.exercises_often,
+        'response[health_needs]': this.model.health_needs
+      };
+
+      var recursiveDecoded = decodeURIComponent($.param(params));
+
+      _axios2.default.post(ajax_receiver.ajax_url, recursiveDecoded, {
         headers: {
           'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }
@@ -599,8 +608,15 @@ var vm = new _vue2.default({
     },
     hideSurveyDiv: function hideSurveyDiv(event) {
       if (event) {
+        event.preventDefault();
         $('#survey-social-public').removeClass('active');
         $('.site-header').removeClass('under');
+
+        var after_hash = window.location.href.split('#')[1];
+        var before_hash = window.location.href.split('#')[0];
+        if (after_hash != undefined) {
+          window.location.href = before_hash;
+        }
       }
     },
 
@@ -641,6 +657,12 @@ var vm = new _vue2.default({
     });
 
     $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
+
+    //     var after_hash = window.location.href.split('#')[1];
+    // var before_hash = window.location.href.split('#')[0];
+    // if (after_hash != undefined) {
+    //   window.location.href = before_hash;
+    // }
   },
 
   updated: function updated() {
@@ -13625,16 +13647,25 @@ return /******/ (function(modules) { // webpackBootstrap
     });
 
     $(window).on('hashchange', function () {
-        if (window.location.hash.slice(1) == "take-survey") {
+        if (window.location.hash.slice(1) == "take-quiz") {
             $('#survey-social-public').addClass('active');
             $('.site-header').addClass('under');
         }
     });
 
-    if (window.location.hash == '#take-survey') {
+    $('a[href="#take-quiz"]').click(function (e) {
+
+        e.preventDefault();
+
+        var $survey = $('survey-social-public');
         $('#survey-social-public').addClass('active');
         $('.site-header').addClass('under');
-    }
+
+        $('html, body').animate({
+            scrollTop: $("#survey-social-public").offset().top
+        }, 1000);
+        return false;
+    });
 })(jQuery);
 
 /***/ })
