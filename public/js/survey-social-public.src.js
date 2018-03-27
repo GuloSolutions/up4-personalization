@@ -161,8 +161,6 @@ var vm = new Vue({
  methods: {
   onComplete: function() {
 
-// var params = new URLSearchParams();
-
 if (this.model.age === "Under 25"){
     this.model.age = 20;
 }
@@ -206,6 +204,13 @@ if (this.model.exercises_often === "I train to compete" || this.model.exercises_
 if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_often === "I like my couch" ){
     this.model.exercises_often = 0;
 };
+
+    var after_hash = window.location.href.split('#')[1];
+    var before_hash = window.location.href.split('#')[0];
+    if (after_hash != undefined) {
+      window.location.href = before_hash;
+      window.top.location = window.location.href
+    }
 
 var params = {
   'action' :'survey_receiver',
@@ -266,12 +271,15 @@ axios.post(ajax_receiver.ajax_url,
    },
    hideSurveyDiv: function (event){
     if (event){
+
+        event.preventDefault();
         $('#survey-social-public').removeClass('active');
         $('.site-header').removeClass('under');
         var after_hash = window.location.href.split('#')[1];
         var before_hash = window.location.href.split('#')[0];
         if (after_hash.length) {
           window.location.href = before_hash;
+          window.top.location = window.location.href;
         }
       }
    },
@@ -318,15 +326,6 @@ axios.post(ajax_receiver.ajax_url,
   },
 
   updated: function(){
-
-
-
-        var after_hash = window.location.href.split('#')[1];
-        var before_hash = window.location.href.split('#')[0];
-        if (after_hash.length) {
-          window.location.href = before_hash;
-        }
-
 
       $("#survey-social-public input:checkbox").click(function(event) {
         if(($("#survey-social-public input:checkbox:checked").length === 0)) {

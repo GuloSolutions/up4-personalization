@@ -5,6 +5,13 @@
         $('.site-header').addClass('under');
     });
 
+    $(window).one('hashchange', function() {
+        if (window.location.hash.slice(1) == "take-quiz") {
+            $('#survey-social-public').addClass('active');
+            $('.site-header').addClass('under');
+        }
+    });
+
     $('a[href="#take-quiz"]').click(function(){
 
          $('#survey-social-public').addClass('active');
@@ -15,6 +22,8 @@
         if (after_hash.length) {
           window.location.href = before_hash;
         }
+
+        event.preventDefault();
 
     });
 

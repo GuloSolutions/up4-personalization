@@ -1,6 +1,10 @@
 
 All changes to the plugin will be recorded here
 
+## 1.0.5 - 2018-03-26
+
+- Hash params bug closing survey fixed
+
 ## 1.0.4 - 2018-03-26
 
 - Hash paramas activating the quiz do not block submission
