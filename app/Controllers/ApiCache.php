@@ -49,13 +49,17 @@ class ApiCache
      */
     public function getCachedItem($cachedItem)
     {
+        if (is_null($cachedItem)) {
+            return false;
+        }
+
         if ($this->getCache() === true) {
             $this->item = $this->pool->getItem($cachedItem);
             $data = $this->item->get();
-        }
 
-        if ($this->item->isMiss()) {
-            return false;
+            if ($this->item->isMiss()) {
+                return false;
+            }
         }
 
         return $data;
@@ -63,9 +67,11 @@ class ApiCache
 
     public function saveItemInCache($data)
     {
-        if ($this->getCache() === true && $this->item->isMiss()) {
-            $this->setExpiration();
-            $this->pool->save($this->item->set($data));
+        if ($this->getCache() === true) {
+            if ($this->item instanceof \Stash\Item && $this->item->isMiss()) {
+                $this->setExpiration();
+                $this->pool->save($this->item->set($data));
+            }
         }
     }
 
