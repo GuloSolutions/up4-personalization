@@ -3,8 +3,8 @@
   box-sizing: border-box;
   position: relative;
   margin-bottom: 10px;
-  padding: 14px 50px 14px 60px;
-  border: 2px solid transparent;
+  padding: 12px 50px 12px 60px;
+  border: 2px solid #3C5A99;
   text-align: left;
   line-height: 20px;
   white-space: nowrap;
@@ -32,5 +32,15 @@
 #fb-logout:focus,#fb-login:focus {
   background-color: #5B7BD5;
   background-image: linear-gradient(#5B7BD5, #4864B1);
+}
+
+@media (max-width: 767px) {
+  #fb-logout,#fb-login {
+    padding: 8px 30px 8px 40px;
+    font-size: 16px;
+  }
+  #fb-logout:before,#fb-login:before {
+    background-position: 8px 8px;
+  }
 }
 
