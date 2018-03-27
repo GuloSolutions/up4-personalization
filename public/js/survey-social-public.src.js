@@ -271,15 +271,14 @@ axios.post(ajax_receiver.ajax_url,
    },
    hideSurveyDiv: function (event){
     if (event){
-
-        event.preventDefault();
         $('#survey-social-public').removeClass('active');
         $('.site-header').removeClass('under');
+
+
         var after_hash = window.location.href.split('#')[1];
         var before_hash = window.location.href.split('#')[0];
-        if (after_hash.length) {
+        if (after_hash != undefined) {
           window.location.href = before_hash;
-          window.top.location = window.location.href;
         }
       }
    },

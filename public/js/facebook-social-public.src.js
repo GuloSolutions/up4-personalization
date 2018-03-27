@@ -69,7 +69,6 @@
                         'trigger': redirect,
                         'response': response
                     };
-
                     sendToApp();
                 }
             );
