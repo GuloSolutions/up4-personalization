@@ -203,12 +203,8 @@ if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_o
     this.model.exercises_often = 0;
 };
 
-    var after_hash = window.location.href.split('#')[1];
-    var before_hash = window.location.href.split('#')[0];
-    if (after_hash != undefined) {
-      window.location.href = before_hash;
-      window.top.location = window.location.href
-    }
+  window.location.replace("#");
+
 
 var params = {
   'action' :'survey_receiver',
@@ -273,11 +269,8 @@ axios.post(ajax_receiver.ajax_url,
         $('#survey-social-public').removeClass('active');
         $('.site-header').removeClass('under');
 
-        var after_hash = window.location.href.split('#')[1];
-        var before_hash = window.location.href.split('#')[0];
-        if (after_hash != undefined) {
-            window.location.href = before_hash;
-        }
+        window.location.replace("#");
+
       }
    },
 
