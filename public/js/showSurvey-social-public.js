@@ -7,15 +7,15 @@
 
     $(window).on('hashchange', function() {
         if (window.location.hash.slice(1) == "take-quiz") {
+            window.location.replace("#");
             $('#survey-social-public').addClass('active');
             $('.site-header').addClass('under');
         }
     });
 
     $('a[href="#take-quiz"]').click(function(e){
-
+        window.location.replace("#");
         e.preventDefault();
-
         var $survey = $('survey-social-public');
          $('#survey-social-public').addClass('active');
          $('.site-header').addClass('under');
@@ -24,7 +24,6 @@
             scrollTop: $("#survey-social-public").offset().top
         }, 1000);
         return false;
-
     });
 
 })(jQuery);
