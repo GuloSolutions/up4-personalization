@@ -14,7 +14,7 @@
     });
 
     $('a[href="#take-quiz"]').click(function(e){
-        window.location.replace("#");
+        window.location.replace("#", ' ');
         e.preventDefault();
         var $survey = $('survey-social-public');
          $('#survey-social-public').addClass('active');

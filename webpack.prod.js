@@ -1,7 +1,9 @@
 require('babel-polyfill');
 let webpack = require('webpack');
 let path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var WebpackAutoInject = require('webpack-auto-inject-version');
+
 
 module.exports = {
   entry: {
@@ -61,7 +63,33 @@ module.exports = {
         NODE_ENV: JSON.stringify('production')
         }
        }),
-    new UglifyJsPlugin()
+    new UglifyJsPlugin(),
+    new WebpackAutoInject({
+        SHORT: 'Name: Facebook Social, URI: https://up4probiotics.com, Author: Gulo - A Digital Agency, Author URI: http://gulo.co',
+        SILENT: true,
+        PACKAGE_JSON_PATH: './package.json',
+        components: {
+          AutoIncreaseVersion: true,
+          InjectAsComment: true,
+          InjectByTag: true
+        },
+        componentsOptions: {
+          AutoIncreaseVersion: {
+            runInWatchMode: false // it will increase version with every single build!
+          },
+          InjectAsComment: {
+            tag: 'Version: {version} - {date}',
+            dateFormat: 'h:MM:ss TT'
+          },
+          InjectByTag: {
+            fileRegex: /\.+/,
+            // regexp to find [AIV] tag inside html, if you tag contains unallowed characters you can adjust the regex
+            // but also you can change [AIV] tag to anything you want
+            AIVTagRegexp: /(\[AIV])(([a-zA-Z{} ,:;!()_@\-"'\\\/])+)(\[\/AIV])/g,
+            dateFormat: 'h:MM:ss TT'
+          }
+        }
+      })
   ],
 
   resolve: {
