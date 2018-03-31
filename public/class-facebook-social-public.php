@@ -321,7 +321,9 @@ EOS;
                 </vue-form-generator>
             </tab-content>';
 
-        $questions[] = '
+
+        if ($this->up4->get()->gender != 'male') {
+            $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateHealthTab">
                          <label for="checkbox" >Which health needs are most important to you?</label>
@@ -333,6 +335,19 @@ EOS;
                 </vue-form-generator>
 
             </tab-content>';
+        } else {
+            $questions[] = '
+            <tab-content
+                         icon="ti-user" :before-change="validateHealthTab">
+                         <label for="checkbox" >Which health needs are most important to you?</label>
+                <vue-form-generator :model="model"
+                                   :schema="healthTabSchemaMale"
+                                   :options="formOptions"
+                                   ref="healthTabForm"
+                                   >
+                </vue-form-generator>
+            </tab-content>';
+        }
 
         foreach ($questions as $question) {
             $content .= $question;

@@ -1,4 +1,3 @@
-
 import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import VueFormGenerator from 'vue-form-generator';
@@ -122,7 +121,6 @@ var vm = new Vue({
      },
      ]
    },
-
    healthTabSchema:{
      fields:[
      {
@@ -143,13 +141,35 @@ var vm = new Vue({
           name: "Vaginal",
           name: "Urinary tract",
           name: "Heart health"
-
+        },
+        validator: VueFormGenerator.validators.required,
+        styleClasses:'col-xs-9',
+     },
+     ]
+   },
+      healthTabSchemaMale:{
+     fields:[
+     {
+        type: "checklist",
+        model: "health_needs",
+        listBox: true,
+        required:true,
+        values: [
+          "Digestive",
+          "Immune",
+          "Heart health"
+        ],
+        checklistOptions: {
+          name: "Digestive",
+          name: "Immune",
+          name: "Heart health"
         },
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
      },
      ]
    },
+
     counterMax: document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length,
     computed: {
     dynamicAge: function () {
@@ -158,7 +178,7 @@ var vm = new Vue({
   }
  },
  methods: {
-  onComplete: function() {
+  onComplete: function(event) {
 
 if (this.model.age === "Under 25"){
     this.model.age = 20;

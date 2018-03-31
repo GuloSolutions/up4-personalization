@@ -377,7 +377,7 @@ var _defineProperty2 = __webpack_require__(12);
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
-var _checklistOptions, _data;
+var _checklistOptions, _checklistOptions2, _data;
 
 var _vue = __webpack_require__(25);
 
@@ -481,7 +481,6 @@ var vm = new _vue2.default({
         styleClasses: 'col-xs-9'
       }]
     },
-
     healthTabSchema: {
       fields: [{
         type: "checklist",
@@ -495,6 +494,20 @@ var vm = new _vue2.default({
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
+    },
+    healthTabSchemaMale: {
+      fields: [{
+        type: "checklist",
+        model: "health_needs",
+        listBox: true,
+        required: true,
+        values: ["Digestive", "Immune", "Heart health"],
+        checklistOptions: (_checklistOptions2 = {
+          name: "Digestive"
+        }, (0, _defineProperty3.default)(_checklistOptions2, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions2, 'name', "Heart health"), _checklistOptions2),
+        validator: _vueFormGenerator2.default.validators.required,
+        styleClasses: 'col-xs-9'
+      }]
     }
 
   }, (0, _defineProperty3.default)(_data, 'counterMax', document.querySelectorAll(' ul.wizard-nav.wizard-nav-pills li').length), (0, _defineProperty3.default)(_data, 'computed', {
@@ -503,7 +516,7 @@ var vm = new _vue2.default({
     }
   }), _data),
   methods: {
-    onComplete: function onComplete() {
+    onComplete: function onComplete(event) {
 
       if (this.model.age === "Under 25") {
         this.model.age = 20;
@@ -553,7 +566,6 @@ var vm = new _vue2.default({
       var before_hash = window.location.href.split('#')[0];
       if (after_hash != undefined) {
         window.location.href = before_hash;
-        window.top.location = window.location.href;
       }
 
       var params = {
@@ -657,12 +669,6 @@ var vm = new _vue2.default({
     });
 
     $("#survey-social-public button:contains('Next')").attr('id', 'wizard-survey-next');
-
-    //     var after_hash = window.location.href.split('#')[1];
-    // var before_hash = window.location.href.split('#')[0];
-    // if (after_hash != undefined) {
-    //   window.location.href = before_hash;
-    // }
   },
 
   updated: function updated() {
@@ -13648,15 +13654,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
     $(window).on('hashchange', function () {
         if (window.location.hash.slice(1) == "take-quiz") {
+            window.location.replace("#");
             $('#survey-social-public').addClass('active');
             $('.site-header').addClass('under');
         }
     });
 
     $('a[href="#take-quiz"]').click(function (e) {
-
+        window.location.replace("#", ' ');
         e.preventDefault();
-
         var $survey = $('survey-social-public');
         $('#survey-social-public').addClass('active');
         $('.site-header').addClass('under');
