@@ -10,6 +10,7 @@ use Controllers\Up4Users;
 
 class Up4
 {
+    const GENDER_MALE = 'male';
     /*
      * @var string
      */
@@ -172,5 +173,13 @@ class Up4
         }
 
         return;
+    }
+
+    public function isGenderMale()
+    {
+        if ($this->up4User->gender == self::GENDER_MALE) {
+            return true;
+        }
+        return false;
     }
 }

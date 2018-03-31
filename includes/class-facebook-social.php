@@ -182,6 +182,8 @@ class Facebook_Social
 
         $this->loader->add_action('init', $plugin_public, 'blockusers_init', 80);
 
+        $this->loader->add_action('init', $plugin_public, 'app_output_buffer', 5);
+
         $this->loader->add_action('wp_ajax_nopriv_fb_receiver', $plugin_public, 'fb_receiver');
         $this->loader->add_action('wp_ajax_fb_receiver', $plugin_public, 'fb_receiver');
 

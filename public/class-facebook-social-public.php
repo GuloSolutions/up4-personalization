@@ -162,6 +162,7 @@ class Facebook_Social_Public
         }
     }
 
+
     public function startUp4User()
     {
         global $up4_user;
@@ -322,7 +323,7 @@ EOS;
             </tab-content>';
 
 
-        if ($this->up4->get()->gender != 'male') {
+        if (!$this->up4->isGenderMale()) {
             $questions[] = '
             <tab-content
                          icon="ti-user" :before-change="validateHealthTab">
@@ -411,6 +412,7 @@ EOS;
         wp_die();
     }
 
+
     public function disableAdminBarforUserRole()
     {
         $id = get_current_user_id();
@@ -451,5 +453,19 @@ EOS;
     {
         $this->register_survey_button();
         $this->register_survey_shortcode();
+    }
+
+    public function app_output_buffer()
+    {
+        ob_start();
+    }
+
+    public function redirect($url)
+    {
+        $string = '<script type="text/javascript">';
+        $string .= 'window.location = "' . $url . '"';
+        $string .= '</script>';
+
+        echo $string;
     }
 }
