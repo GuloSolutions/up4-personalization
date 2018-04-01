@@ -32,7 +32,7 @@ class Age
                     $this->age = current($value);
                 break;
                 default:
-                    throw new \Exception('No age defined');
+                    $this->age = null;
                 break;
             }
         }

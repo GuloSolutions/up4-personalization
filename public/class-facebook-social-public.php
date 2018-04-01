@@ -62,7 +62,6 @@ class Facebook_Social_Public
         $this->version = $version;
         $this->register_facebook_shortcode();
         $this->survey_loader_helper();
-        $this->redirect();
     }
 
     /**
@@ -213,7 +212,8 @@ class Facebook_Social_Public
             'facebook-social-public',
             'ajax_receiver',
             [
-                'ajax_url' => admin_url('admin-ajax.php')
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'is_front_page' => is_front_page()
             ]
         );
 
@@ -241,23 +241,22 @@ class Facebook_Social_Public
         );
 
         $content = <<<EOS
-            <div id="survey-social-public">
+        <div id="survey-social-public">
 
             <button id="start-over" v-on:click="restartSurvey">Start over</button>
             <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
 
             <div class="container">
-
-            <form-wizard @on-complete="onComplete"
-                    @on-change="incrementCounter"
-                     color="gray"
-                     error-color="#a94442"
-                     title=""
-                     subtitle=""
-                     ref="wizard">
-            <div class="wizard-numbers">
-                {{ counter }} / {{ counterMax }}
-            </div>
+                <form-wizard @on-complete="onComplete"
+                        @on-change="incrementCounter"
+                         color="gray"
+                         error-color="#a94442"
+                         title=""
+                         subtitle=""
+                         ref="wizard">
+                    <div class="wizard-numbers">
+                        {{ counter }} / {{ counterMax }}
+                    </div>
 EOS;
 
         if (!$this->up4->get()->age) {
@@ -287,10 +286,8 @@ EOS;
         }
 
         $questions[] = '
-            <tab-content
-                         icon="ti-user" :before-change="validateTravelTab">
+            <tab-content icon="ti-user" :before-change="validateTravelTab">
                 <label for="radio"  class="control control--checkbox">You are best described as a...</label>
-
                 <vue-form-generator :model="model"
                                    :schema="travelTabSchema"
                                    :options="formOptions"
@@ -300,9 +297,8 @@ EOS;
             </tab-content>';
 
         $questions[] = '
-            <tab-content
-                         icon="ti-user" :before-change="validateChildrenTab">
-                        <label for="radio">Do you have children?</label>
+            <tab-content icon="ti-user" :before-change="validateChildrenTab">
+                <label for="radio">Do you have children?</label>
                 <vue-form-generator :model="model"
                                    :schema="childrenTabSchema"
                                    :options="formOptions"
@@ -312,9 +308,8 @@ EOS;
             </tab-content>';
 
         $questions[] = '
-            <tab-content
-                         icon="ti-user" :before-change="validateExerciseTab">
-                         <label for="radio">How would you describe your workouts?</label>
+            <tab-content icon="ti-user" :before-change="validateExerciseTab">
+                <label for="radio">How would you describe your workouts?</label>
                 <vue-form-generator :model="model"
                                    :schema="exerciseTabSchema"
                                    :options="formOptions"
@@ -323,45 +318,29 @@ EOS;
                 </vue-form-generator>
             </tab-content>';
 
+        $gender = new \Controllers\Gender($this->up4->get()->gender);
+        $health_tab_schema = !$gender->isMale() ? 'healthTabSchema' : 'healthTabSchemaMale';
 
-        if (!$this->up4->isGenderMale()) {
-            $questions[] = '
-            <tab-content
-                         icon="ti-user" :before-change="validateHealthTab">
-                         <label for="checkbox" >Which health needs are most important to you?</label>
+        $questions[] = sprintf('
+            <tab-content icon="ti-user" :before-change="validateHealthTab">
+                <label for="checkbox" >Which health needs are most important to you?</label>
                 <vue-form-generator :model="model"
-                                   :schema="healthTabSchema"
+                                   :schema="%s"
                                    :options="formOptions"
                                    ref="healthTabForm"
                                    >
                 </vue-form-generator>
-
-            </tab-content>';
-        } else {
-            $questions[] = '
-            <tab-content
-                         icon="ti-user" :before-change="validateHealthTab">
-                         <label for="checkbox" >Which health needs are most important to you?</label>
-                <vue-form-generator :model="model"
-                                   :schema="healthTabSchemaMale"
-                                   :options="formOptions"
-                                   ref="healthTabForm"
-                                   >
-                </vue-form-generator>
-            </tab-content>';
-        }
+            </tab-content>', $health_tab_schema);
 
         foreach ($questions as $question) {
             $content .= $question;
         }
 
         $content .= <<<EOS
-
-            </form-wizard>
-            </div>
+                    </form-wizard>
+                </div>
             </div>
         </div>
-
 EOS;
 
         return $content;
@@ -410,6 +389,12 @@ EOS;
         $survey_up4_user->setupSurveyResponse($response);
         $survey_up4_user->checkSurveyUser();
 
+        $response = [
+            'redirect'  => $this->survey_redirect()
+        ];
+
+        wp_send_json($response);
+
         wp_die();
     }
 
@@ -456,44 +441,20 @@ EOS;
         $this->register_survey_shortcode();
     }
 
-    public function redirect()
+    /*
+     * Gets a config var for post survey redirect
+     * @return String url
+     */
+    public function survey_redirect()
     {
-        $fields = acf_get_fields(1032);
+        if (!is_front_page() && function_exists('get_field')) {
+            $quiz_redirect_url = get_field('quiz_completed_redirect', 'option');
 
-        foreach ($fields as $field) {
-            if (isset($field['name'])) {
-                $redirect_label = $field['name'];
-                break;
+            if ($quiz_redirect_url) {
+                return $quiz_redirect_url;
             }
         }
 
-        $url = get_field($redirect_label, 'options');
-        $redirect_url = json_encode($url['url'], JSON_UNESCAPED_SLASHES);
-
-        if (!empty($redirect_url)) {
-            echo
-            "<script type='text/javascript'>
-                function redirectSurveyUrl () {
-                    function echoUrl() {
-                       window.location =" . $redirect_url . ";
-                    }
-                    return echoUrl;
-                }
-                var redirect = redirectSurveyUrl();
-            </script>";
-        } else {
-            $redirect_url = "/";
-            $redirect_url = json_encode($redirect_url, JSON_UNESCAPED_SLASHES);
-            echo
-            "<script type='text/javascript'>
-                function redirectSurveyUrl () {
-                    function echoUrl() {
-                       window.location.href =" . $redirect_url . ";
-                    }
-                    return echoUrl;
-                }
-                var redirect = redirectSurveyUrl();
-            </script>";
-        }
+        return esc_url(home_url('/'));
     }
 }

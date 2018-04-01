@@ -20,7 +20,7 @@ class Gender
                 $this->gender = $value;
             break;
             default:
-                throw new \Exception('No gender defined');
+                $this->gender = null;
             break;
         }
     }

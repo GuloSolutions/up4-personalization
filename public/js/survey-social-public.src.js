@@ -242,22 +242,24 @@ var params = {
 
 var recursiveDecoded = decodeURIComponent( $.param( params ) );
 
-axios.post(ajax_receiver.ajax_url,
-    recursiveDecoded,
+axios.post(ajax_receiver.ajax_url, recursiveDecoded,
     {
         headers: {
             'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }
-    }
+    })
+    .then(function (response) {
+        var redirect = '/';
 
-  )
-  .then(function (response) {
-      redirect();
-  })
-  .catch(function (error) {
-      console.log(error);
-  });
+        if (!ajax_receiver.is_front_page && response.data.redirect) {
+            redirect = response.data.redirect;
+        }
 
+        window.location = redirect;
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
    },
    validateAgeTab: function(){
      return this.$refs.ageTabForm.validate();
