@@ -252,10 +252,10 @@ axios.post(ajax_receiver.ajax_url,
 
   )
   .then(function (response) {
-        window.location = window.location.href;
+      redirect();
   })
   .catch(function (error) {
-    console.log(error);
+      console.log(error);
   });
 
    },

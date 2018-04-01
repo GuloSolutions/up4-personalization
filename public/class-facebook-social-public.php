@@ -62,6 +62,7 @@ class Facebook_Social_Public
         $this->version = $version;
         $this->register_facebook_shortcode();
         $this->survey_loader_helper();
+        $this->redirect();
     }
 
     /**
@@ -455,17 +456,44 @@ EOS;
         $this->register_survey_shortcode();
     }
 
-    public function app_output_buffer()
+    public function redirect()
     {
-        ob_start();
-    }
+        $fields = acf_get_fields(1032);
 
-    public function redirect($url)
-    {
-        $string = '<script type="text/javascript">';
-        $string .= 'window.location = "' . $url . '"';
-        $string .= '</script>';
+        foreach ($fields as $field) {
+            if (isset($field['name'])) {
+                $redirect_label = $field['name'];
+                break;
+            }
+        }
 
-        echo $string;
+        $url = get_field($redirect_label, 'options');
+        $redirect_url = json_encode($url['url'], JSON_UNESCAPED_SLASHES);
+
+        if (!empty($redirect_url)) {
+            echo
+            "<script type='text/javascript'>
+                function redirectSurveyUrl () {
+                    function echoUrl() {
+                       window.location =" . $redirect_url . ";
+                    }
+                    return echoUrl;
+                }
+                var redirect = redirectSurveyUrl();
+            </script>";
+        } else {
+            $redirect_url = "/";
+            $redirect_url = json_encode($redirect_url, JSON_UNESCAPED_SLASHES);
+            echo
+            "<script type='text/javascript'>
+                function redirectSurveyUrl () {
+                    function echoUrl() {
+                       window.location.href =" . $redirect_url . ";
+                    }
+                    return echoUrl;
+                }
+                var redirect = redirectSurveyUrl();
+            </script>";
+        }
     }
 }

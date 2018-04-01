@@ -585,7 +585,9 @@ var vm = new _vue2.default({
           'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }
       }).then(function (response) {
-        window.location = window.location.href;
+
+        redirect();
+        // window.location = window.location.href;
       }).catch(function (error) {
         console.log(error);
       });
