@@ -79,7 +79,7 @@ module.exports = {
           },
           InjectAsComment: {
             tag: 'Version: {version} - {date}',
-            dateFormat: 'h:MM:ss TT'
+            dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT' // default
           },
           InjectByTag: {
             fileRegex: /\.+/,
