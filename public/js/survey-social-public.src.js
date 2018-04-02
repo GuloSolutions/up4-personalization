@@ -360,15 +360,4 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
       $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
 
   },
-  beforeUpdate: function() {
-
-        console.log(this.model.gender);
-
-    // if (this.model.gender) {
-    //     this.male_gender = this.model.gender;
-    //            visible(schema) {
-                return this.refs.healthTabSchema;
-            }
-  //   }
-  // }
 })
