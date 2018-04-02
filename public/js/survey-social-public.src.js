@@ -17,6 +17,7 @@ var vm = new Vue({
  data:{
    counter: 1,
    counterMax: 0,
+   male_gender: false,
 
    model:{
     age: null,
@@ -291,14 +292,15 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
    },
    hideSurveyDiv: function (event){
     if (event){
-      event.preventDefault();
         $('#survey-social-public').removeClass('active');
         $('.site-header').removeClass('under');
 
         var after_hash = window.location.href.split('#')[1];
         var before_hash = window.location.href.split('#')[0];
         if (after_hash != undefined) {
-            window.location.href = before_hash;
+          var no_reload = {'url' : before_hash};
+
+          window.history.pushState({}, null, before_hash);
         }
       }
    },
@@ -356,5 +358,17 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
 
       $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
       $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
+
   },
+  beforeUpdate: function() {
+
+        console.log(this.model.gender);
+
+    // if (this.model.gender) {
+    //     this.male_gender = this.model.gender;
+    //            visible(schema) {
+                return this.refs.healthTabSchema;
+            }
+  //   }
+  // }
 })
