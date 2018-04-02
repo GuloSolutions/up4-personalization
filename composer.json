@@ -2,7 +2,7 @@
     "name": "gulo-solutions/up4-personalization",
     "description": "up4 Facebook login, Survey wizard and Personalization",
     "keywords": ["API", "up4-personalization"],
-    "version": "1.0.9",
+    "version": "1.0.10",
     "license": "MIT",
     "type": "wordpress-plugin",
     "require": {
