@@ -7,14 +7,13 @@
 
     $(window).on('hashchange', function() {
         if (window.location.hash.slice(1) == "take-quiz") {
-            window.location.replace("#");
             $('#survey-social-public').addClass('active');
             $('.site-header').addClass('under');
         }
     });
 
     $('a[href="#take-quiz"]').click(function(e){
-        window.location.replace("#", ' ');
+        window.location.replace("#take-quiz", ' ');
         e.preventDefault();
         var $survey = $('survey-social-public');
          $('#survey-social-public').addClass('active');

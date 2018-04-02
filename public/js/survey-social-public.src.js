@@ -17,7 +17,7 @@ var vm = new Vue({
  data:{
    counter: 1,
    counterMax: 0,
-   male_gender: false,
+   male_gender: '',
 
    model:{
     age: null,
@@ -153,6 +153,7 @@ var vm = new Vue({
      {
         type: "checklist",
         model: "health_needs",
+        type: 'male',
         listBox: true,
         required:true,
         values: [
@@ -225,12 +226,6 @@ if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_o
     this.model.exercises_often = 0;
 };
 
-    var after_hash = window.location.href.split('#')[1];
-    var before_hash = window.location.href.split('#')[0];
-    if (after_hash != undefined) {
-      window.location.href = before_hash;
-    }
-
 var params = {
   'action' :'survey_receiver',
   'response[age]': this.model.age,
@@ -298,8 +293,6 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
         var after_hash = window.location.href.split('#')[1];
         var before_hash = window.location.href.split('#')[0];
         if (after_hash != undefined) {
-          var no_reload = {'url' : before_hash};
-
           window.history.pushState({}, null, before_hash);
         }
       }
@@ -358,6 +351,11 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
 
       $("#survey-social-public button:contains('Back')").attr('id', 'wizard-survey-back');
       $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
-
-  },
+    },
+  beforeUpdate: function checkGender() {
+    if (this.model.gender == 'Male') {
+        $("input[name='Vaginal']").closest('div[class^="list-row"]').hide();
+        $("input[name='Urinary-tract']").closest('div[class^="list-row"]').hide();
+      }
+   }
 })
