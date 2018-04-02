@@ -1,7 +1,13 @@
 
 All changes to the plugin will be recorded here
 
+## 1.0.9 - 2018-04-01
 
+- AJAX survey impovements on on interior pages
+
+## 1.0.8 - 2018-03-28
+
+- More than 1 header fail would result in multiple lookups
 
 ## 1.0.7 - 2018-03-27
 
