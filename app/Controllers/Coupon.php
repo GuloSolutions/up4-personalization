@@ -7,8 +7,6 @@ use Models\Up4User;
 
 class Coupon
 {
-    const PCODE = 'camhong2296@yahoo.com';
-
     private $short_cipher;
     private $long_cipher;
     private $offer_code;
