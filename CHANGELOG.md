@@ -1,6 +1,11 @@
 
 All changes to the plugin will be recorded here
 
+
+## 1.0.10 - 2018-04-03
+
+- Refactored JS and other improvements
+
 ## 1.0.9 - 2018-04-01
 
 - AJAX survey impovements on on interior pages
