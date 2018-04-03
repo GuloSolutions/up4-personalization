@@ -1,4 +1,4 @@
-// [Name: Facebook Social, URI: https://up4probiotics.com, Author: Gulo - A Digital Agency, Author URI: http://gulo.co]  Version: 1.0.8 - Tuesday, April 3rd, 2018, 5:07:12 PM  
+// [Name: Facebook Social, URI: https://up4probiotics.com, Author: Gulo - A Digital Agency, Author URI: http://gulo.co]  Version: 1.0.10 - Tuesday, April 3rd, 2018, 5:22:52 PM  
  /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
