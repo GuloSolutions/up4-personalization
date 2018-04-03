@@ -19,13 +19,11 @@ class Coupon
         $this->setOfferCode($offer_code);
     }
 
-    public function encodeRequest($pCode = null)
+    public function encodeRequest($pCode)
     {
         if (!isset($this->long_cipher) || !isset($this->short_cipher) || !isset($this->offer_code)) {
             return false;
         }
-
-        $pCode = $pCode ?: self::PCODE;
 
         $decodeX = " abcdefghijklmnopqrstuvwxyz0123456789!$%()*+,-.@;<=>?[]^_{|}~";
         $encodeModulo = array_fill(0, 256, 0);
