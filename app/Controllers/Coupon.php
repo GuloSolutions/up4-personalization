@@ -7,12 +7,9 @@ use Models\Up4User;
 
 class Coupon
 {
-    const PCODE = 'camhong2296@yahoo.com';
-
     private $short_cipher;
     private $long_cipher;
     private $offer_code;
-
 
     public function __construct(string $long_cipher, string $short_cipher, string $offer_code)
     {
@@ -21,7 +18,7 @@ class Coupon
         $this->setOfferCode($offer_code);
     }
 
-    public function encodeRequest()
+    public function encodeRequest($pCode)
     {
         if (!isset($this->long_cipher) || !isset($this->short_cipher) || !isset($this->offer_code)) {
             return false;
@@ -35,7 +32,8 @@ class Coupon
         for ($i = 0; $i < 61; $i++) {
             $encodeModulo[substr($decodeX, $i, 1)] = $i;
         }
-        $pinCode = strtolower(self::PCODE) . strval($this->offer_code);
+
+        $pinCode = strtolower($pCode) . strval($this->offer_code);
 
         if (strlen($pinCode) < 20) {
             $pinCode .= ' couponsincproduction';
@@ -59,7 +57,7 @@ class Coupon
 
         return [
             'o' => $this->offer_code,
-            'p' => self::PCODE,
+            'p' => $pCode,
             'cpt' =>$cpt
         ];
     }
