@@ -1,33 +1,40 @@
 (function ($) {
+    var showSurvey = function() {
+        var $survey = $('#survey-social-public');
+
+        if ($survey.length) {
+            $('html, body').animate({
+                scrollTop: $survey.offset().top
+            }, 1000);
+
+            $survey.addClass('active');
+            $('.site-header').addClass('under');
+        }
+    };
 
     $('#show-survey, #show-survey-again').on('click', function(e) {
-        $('#survey-social-public').addClass('active');
-        $('.site-header').addClass('under');
+        e.preventDefault();
+
+        showSurvey();
+
+        return false;
     });
 
     $(window).on('hashchange', function() {
-        if (window.location.hash.slice(1) == "take-quiz" && $('#survey-social-public').length) {
-            $('#survey-social-public').addClass('active');
-            $('.site-header').addClass('under');
-        }
-            $('html, body').animate({
-                scrollTop: $("#survey-social-public").offset().top
-            }, 2000);
-    });
-
-    $('a[href="#take-quiz"]').click(function(e){
-        window.location.replace("#take-quiz");
-        e.preventDefault();
-        $('#survey-social-public').addClass('active');
-        $('.site-header').addClass('under');
-
-        if ($('#survey-social-public').length) {
-            $('html, body').animate({
-                scrollTop: $("#survey-social-public").offset().top
-            }, 2000);
+        if (window.location.hash.slice(1) == "take-quiz") {
+            showSurvey();
         }
 
         return false;
     });
 
+    $('a[href="#take-quiz"]').click(function(e){
+        e.preventDefault();
+
+        window.location.replace("#take-quiz");
+
+        showSurvey();
+
+        return false;
+    });
 })(jQuery);
