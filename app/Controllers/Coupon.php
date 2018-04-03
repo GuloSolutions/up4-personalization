@@ -11,7 +11,6 @@ class Coupon
     private $long_cipher;
     private $offer_code;
 
-
     public function __construct(string $long_cipher, string $short_cipher, string $offer_code)
     {
         $this->setLongCipher($long_cipher);
