@@ -1,4 +1,5 @@
-/******/ (function(modules) { // webpackBootstrap
+// [Name: Facebook Social, URI: https://up4probiotics.com, Author: Gulo - A Digital Agency, Author URI: http://gulo.co]  Version: 1.0.8 - Tuesday, April 3rd, 2018, 9:59:14 AM  
+ /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -13679,4 +13680,4 @@ return /******/ (function(modules) { // webpackBootstrap
 })(jQuery);
 
 /***/ })
-/******/ ]);
+/******/ ]); 
