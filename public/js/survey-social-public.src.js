@@ -153,7 +153,6 @@ var vm = new Vue({
      {
         type: "checklist",
         model: "health_needs",
-        type: 'male',
         listBox: true,
         required:true,
         values: [
