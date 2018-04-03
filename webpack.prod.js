@@ -69,7 +69,7 @@ module.exports = {
         SILENT: true,
         PACKAGE_JSON_PATH: './package.json',
         components: {
-          AutoIncreaseVersion: true,
+          AutoIncreaseVersion: false,
           InjectAsComment: true,
           InjectByTag: true
         },
