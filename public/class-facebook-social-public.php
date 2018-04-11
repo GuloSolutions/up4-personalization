@@ -245,7 +245,7 @@ class Facebook_Social_Public
 
             <button id="start-over" v-on:click="restartSurvey">Start over</button>
             <button id="hide-survey" v-on:click="hideSurveyDiv">Cancel</button>
-
+            <div class="survey-image-wrapper"></div>
             <div class="container">
                 <form-wizard @on-complete="onComplete"
                         @on-change="incrementCounter"
