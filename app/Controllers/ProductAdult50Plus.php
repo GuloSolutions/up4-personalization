@@ -79,6 +79,6 @@ class ProductAdult50Plus extends AbstractProduct
 
     public function isHeart()
     {
-        return false;
+        return true;
     }
 }
