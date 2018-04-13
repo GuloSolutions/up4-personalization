@@ -16,8 +16,8 @@ class ProductUltra extends AbstractProduct
 
     public function __construct()
     {
-        $this->age = new Age(Age::IS2439);
         $this->gender = new Gender(Gender::BOTH);
+        $this->age = new Age(Age::IS2439);
 
         $this->rank = self::RANK;
     }

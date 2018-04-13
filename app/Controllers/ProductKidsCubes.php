@@ -16,8 +16,8 @@ class ProductKidsCubes extends AbstractProduct
 
     public function __construct()
     {
-        $this->age = new Age(Age::ISKID);
         $this->gender = new Gender(Gender::BOTH);
+        $this->age = new Age(Age::ISKID);
 
         $this->rank = self::RANK;
 
