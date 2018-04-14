@@ -2,6 +2,11 @@
 All changes to the plugin will be recorded here
 
 
+## 1.0.11 - 2018-04-13
+
+- Recommendations finetuned
+- Image wrapper for survey
+
 ## 1.0.10 - 2018-04-03
 
 - Refactored JS and other improvements
