@@ -1,10 +1,16 @@
 let webpack = require('webpack');
 let path = require('path');
-var WebpackAutoInject = require('webpack-auto-inject-version');
 
+var PACKAGE = require('./package.json');
+var date = new Date(Date.now()).toLocaleDateString() + ' ' + new Date(Date.now()).toLocaleTimeString();
+var banner = 'Name: '+PACKAGE.description+
+              '\nURI: '+PACKAGE.uri+
+              '\nAuthor: '+PACKAGE.author.name+' - '+PACKAGE.author.description+
+              '\nAuthor URI: '+PACKAGE.author.uri+
+              '\nVersion: '+PACKAGE.version+
+              ' (built on '+date+')';
 
 module.exports = {
-
   entry: {
     'survey-social-public': ['./public/js/survey-social-public.src.js', './public/js/showSurvey-social-public.js']
   },
@@ -44,37 +50,11 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-        'process.env': {
-        NODE_ENV: JSON.stringify('development')
-        }
-       }),
-        new WebpackAutoInject({
-        SHORT: 'Name: Facebook Social, URI: https://up4probiotics.com, Author: Gulo - A Digital Agency, Author URI: http://gulo.co',
-        SILENT: true,
-        PACKAGE_JSON_PATH: './package.json',
-        components: {
-          AutoIncreaseVersion: true,
-          InjectAsComment: true,
-          InjectByTag: true
-        },
-        componentsOptions: {
-          AutoIncreaseVersion: {
-            runInWatchMode: false // it will increase version with every single build!
-          },
-          InjectAsComment: {
-            tag: 'Version: {version} - {date}',
-            dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT' // default
-          },
-          InjectByTag: {
-            fileRegex: /\.+/,
-            // regexp to find [AIV] tag inside html, if you tag contains unallowed characters you can adjust the regex
-            // but also you can change [AIV] tag to anything you want
-            AIVTagRegexp: /(\[AIV])(([a-zA-Z{} ,:;!()_@\-"'\\\/])+)(\[\/AIV])/g,
-            dateFormat: 'h:MM:ss TT'
-          }
-        }
-      })
+    new webpack.BannerPlugin({
+        banner: banner,
+        raw: false, // if true, banner will not be wrapped in a comment
+        entryOnly: false, // if true, the banner will only be added to the entry chunks
+    })
   ],
 
   resolve: {
