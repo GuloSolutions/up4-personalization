@@ -1,4 +1,4 @@
-// [Name: Facebook Social, URI: https://up4probiotics.com, Author: Gulo - A Digital Agency, Author URI: http://gulo.co]  Version: 1.0.10 - Tuesday, April 3rd, 2018, 5:22:52 PM  
+// [Name: Facebook Social, URI: https://up4probiotics.com, Author: Gulo - A Digital Agency, Author URI: http://gulo.co]  Version: 1.0.11 - Tuesday, April 17th, 2018, 4:27:10 PM  
  /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -537,7 +537,7 @@ var vm = new _vue2.default({
       }
 
       if (this.model.gender === "Other") {
-        this.model.gender = "null";
+        this.model.gender = null;
       }
 
       if (this.model.has_children === "Yes, and they're growing so fast" || this.model.has_children === "Yes, little rugrats") {
@@ -686,9 +686,13 @@ var vm = new _vue2.default({
     $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
   },
   beforeUpdate: function checkGender() {
+
     if (this.model.gender == 'Male') {
       $("input[name='Vaginal']").closest('div[class^="list-row"]').hide();
       $("input[name='Urinary-tract']").closest('div[class^="list-row"]').hide();
+    } else if (this.model.gender == 'Female' || this.model.gender == 'Other') {
+      $("input[name='Vaginal']").closest('div[class^="list-row"]').toggle(true);
+      $("input[name='Urinary-tract']").closest('div[class^="list-row"]').toggle(true);
     }
   }
 });
