@@ -2,6 +2,12 @@
 All changes to the plugin will be recorded here
 
 
+
+## 1.0.12 - 2018-04-13
+
+- Fixed quiz when reverting from men to women final stage
+- Added changes to recommendations
+
 ## 1.0.11 - 2018-04-13
 
 - Recommendations finetuned
