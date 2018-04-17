@@ -352,9 +352,13 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
       $("#survey-social-public button:contains('Finish')").attr('id', 'wizard-survey-finish');
     },
   beforeUpdate: function checkGender() {
+
     if (this.model.gender == 'Male') {
         $("input[name='Vaginal']").closest('div[class^="list-row"]').hide();
         $("input[name='Urinary-tract']").closest('div[class^="list-row"]').hide();
+    } else if (this.model.gender == 'Female' || this.model.gender == 'Other') {
+            $("input[name='Vaginal']").closest('div[class^="list-row"]').toggle(true);
+            $("input[name='Urinary-tract']").closest('div[class^="list-row"]').toggle(true);
       }
    }
 })
