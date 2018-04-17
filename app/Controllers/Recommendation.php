@@ -84,7 +84,7 @@ class Recommendation
                     if (isset($sec_getter) &&
                         method_exists($objA, $sec_getter) &&
                             method_exists($objB, $sec_getter)) {
-                        if ($objA->$sec_getter() !== false ||
+                        if ($objA->$sec_getter() !== false &&
                                     $objB->$sec_getter() !== false) {
                             return $objA->$sec_getter() - $objB->$sec_getter();
                         } else {
