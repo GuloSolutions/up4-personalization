@@ -1,8 +1,14 @@
 {
-  "name": "survey",
-  "description": "Vue project",
-  "version": "1.0.11",
-  "author": "Gulo Solutions",
+  "name": "up4-plugin",
+  "description": "Facebook Social Quiz",
+  "version": "1.0.12",
+  "client": "up4 Probiotics",
+  "uri": "https://up4probiotics.com",
+  "author": {
+    "name": "Gulo",
+    "description": "A Digital Agency",
+    "uri": "http://gulo.co"
+  },
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -43,7 +49,7 @@
     "vue-template-compiler": "^2.5.16",
     "vuex": "^3.0.1",
     "webpack": "^3.11.0",
-    "webpack-auto-inject-version": "^1.1.0",
+    "banner-webpack-plugin": "^0.2",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-dev-server": "^2.11.2"
   }
