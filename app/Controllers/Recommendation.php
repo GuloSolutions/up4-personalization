@@ -84,11 +84,11 @@ class Recommendation
                     if (isset($sec_getter) &&
                         method_exists($objA, $sec_getter) &&
                             method_exists($objB, $sec_getter)) {
-                        if($objA->$sec_getter() !== false ||
+                        if ($objA->$sec_getter() !== false ||
                                     $objB->$sec_getter() !== false) {
-                            return;
-                        } else {
                             return $objA->$sec_getter() - $objB->$sec_getter();
+                        } else {
+                            return;
                         }
                     } else {
                         return 0;
@@ -121,7 +121,7 @@ class Recommendation
                 if ($product->getGender()->get() === $this->user->gender ||
                         $product->getGender()->isEither()) {
                     $recommendations[$key] = $product;
-                } else if (in_array($product->getAge()->getType(), $product->getAge()->find($age))) {
+                } elseif (in_array($product->getAge()->getType(), $product->getAge()->find($age))) {
                     $recommendations[$key] = $product;
                 }
             }
