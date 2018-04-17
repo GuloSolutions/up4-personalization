@@ -198,7 +198,7 @@ if (this.model.age === "50+"){
 }
 
 if (this.model.gender === "Other") {
-    this.model.gender = "null";
+    this.model.gender = null;
 }
 
 if (this.model.has_children === "Yes, and they're growing so fast" || this.model.has_children === "Yes, little rugrats" ){
