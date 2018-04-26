@@ -349,6 +349,9 @@ EOS;
     public function fb_receiver()
     {
         $response = $_POST['response'];
+                error_log(print_r('in receiver', true));
+
+        error_log(print_r($response, true));
 
         $up4_user = new Controllers\Up4Users($this->up4->up4User, $this->up4->up4Session);
         $up4_user->setupFacebookResponse($response);
