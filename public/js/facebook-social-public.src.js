@@ -57,7 +57,10 @@
                 }
 
                 return;
-            }, {scope: 'email, user_birthday'});
+            }, {scope: 'email, user_birthday',
+                return_scopes: true,
+                auth_type: 'rerequest'
+                });
         };
 
         var connectToApp = function(redirect) {

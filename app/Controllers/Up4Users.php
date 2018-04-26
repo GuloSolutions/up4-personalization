@@ -90,8 +90,6 @@ class Up4Users
             $this->create();
         }
 
-        $this->up4User->save();
-
         return;
     }
 
@@ -155,7 +153,7 @@ class Up4Users
     private function setData()
     {
         if ($this->fb_data) {
-            if ($this->fb_user->id !== null) {
+            if (!empty($this->fb_user->id) && !empty($this->fb_user->user_id)) {
                 $this->fb_user->session_id = $this->up4Session->id;
 
                 // move data if survey taken again and subsequent FB login
@@ -166,7 +164,8 @@ class Up4Users
                     ->whereNull('facebook_id')->delete();
 
                 $this->fb_user->save();
-            } elseif ($this->facebook_id) {
+            } else {
+                // if no existing FB user, save one
                 $this->setObjectPropsFromData($this->up4User, $this->fb_data);
                 $this->establishSession();
             }
@@ -184,7 +183,13 @@ class Up4Users
         }
 
         $this->setData();
-        $this->updateMetaAndSave();
+
+        // don't save metadata if user has declined sharing data
+        if ($this->facebook_id && empty($this->up4User->user_id)) {
+            return;
+        } else {
+            $this->updateMetaAndSave();
+        }
     }
 
     private function updateMetaAndSave()
@@ -254,7 +259,6 @@ class Up4Users
         $object->temperature = $local_weather->getTemperature();
         $object->conditions = $local_weather->getConditions();
         $object->local_time = $local_weather->getLocalTime();
-
         $object->save();
     }
 
