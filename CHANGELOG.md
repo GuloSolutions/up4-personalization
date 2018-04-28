@@ -1,7 +1,10 @@
 
 All changes to the plugin will be recorded here
 
+## 1.0.13 - 2018-04-28
 
+- Facebook permission rerequest if denied
+- Updated npm dependencies
 
 ## 1.0.12 - 2018-04-13
 
