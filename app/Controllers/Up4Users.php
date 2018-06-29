@@ -163,6 +163,8 @@ class Up4Users
                 Up4User::where('session_id', $this->fb_user->session_id)
                     ->whereNull('facebook_id')->delete();
 
+                $this->fb_user->picture = $this->fb_data['picture'];
+
                 $this->fb_user->save();
             } else {
                 // if no existing FB user, save one
