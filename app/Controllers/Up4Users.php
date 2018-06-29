@@ -163,7 +163,11 @@ class Up4Users
                 Up4User::where('session_id', $this->fb_user->session_id)
                     ->whereNull('facebook_id')->delete();
 
+                // save pic url because FB chnages that url
                 $this->fb_user->picture = $this->fb_data['picture'];
+
+                // save weather info here for existing users
+                $this->updateMetaAndSave();
 
                 $this->fb_user->save();
             } else {
@@ -197,11 +201,12 @@ class Up4Users
     private function updateMetaAndSave()
     {
         $location = new Location();
+
         $weather = new Weather($location);
 
-        if (!empty($this->fb_user->id)) {
+        if (!is_null($this->fb_user->id)) {
             $this->saveMetaData($this->fb_user, $weather);
-        } elseif (!isset($this->fb_user->id)) {
+        } else {
             $this->saveMetaData($this->up4User, $weather);
         }
     }
