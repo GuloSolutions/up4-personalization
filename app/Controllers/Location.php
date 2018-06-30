@@ -10,15 +10,15 @@ class Location
     const BASE_URI = 'http://api.ipstack.com/%s?access_key=%s&output=json&legacy=1';
 
     /*
-     * @var string
-     */
-    private $api_key;
-
-    /*
      * Cache life
      * 3 days
      */
     const CACHE_EXPIRE = 2592000;
+
+    /*
+     * @var string
+     */
+    private $api_key;
 
     /*
      * @var string
