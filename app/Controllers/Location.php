@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 class Location
 {
 
-    private $api_key = defined(IPSTACK_API_KEY);
+    private $api_key;
 
     const BASE_URI = 'http://api.ipstack.com/%s?access_key=%s&output=json&legacy=1';
 
@@ -79,6 +79,7 @@ class Location
     private function setResponse()
     {
         $ip = $this->ip->getAddress();
+        $api_key = defined('IPSTACK_API_KEY');
 
         $this->response = $this->apiCache->getCachedItem($ip);
 
