@@ -7,7 +7,10 @@ use GuzzleHttp\Client;
 
 class Location
 {
-    const BASE_URI = 'https://freegeoip.net/json/%s';
+
+    private $api_key = defined(IPSTACK_API_KEY);
+
+    const BASE_URI = 'http://api.ipstack.com/%s?access_key=%s&output=json&legacy=1';
 
     /*
      * Cache life
@@ -80,7 +83,7 @@ class Location
         $this->response = $this->apiCache->getCachedItem($ip);
 
         if ($this->response === false) {
-            $base_uri = sprintf(self::BASE_URI, $ip);
+            $base_uri = sprintf(self::BASE_URI, $ip, $api_key);
 
             $client = new Client();
 
