@@ -1,6 +1,13 @@
 
 All changes to the plugin will be recorded here
 
+
+## 1.0.14 - 2018-07-02
+
+- Freegeoip endpoint (and API name) updated; legacy JSON format remains
+- Facebook image url issues fixed
+- Caching issues issues fixed
+
 ## 1.0.13 - 2018-04-28
 
 - Facebook permission rerequest if denied
