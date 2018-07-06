@@ -16,7 +16,15 @@ class Weather
      */
     const CACHE_EXPIRE = 10800;
 
+    /*
+     * @var string
+     */
     private $response;
+
+    /*
+     * @var string
+     */
+    private $api_response;
 
     /*
      * @var string
@@ -94,20 +102,30 @@ class Weather
 
             $response = $client->request('GET', $base_uri);
 
-            $this->response = json_decode($response->getBody());
+            $this->api_response = json_decode($response->getBody());
 
-            $this->apiCache->saveItemInCache($this->response);
+            $this->apiCache->saveItemInCache($this->api_response);
         }
     }
 
     private function setProperties()
     {
-        $this->temperature = $this->response->{'current_observation'}->{'temp_f'};
+        if ($this->api_response) {
+            $this->temperature = $this->api_response->{'current_observation'}->{'temp_f'};
 
-        $this->origin = $this->response->{'current_observation'}->{'display_location'}->{'full'};
+            $this->origin = $this->api_response->{'current_observation'}->{'display_location'}->{'full'};
 
-        $this->conditions =  $this->response->{'current_observation'}->{'weather'};
+            $this->conditions =  $this->api_response->{'current_observation'}->{'weather'};
 
-        $this->localTime =  $this->response->{'current_observation'}->{'local_tz_long'};
+            $this->localTime =  $this->api_response->{'current_observation'}->{'local_tz_long'};
+        } else {
+            $this->temperature = $this->response->{'current_observation'}->{'temp_f'};
+
+            $this->origin = $this->response->{'current_observation'}->{'display_location'}->{'full'};
+
+            $this->conditions =  $this->response->{'current_observation'}->{'weather'};
+
+            $this->localTime =  $this->response->{'current_observation'}->{'local_tz_long'};
+        }
     }
 }

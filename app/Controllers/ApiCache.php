@@ -41,7 +41,7 @@ class ApiCache
 
         $this->expiration = is_int($expiration) ? $expiration : self::CACHE_EXPIRE;
 
-        $this->setCache(true);
+        $this->setCache(false);
     }
 
     /*
@@ -49,7 +49,7 @@ class ApiCache
      */
     public function getCachedItem($cachedItem)
     {
-        if (is_null($cachedItem)) {
+        if (is_null($cachedItem) || $this->getCache() === false) {
             return false;
         }
 
