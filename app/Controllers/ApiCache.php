@@ -41,7 +41,7 @@ class ApiCache
 
         $this->expiration = is_int($expiration) ? $expiration : self::CACHE_EXPIRE;
 
-        $this->setCache(false);
+        $this->setCache(true);
     }
 
     /*
