@@ -3,7 +3,7 @@
  * URI: https://up4probiotics.com
  * Author: Gulo - A Digital Agency
  * Author URI: http://gulo.co
- * Version: 1.0.15 (built on 2018-7-11 12:39:20)
+ * Version: 1.0.15 (built on 2018-7-11 16:41:59)
  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -570,7 +570,7 @@ var vm = new _vue2.default({
         this.model.exercises_often = 0;
       };
 
-      $('#wizard-survey-finish').text('Loading...');
+      $('#wizard-survey-finish').text('').removeClass().addClass('gif-loader');
 
       var params = {
         'action': 'survey_receiver',
