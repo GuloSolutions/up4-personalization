@@ -2,6 +2,10 @@
 All changes to the plugin will be recorded here
 
 
+## 1.0.15 - 2018-07-12
+
+- Spinner added to ht efinish button
+
 ## 1.0.14 - 2018-07-02
 
 - Freegeoip endpoint (and API name) updated; legacy JSON format remains
