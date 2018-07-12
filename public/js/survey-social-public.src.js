@@ -225,8 +225,7 @@ if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_o
     this.model.exercises_often = 0;
 };
 
-$('#wizard-survey-finish').html('<div class="gif-loader"></div>');
-
+$('#wizard-survey-finish').addClass('finish-loader').html('<div class="gif-loader"></div>');
 
 var params = {
   'action' :'survey_receiver',
