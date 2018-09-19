@@ -167,7 +167,7 @@ class Recommendation
                 $product->score();
             }
 
-            if ($product->isHeart() && $product->isHeart() == $this->user->heart) {
+            if ($product->isCapsules() && $product->isCapsules() == $this->user->capsules) {
                 $product->score();
             }
         }

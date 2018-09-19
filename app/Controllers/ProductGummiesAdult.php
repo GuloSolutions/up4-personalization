@@ -4,11 +4,11 @@ namespace Controllers;
 use Controllers\Gender;
 use Controllers\Age;
 
-class ProductSport extends AbstractProduct
+class ProductGummiesAdult extends AbstractProduct
 {
-    private const SKU = 40000600541;
+    private const SKU = 40000610000;
 
-    private const RANK = 6;
+    private const RANK = 1;
 
     public $gender;
 
@@ -44,7 +44,7 @@ class ProductSport extends AbstractProduct
 
     public function isExercisesOften()
     {
-        return true;
+        return false;
     }
 
     public function hasChildren()
@@ -64,7 +64,7 @@ class ProductSport extends AbstractProduct
 
     public function isDigestive()
     {
-        return  false;
+        return true;
     }
 
     public function isImmune()
@@ -72,7 +72,7 @@ class ProductSport extends AbstractProduct
         return true;
     }
 
-    public function isHeart()
+    public function isCapsules()
     {
         return false;
     }

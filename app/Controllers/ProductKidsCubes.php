@@ -74,8 +74,8 @@ class ProductKidsCubes extends AbstractProduct
         return false;
     }
 
-    public function isHeart()
+    public function isCapsules()
     {
-        return false;
+        return true;
     }
 }

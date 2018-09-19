@@ -72,8 +72,8 @@ class ProductUltra extends AbstractProduct
         return true;
     }
 
-    public function isHeart()
+    public function isCapsules()
     {
-        return false;
+        return true;
     }
 }

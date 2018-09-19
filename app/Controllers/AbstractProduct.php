@@ -41,7 +41,7 @@ abstract class AbstractProduct
 
     abstract public function isImmune();
 
-    abstract public function isHeart();
+    abstract public function isCapsules();
 
     /*
      * @return Void

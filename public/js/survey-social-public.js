@@ -3,7 +3,7 @@
  * URI: https://up4probiotics.com
  * Author: Gulo - A Digital Agency
  * Author URI: http://gulo.co
- * Version: 1.0.15 (built on 2018-7-12 17:26:59)
+ * Version: 1.0.16 (built on 2018-9-19 14:31:05)
  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -384,7 +384,7 @@ var _defineProperty2 = __webpack_require__(12);
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
-var _checklistOptions, _checklistOptions2, _data;
+var _checklistOptions, _data;
 
 var _vue = __webpack_require__(25);
 
@@ -426,6 +426,7 @@ var vm = new _vue2.default({
       travels_often: null,
       has_children: null,
       exercises_often: null,
+      supplements: null,
       health_needs: null
     },
 
@@ -478,7 +479,6 @@ var vm = new _vue2.default({
         styleClasses: 'col-xs-9'
       }]
     },
-
     exerciseTabSchema: {
       fields: [{
         type: "radios",
@@ -489,16 +489,26 @@ var vm = new _vue2.default({
         styleClasses: 'col-xs-9'
       }]
     },
+    supplementsTabSchema: {
+      fields: [{
+        type: "radios",
+        model: "supplements",
+        required: true,
+        values: ["Gummies", "Capsules"],
+        validator: _vueFormGenerator2.default.validators.required,
+        styleClasses: 'col-xs-9'
+      }]
+    },
     healthTabSchema: {
       fields: [{
         type: "checklist",
         model: "health_needs",
         listBox: true,
         required: true,
-        values: ["Digestive", "Immune", "Vaginal", "Urinary tract", "Heart health"],
+        values: ["Digestive", "Immune", "Vaginal", "Urinary tract"],
         checklistOptions: (_checklistOptions = {
           name: "Digestive"
-        }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary tract"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Heart health"), _checklistOptions),
+        }, (0, _defineProperty3.default)(_checklistOptions, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Vaginal"), (0, _defineProperty3.default)(_checklistOptions, 'name', "Urinary tract"), _checklistOptions),
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -509,10 +519,10 @@ var vm = new _vue2.default({
         model: "health_needs",
         listBox: true,
         required: true,
-        values: ["Digestive", "Immune", "Heart health"],
-        checklistOptions: (_checklistOptions2 = {
+        values: ["Digestive", "Immune"],
+        checklistOptions: (0, _defineProperty3.default)({
           name: "Digestive"
-        }, (0, _defineProperty3.default)(_checklistOptions2, 'name', "Immune"), (0, _defineProperty3.default)(_checklistOptions2, 'name', "Heart health"), _checklistOptions2),
+        }, 'name', "Immune"),
         validator: _vueFormGenerator2.default.validators.required,
         styleClasses: 'col-xs-9'
       }]
@@ -570,6 +580,12 @@ var vm = new _vue2.default({
         this.model.exercises_often = 0;
       };
 
+      if (this.model.supplements === "Capsules") {
+        this.model.supplements = 1;
+      } else {
+        this.model.supplements = 0;
+      }
+
       $('#wizard-survey-finish').addClass('finish-loader').html('<div class="gif-loader"></div>');
 
       var params = {
@@ -579,6 +595,7 @@ var vm = new _vue2.default({
         'response[has_children]': this.model.has_children,
         'response[travels_often]': this.model.travels_often,
         'response[exercises_often]': this.model.exercises_often,
+        'response[supplements]': this.model.supplements,
         'response[health_needs]': this.model.health_needs
       };
 

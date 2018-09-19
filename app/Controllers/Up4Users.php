@@ -106,6 +106,8 @@ class Up4Users
 
         $this->survey_data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
 
+        $this->survey_data['capsules'] = filter_var($response['supplements'], FILTER_VALIDATE_BOOLEAN);
+
         foreach ($response['health_needs'] as $key=>$value) {
             $value = strtolower($value);
 
@@ -255,7 +257,7 @@ class Up4Users
         $this->fb_user->immune = $user->immune;
         $this->fb_user->vaginal = $user->vaginal;
         $this->fb_user->urinary = $user->urinary;
-        $this->fb_user->heart = $user->heart;
+        $this->fb_user->capsules = $user->capsules;
 
         $this->fb_user->save();
     }

@@ -318,12 +318,23 @@ EOS;
                 </vue-form-generator>
             </tab-content>';
 
+        $questions[] = '
+            <tab-content icon="ti-user" :before-change="validateSupplementsTab">
+                <label for="radio">You prefer your supplements in...</label>
+                <vue-form-generator :model="model"
+                                   :schema="supplementsTabSchema"
+                                   :options="formOptions"
+                                   ref="supplementsTabForm"
+                                   >
+                </vue-form-generator>
+            </tab-content>';
+
         $gender = new \Controllers\Gender($this->up4->get()->gender);
         $health_tab_schema = !$gender->isMale() ? 'healthTabSchema' : 'healthTabSchemaMale';
 
         $questions[] = sprintf('
             <tab-content icon="ti-user" :before-change="validateHealthTab">
-                <label for="checkbox" >Which health needs are most important to you?</label>
+                <label for="checkbox" >Which health needs are most important to you?(check all that apply)</label>
                 <vue-form-generator :model="model"
                                    :schema="%s"
                                    :options="formOptions"

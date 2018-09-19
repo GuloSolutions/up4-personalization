@@ -25,6 +25,7 @@ var vm = new Vue({
     travels_often: null,
     has_children: null,
     exercises_often: null,
+    supplements: null,
     health_needs: null,
    },
 
@@ -104,7 +105,6 @@ var vm = new Vue({
      },
      ]
    },
-
    exerciseTabSchema:{
      fields:[
      {
@@ -116,6 +116,21 @@ var vm = new Vue({
           "The gym is my domain",
           "Hey, life is busy",
           "I like my couch"
+        ],
+        validator: VueFormGenerator.validators.required,
+        styleClasses:'col-xs-9'
+     },
+     ]
+   },
+   supplementsTabSchema:{
+     fields:[
+     {
+        type: "radios",
+        model: "supplements",
+        required:true,
+        values: [
+          "Gummies",
+          "Capsules",
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -134,14 +149,12 @@ var vm = new Vue({
           "Immune",
           "Vaginal",
           "Urinary tract",
-          "Heart health"
         ],
         checklistOptions: {
           name: "Digestive",
           name: "Immune",
           name: "Vaginal",
           name: "Urinary tract",
-          name: "Heart health"
         },
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9',
@@ -158,12 +171,10 @@ var vm = new Vue({
         values: [
           "Digestive",
           "Immune",
-          "Heart health"
         ],
         checklistOptions: {
           name: "Digestive",
           name: "Immune",
-          name: "Heart health"
         },
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -225,6 +236,12 @@ if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_o
     this.model.exercises_often = 0;
 };
 
+if (this.model.supplements === "Capsules" ){
+    this.model.supplements = 1;
+} else {
+  this.model.supplements = 0;
+}
+
 $('#wizard-survey-finish').addClass('finish-loader').html('<div class="gif-loader"></div>');
 
 var params = {
@@ -234,6 +251,7 @@ var params = {
   'response[has_children]' :this.model.has_children,
   'response[travels_often]' :this.model.travels_often,
   'response[exercises_often]':this.model.exercises_often,
+  'response[supplements]':this.model.supplements,
   'response[health_needs]' :this.model.health_needs
 }
 
