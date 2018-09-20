@@ -2,9 +2,13 @@
 All changes to the plugin will be recorded here
 
 
+## 1.0.15 - 2018-09-20
+
+- Add question to quiz and adjust recommendation classes
+
 ## 1.0.15 - 2018-07-12
 
-- Spinner added to ht efinish button
+- Spinner added to the finish button
 
 ## 1.0.14 - 2018-07-02
 
