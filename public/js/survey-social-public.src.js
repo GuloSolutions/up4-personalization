@@ -291,6 +291,9 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
    validateExerciseTab: function(){
      return this.$refs.exerciseTabForm.validate();
    },
+   validateSupplementsTab: function(){
+     return this.$refs.supplementsTabForm.validate();
+   },
    validateHealthTab: function(){
      return this.$refs.healthTabForm.validate();
    },

@@ -2,7 +2,7 @@
 All changes to the plugin will be recorded here
 
 
-## 1.0.15 - 2018-09-20
+## 1.0.16 - 2018-09-20
 
 - Add question to quiz and adjust recommendation classes
 
