@@ -21,6 +21,12 @@ class Recommendation
     private $products = [];
 
     /*
+     * @param Array of Abstract Products of type capsules or gummies
+     */
+    private $filtered = [];
+
+
+    /*
      * @param Array of Abstract Products Recs
      */
     private $recommendations = [];
@@ -51,8 +57,8 @@ class Recommendation
 
     public function __get($name)
     {
-        if (is_object($this->products[$name]) && method_exists($this->products[$name], 'getPost')) {
-            return $this->products[$name]->getPost();
+        if (is_object($this->filtered[$name]) && method_exists($this->filtered[$name], 'getPost')) {
+            return $this->filtered[$name]->getPost();
         }
     }
 
@@ -113,6 +119,12 @@ class Recommendation
     {
         $recommendations = [];
 
+        if ($this->user->capsules == true) {
+            $this->products = $this->getCapsules();
+        } else {
+            $this->products = $this->getGummies();
+        }
+
         $age = $this->user->age;
         $userAge = new Age($this->user->age);
 
@@ -128,6 +140,28 @@ class Recommendation
         }
 
         return $recommendations;
+    }
+
+    private function getGummies()
+    {
+        foreach ($this->products as $key => $product) {
+            if ($product->isCapsules() !== true) {
+                $this->filtered[$key] = $product;
+            }
+        }
+
+        return $this->filtered;
+    }
+
+    private function getCapsules()
+    {
+        foreach ($this->products as $key => $product) {
+            if ($product->isCapsules() === true) {
+                $this->filtered[$key] = $product;
+            }
+        }
+
+        return $this->filtered;
     }
 
     /*
