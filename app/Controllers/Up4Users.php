@@ -106,7 +106,7 @@ class Up4Users
 
         $this->survey_data['has_children'] = filter_var($response['has_children'], FILTER_VALIDATE_BOOLEAN);
 
-        $this->survey_data['capsules'] = filter_var($response['supplements'], FILTER_VALIDATE_BOOLEAN);
+        $this->survey_data['capsules'] = filter_var($response['capsules'], FILTER_VALIDATE_BOOLEAN);
 
         foreach ($response['health_needs'] as $key=>$value) {
             $value = strtolower($value);

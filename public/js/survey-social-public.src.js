@@ -25,7 +25,7 @@ var vm = new Vue({
     travels_often: null,
     has_children: null,
     exercises_often: null,
-    supplements: null,
+    capsules: null,
     health_needs: null,
    },
 
@@ -122,15 +122,15 @@ var vm = new Vue({
      },
      ]
    },
-   supplementsTabSchema:{
+   capsulesTabSchema:{
      fields:[
      {
         type: "radios",
-        model: "supplements",
+        model: "capsules",
         required:true,
         values: [
           "Gummies",
-          "Capsules",
+          "Capsules"
         ],
         validator: VueFormGenerator.validators.required,
         styleClasses:'col-xs-9'
@@ -236,10 +236,11 @@ if (this.model.exercises_often === "Hey, life is busy" || this.model.exercises_o
     this.model.exercises_often = 0;
 };
 
-if (this.model.supplements === "Capsules" ){
-    this.model.supplements = 1;
-} else {
-  this.model.supplements = 0;
+if (this.model.capsules === "Capsules" ){
+    this.model.capsules = 1;
+}
+if (this.model.capsules === "Gummies" ){
+    this.model.capsules = 0;
 }
 
 $('#wizard-survey-finish').addClass('finish-loader').html('<div class="gif-loader"></div>');
@@ -251,7 +252,7 @@ var params = {
   'response[has_children]' :this.model.has_children,
   'response[travels_often]' :this.model.travels_often,
   'response[exercises_often]':this.model.exercises_often,
-  'response[supplements]':this.model.supplements,
+  'response[capsules]':this.model.capsules,
   'response[health_needs]' :this.model.health_needs
 }
 
@@ -291,8 +292,8 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
    validateExerciseTab: function(){
      return this.$refs.exerciseTabForm.validate();
    },
-   validateSupplementsTab: function(){
-     return this.$refs.supplementsTabForm.validate();
+   validateCapsulesTab: function(){
+     return this.$refs.capsulesTabForm.validate();
    },
    validateHealthTab: function(){
      return this.$refs.healthTabForm.validate();

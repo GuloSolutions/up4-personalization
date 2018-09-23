@@ -19,7 +19,7 @@ class Age
 
     public function __construct($value)
     {
-        if(is_numeric($value)) {
+        if (is_numeric($value)) {
             $this->age = $value;
         } else {
             switch ($value) {
@@ -40,23 +40,23 @@ class Age
 
     public function find($age)
     {
-        if($age >= current(self::IS2439) && $age <= self::IS2439[1]) {
+        if ($age >= current(self::IS2439) && $age <= self::IS2439[1]) {
             $type[] = self::IS2439;
         }
 
-        if($age >= current(self::IS4060) && $age <= self::IS4060[1]) {
+        if ($age >= current(self::IS4060) && $age <= self::IS4060[1]) {
             $type[] = self::IS4060;
         }
 
-        if($age >= current(self::IS50PLUS) && $age <= self::IS50PLUS[1]) {
+        if ($age >= current(self::IS50PLUS) && $age <= self::IS50PLUS[1]) {
             $type[] = self::IS50PLUS;
         }
 
-        if($age >= current(self::ISKID) && $age <= self::ISKID[1]) {
+        if ($age >= current(self::ISKID) && $age <= self::ISKID[1]) {
             $type[] = self::ISKID;
         }
 
-        if($age >= current(self::ISALL) && $age <= self::ISALL[1]) {
+        if ($age >= current(self::ISALL) && $age <= self::ISALL[1]) {
             $type[] = self::ISALL;
         } else {
             $type[] = self::UNDEF;

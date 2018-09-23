@@ -319,12 +319,12 @@ EOS;
             </tab-content>';
 
         $questions[] = '
-            <tab-content icon="ti-user" :before-change="validateSupplementsTab">
+            <tab-content icon="ti-user" :before-change="validateCapsulesTab">
                 <label for="radio">You prefer your supplements in...</label>
                 <vue-form-generator :model="model"
-                                   :schema="supplementsTabSchema"
+                                   :schema="capsulesTabSchema"
                                    :options="formOptions"
-                                   ref="supplementsTabForm"
+                                   ref="capsulesTabForm"
                                    >
                 </vue-form-generator>
             </tab-content>';

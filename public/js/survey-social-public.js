@@ -3,7 +3,7 @@
  * URI: https://up4probiotics.com
  * Author: Gulo - A Digital Agency
  * Author URI: http://gulo.co
- * Version: 1.0.16 (built on 2018-9-20 10:03:52)
+ * Version: 1.0.16 (built on 2018-9-22 19:01:16)
  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -426,7 +426,7 @@ var vm = new _vue2.default({
       travels_often: null,
       has_children: null,
       exercises_often: null,
-      supplements: null,
+      capsules: null,
       health_needs: null
     },
 
@@ -489,10 +489,10 @@ var vm = new _vue2.default({
         styleClasses: 'col-xs-9'
       }]
     },
-    supplementsTabSchema: {
+    capsulesTabSchema: {
       fields: [{
         type: "radios",
-        model: "supplements",
+        model: "capsules",
         required: true,
         values: ["Gummies", "Capsules"],
         validator: _vueFormGenerator2.default.validators.required,
@@ -580,10 +580,11 @@ var vm = new _vue2.default({
         this.model.exercises_often = 0;
       };
 
-      if (this.model.supplements === "Capsules") {
-        this.model.supplements = 1;
-      } else {
-        this.model.supplements = 0;
+      if (this.model.capsules === "Capsules") {
+        this.model.capsules = 1;
+      }
+      if (this.model.capsules === "Gummies") {
+        this.model.capsules = 0;
       }
 
       $('#wizard-survey-finish').addClass('finish-loader').html('<div class="gif-loader"></div>');
@@ -595,7 +596,7 @@ var vm = new _vue2.default({
         'response[has_children]': this.model.has_children,
         'response[travels_often]': this.model.travels_often,
         'response[exercises_often]': this.model.exercises_often,
-        'response[supplements]': this.model.supplements,
+        'response[capsules]': this.model.capsules,
         'response[health_needs]': this.model.health_needs
       };
 
@@ -632,8 +633,8 @@ var vm = new _vue2.default({
     validateExerciseTab: function validateExerciseTab() {
       return this.$refs.exerciseTabForm.validate();
     },
-    validateSupplementsTab: function validateSupplementsTab() {
-      return this.$refs.supplementsTabForm.validate();
+    validateCapsulesTab: function validateCapsulesTab() {
+      return this.$refs.capsulesTabForm.validate();
     },
     validateHealthTab: function validateHealthTab() {
       return this.$refs.healthTabForm.validate();
