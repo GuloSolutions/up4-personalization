@@ -2,6 +2,11 @@
 All changes to the plugin will be recorded here
 
 
+
+## 1.0.17 - 2018-09-20
+
+- Revise options for gummies and gender if gummies selected
+
 ## 1.0.16 - 2018-09-20
 
 - Add question to quiz and adjust recommendation classes

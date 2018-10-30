@@ -3,7 +3,7 @@
  * URI: https://up4probiotics.com
  * Author: Gulo - A Digital Agency
  * Author URI: http://gulo.co
- * Version: 1.0.16 (built on 2018-9-22 19:01:16)
+ * Version: 1.0.17 (built on 2018-10-30 14:24:05)
  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -719,9 +719,9 @@ var vm = new _vue2.default({
     if (this.model.gender == 'Male') {
       $("input[name='Vaginal']").closest('div[class^="list-row"]').hide();
       $("input[name='Urinary-tract']").closest('div[class^="list-row"]').hide();
-    } else if (this.model.gender == 'Female' || this.model.gender == 'Other') {
-      $("input[name='Vaginal']").closest('div[class^="list-row"]').toggle(true);
-      $("input[name='Urinary-tract']").closest('div[class^="list-row"]').toggle(true);
+    } else if (this.model.gender == 'Female' && this.model.capsules == 'Gummies') {
+      $("input[name='Vaginal']").closest('div[class^="list-row"]').hide();
+      $("input[name='Urinary-tract']").closest('div[class^="list-row"]').hide();
     }
   }
 });

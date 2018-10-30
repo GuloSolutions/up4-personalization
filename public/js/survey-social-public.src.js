@@ -380,9 +380,9 @@ axios.post(ajax_receiver.ajax_url, recursiveDecoded,
     if (this.model.gender == 'Male') {
         $("input[name='Vaginal']").closest('div[class^="list-row"]').hide();
         $("input[name='Urinary-tract']").closest('div[class^="list-row"]').hide();
-    } else if (this.model.gender == 'Female' || this.model.gender == 'Other') {
-            $("input[name='Vaginal']").closest('div[class^="list-row"]').toggle(true);
-            $("input[name='Urinary-tract']").closest('div[class^="list-row"]').toggle(true);
+    } else if(this.model.gender == 'Female' && this.model.capsules == 'Gummies' ){
+        $("input[name='Vaginal']").closest('div[class^="list-row"]').hide();
+        $("input[name='Urinary-tract']").closest('div[class^="list-row"]').hide();
       }
    }
 })
