@@ -15,7 +15,7 @@
  * Plugin Name:       up4-personalization
  * Plugin URI:        www.gulosolutions.com
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.0.18
+ * Version:           1.0.19
  * Author:            Gulo Solutions
  * Author URI:        www.gulosolutions.com
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ if (! defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('PLUGIN_NAME_VERSION', '1.0.18');
+define('PLUGIN_NAME_VERSION', '1.0.19');
 
 /**
  * The code that runs during plugin activation.
