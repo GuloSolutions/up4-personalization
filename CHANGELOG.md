@@ -2,15 +2,15 @@
 All changes to the plugin will be recorded here
 
 
-## 1.0.19 - 2018-09-20
+## 1.0.19 - 2018-11-01
 
 - As migration for capsules
 
-## 1.0.18 - 2018-09-20
+## 1.0.18 - 2018-11-01
 
 - Fixed wrong SKU for gummies
 
-## 1.0.17 - 2018-09-20
+## 1.0.17 - 2018-11-01
 
 - Revise options for gummies and gender if gummies selected
 
