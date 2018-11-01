@@ -2,6 +2,10 @@
 All changes to the plugin will be recorded here
 
 
+## 1.0.19 - 2018-09-20
+
+- As migration for capsules
+
 ## 1.0.18 - 2018-09-20
 
 - Fixed wrong SKU for gummies
