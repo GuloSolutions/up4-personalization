@@ -6,7 +6,7 @@ use Controllers\Age;
 
 class ProductGummies extends AbstractProduct
 {
-    private const SKU = 40000610000;
+    private const SKU = 40000610001;
 
     private const RANK = 1;
 

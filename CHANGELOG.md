@@ -2,6 +2,9 @@
 All changes to the plugin will be recorded here
 
 
+## 1.0.18 - 2018-09-20
+
+- Fixed wrong SKU for gummies
 
 ## 1.0.17 - 2018-09-20
 
